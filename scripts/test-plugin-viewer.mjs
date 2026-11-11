@@ -4,7 +4,7 @@ const {chromium}=await import(process.env.INTACT_PLAYWRIGHT_MODULE||'playwright'
 const out=path.resolve('outputs/plugin-audit'),report=JSON.parse(fs.readFileSync(path.join(out,'report.json'),'utf8'));
 const browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 const page=await browser.newPage({viewport:{width:1360,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
-async function ready(){await page.waitForSelector('body[data-ready=true]');await page.waitForTimeout(500);await page.locator('#parameter-form').locator('..').evaluate(el=>el.open=true);const error=await page.locator('#error').textContent();if(error)throw Error(error);}
+async function ready(){await page.waitForSelector('body[data-ready=true]');await page.locator('#components-summary').click();await page.waitForTimeout(500);await page.locator('#parameter-form').locator('..').evaluate(el=>el.open=true);const error=await page.locator('#error').textContent();if(error)throw Error(error);}
 async function image(name){await page.waitForTimeout(250);const png=await page.locator('#cad-canvas').screenshot({path:path.join(out,name+'.png')});return png;}
 async function state(){return page.evaluate(async()=>await fetch('state.json').then(r=>r.json()));}
 try{

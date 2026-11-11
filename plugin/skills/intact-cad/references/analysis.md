@@ -1,10 +1,7 @@
 # Implemented simulation scope
 
-`analyze_reference` creates a **new matching rectangular reference model** and solves one of two reduced problems:
+Use `run_3d_simulation` for supported native-solid steady conduction, linear elasticity and creeping-flow Stokes. Read [engineering tool contracts](priority23.md) before preparing a study. Establish materials, loads, geometry, units and boundary conditions; inspect mesh quality and convergence evidence. Unsupported turbulent/inertial CFD, nonlinear/contact mechanics and multiphysics remain unavailable.
 
-- `beam`: uniform rectangular cantilever, small linear elastic deflection; force at its free end, fixed base; analytical formula plus 1D beam FEM and convergence/agreement checks.
-- `fin`: single rectangular cooling fin, steady 1D conduction, prescribed base heat, ambient convection and insulated tip; analytical formula plus 1D finite-volume field and balance/convergence/agreement checks.
+The older `analyze_reference` MCP tool was removed in 0.12.2. Reduced beam/fin solvers remain internal numerical benchmarks and optional legacy HTTP functionality; do not call them as a public MCP tool or attach their results to arbitrary geometry.
 
-For a real design study, review dimensions, material provenance, load/heat, fixed/insulated faces, ambient, convection and assumptions with the user before `approved=true`. Existing task authorization to run a defined study still applies; do not ask repeatedly for the same approval. Fixed numerical regression fixtures in an explicitly requested software audit are tests, not an engineering design recommendation.
-
-Report `scope=reduced_1d`, assumptions, verification results and warnings. Material constants are representative, not certified supplier data. The reference model must match the solved rectangle. Never attach beam/fin results to an arbitrary imported assembly, generated impeller, pressure vessel or heat sink and imply it received a 3D solve. For bounded 3D steady conduction, linear elasticity and creeping-flow Stokes, use run_3d_simulation and read priority23.md. Multiphysics, contact/nonlinear analysis, turbulent/inertial CFD, resolved boundary-layer models and fatigue are not implemented. A CAD model or an AI narrative cannot establish stresses, temperatures, safety factors or certification for those cases.
+The compact viewer omits manual engineering panels. Read `engineering_evidence`, `get_engineering_job` and returned report/VTU/PDF paths through the AI conversation; use `cancel_engineering_job` to stop a job. Preserve revision/artifact provenance and label stale results. Representative material constants are not certified supplier data.

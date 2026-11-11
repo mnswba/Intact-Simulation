@@ -298,10 +298,6 @@ def create_server(engine:IntactMCP|None=None):
     async def apply_edit_request(model_id:str,request_id:str,source:str,parameters:dict[str,StrictFloat],ctx:Context)->dict[str,Any]:
         """Apply a viewer edit request using revised build(params) Python. Preserves the previous model on failure, rejects stale selections, records completion and refreshes the open viewer. Preserve unrelated assembly parts. Inspect snapshot_model afterward."""
         return await execute('apply_edit_request',dict(model_id=model_id,request_id=request_id,source=source,parameters=parameters),ctx)
-    @server.tool(annotations=write)
-    async def analyze_reference(kind:Literal['beam','fin'],length:float,width:float,height:float,material:Literal['aluminum','steel','copper'],study:Study,approved:StrictBool,ctx:Context)->dict[str,Any]:
-        """After user review, solve a NEW rectangular reference beam (1D FEM) or fin (steady thermal FVM) and show its actual samples, checks and assumptions in the viewer. Cannot simulate an arbitrary generated model or CFD."""
-        return await execute('analyze_reference',{'kind':kind,'length':length,'width':width,'height':height,'material':material,'study':study.model_dump(),'approved':approved},ctx)
     from .advanced_mcp import register
     register(server,engine,execute,read,write)
     return server

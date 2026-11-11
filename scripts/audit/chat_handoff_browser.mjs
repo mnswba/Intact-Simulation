@@ -8,7 +8,7 @@ const browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-a
 const page=await browser.newPage({viewport:{width:1300,height:1000}});page.on('pageerror',e=>errors.push(e.message));
 await page.addInitScript(()=>{window.annotationCalls=[];window.annotationMode='accept';document.oai={annotation:{request(target,options){window.annotationCalls.push({active:navigator.userActivation.isActive,connected:target.isConnected,visible:target.getBoundingClientRect().top<innerHeight&&target.getBoundingClientRect().bottom>0,text:target.textContent,options});if(window.annotationMode==='throw')throw Error('host unavailable');return {accepted:window.annotationMode==='accept'};}}};});
 let runs=0;await page.route('**/run-edit',route=>{runs++;return route.fulfill({json:{status:'processing'}});});
-async function ready(){await page.waitForSelector('body[data-ready=true]');await page.locator('#toggle-edit').click();}
+async function ready(){await page.waitForSelector('body[data-ready=true]');await page.locator('#toggle-edit').click();await page.locator('#components-summary').click();}
 async function records(){return page.evaluate(()=>fetch('requests.json').then(r=>r.json()));}
 async function waitSaved(n){const deadline=Date.now()+15000;while(Date.now()<deadline){const rows=(await records()).requests;if(rows.length===n)return rows;await page.waitForTimeout(150);}throw Error('Request save timed out; '+await page.locator('#error').textContent());}
 try{

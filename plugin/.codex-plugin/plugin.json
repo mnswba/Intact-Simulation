@@ -1,6 +1,6 @@
 {
   "name": "intact-simulation",
-  "version": "0.12.1",
+  "version": "0.12.2",
   "description": "ChatGPT CAD with constrained sketches, explicit feature history, design verification, stable references and TPMS.",
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",

@@ -1,0 +1,11 @@
+# Compact viewer — 0.12.2
+
+The solid viewer omits the manual Requirements / Feature history section and Engineering results & jobs panel. The draft viewer also omits Requirements and Feature history, retaining its useful sketch/solver controls. AI-accessible requirements, constrained sketches, editable feature graphs, verification and numerical tools remain available because they support reliable edits. The older simplified `analyze_reference` public MCP tool has been removed; the supported 3D simulation tools remain, giving 53 advertised tools. Historical reduced studies and HTTP code are retained for backwards compatibility and numerical benchmarks.
+
+Components are inside a single initially collapsed disclosure. Part controls and lazy face/edge inspection remain available when expanded. Expanded inspection groups survive refreshes, and filtering opens matching components and restores the previous outer state when cleared. Native FreeCAD exports now live in Files & exports alongside the other formats when available. Revision history remains separate and read-only previews remain guarded.
+
+Files & exports pins the open model first, followed by at most four other models ordered by their save timestamps. It deduplicates entries, works for fewer than five models and updates while the viewer is open. Older models are hidden from this short list, not deleted; AI list_models still returns the complete library. Last-save metadata includes project/view updates. Removed panels no longer fetch engineering data every second; the recent-model list refreshes every five seconds.
+
+Source and bundled JavaScript are rebuilt together. The local installer updates the durable runtime and both plugin profiles while preserving user CAD and the viewer address. The prepared GitHub checkout is updated separately; remote publication still requires authenticated GitHub access.
+
+Validation covers recent-model ordering/deduplication, saved/draft metadata, retained engine tools, absent legacy tool, collapsible component inspection, filtering, refresh behavior, historical previews and Ask AI handoff/replies. Browser annotation API tests use a simulated host in Chromium, not the native Windows ChatGPT editor.

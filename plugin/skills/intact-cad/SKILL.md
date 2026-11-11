@@ -17,7 +17,7 @@ For geometry that should survive edits, `bind_reference` names an inspected curr
 
 `set_accuracy` applies dimensional and mesh targets and rebuilds safely. `check_accuracy` reports native kernel tolerances, STL volume approximation and optional two-resolution volume/area convergence without changing saved revisions. A target is not achieved accuracy; report failed/unverified results. TPMS refinement needs an exposed samples_per_cell parameter and stays within its sampling budget.
 
-Drafts can open in the viewer as solved 2D sketches with constraint controls. Built projects show the feature tree, suppression, numeric edits, verification and accuracy controls. Structured projects download a native `.FCStd` document and standalone **FreeCAD** Python (not a build123d program); its exported STEP and native document rebuild from the saved graph. General Python/TPMS projects retain their existing export workflow. The viewport Draw/annotate feature remains a reference sketch, separate from a solved CAD sketch.
+Drafts can open in the viewer as solved 2D sketches with constraint controls. Built projects use a compact CAD viewer: Components is collapsible and Files & exports lists the current model and four recent others. Requirements, feature-history and job panels are omitted; edit and verify these capabilities through AI tools. Native FCStd remains in Files & exports. Structured projects download a native `.FCStd` document and standalone **FreeCAD** Python (not a build123d program); its exported STEP and native document rebuild from the saved graph. General Python/TPMS projects retain their existing export workflow. The viewport Draw/annotate feature remains a reference sketch, separate from a solved CAD sketch.
 
 ## Priority 2/3 engineering
 

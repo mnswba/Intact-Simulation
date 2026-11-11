@@ -51,12 +51,12 @@ class ProjectService:
         models=[]
         for path in self.models.glob('*.json'):
             try:
-                r=self.load(path.stem);models.append({'model_id':r['model_id'],'name':r['name'],'revision':r['spec']['revision'],'part_count':len(r['spec']['parts'])})
+                r=self.load(path.stem);models.append({'model_id':r['model_id'],'name':r['name'],'revision':r['spec']['revision'],'part_count':len(r['spec']['parts']),'updated_at':path.stat().st_mtime})
             except (ValueError,KeyError,OSError):continue
         for path in (self.root/'design-drafts').glob('*.json'):
             try:
                 r=json.loads(path.read_text())
-                if not self.path(r['model_id']).exists():models.append({'model_id':r['model_id'],'name':r['name'],'revision':r['revision'],'part_count':0,'draft':True})
+                if not self.path(r['model_id']).exists():models.append({'model_id':r['model_id'],'name':r['name'],'revision':r['revision'],'part_count':0,'draft':True,'updated_at':path.stat().st_mtime})
             except (ValueError,KeyError,OSError):continue
         return sorted(models,key=lambda r:r['name'].lower())
     def commit(self,record,expected=None):

@@ -1,6 +1,6 @@
 # Intact CAD and engineering backend
 
-Current version: **0.12.1**. The primary interface is the 54-tool MCP server, `intact_backend.mcp_server`, used by an AI client. The backend executes CAD and engineering operations; it does not host or train an LLM and does not use LiteLLM.
+Current version: **0.12.2**. The primary interface is the 53-tool MCP server, `intact_backend.mcp_server`, used by an AI client. The backend executes CAD and engineering operations; it does not host or train an LLM and does not use LiteLLM.
 
 Start with the root [installation guide](../docs/install.md). Prepare the local runtime with `python3 scripts/install-chatgpt-plugin.py` from the repository root. It installs pinned Python packages and the verified FreeCAD runtime. Generated Python requires bubblewrap and working Linux user/network namespaces; execution remains disabled if isolation is unavailable.
 

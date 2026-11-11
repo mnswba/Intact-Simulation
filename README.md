@@ -38,15 +38,15 @@ This installs a local development plugin. Publishing this repository does not li
 | Design intent | Structured dimensions and requirements, FreeCAD sketch constraints and actual solver diagnostics |
 | Editable history | Explicit feature graphs with supported sketch/extrude/revolve/hole/fillet/chamfer/boolean/pattern/transform operations |
 | Geometry inspection | Parts, faces, edges, vertices, native measurements, snapping and named references with ambiguity detection |
-| Viewer | Four light-to-dark themes, grid, colors, sections/caps, exploded views, visibility and revision previews |
+| Viewer | Collapsible components, current model plus four recent models, four themes, grid, colors, sections/caps, exploded views and revision previews |
 | Ask AI | Select geometry, attach references/sketches, describe an edit or question, rebuild and refresh; ChatGPT annotation handoff and clarification replies |
 | Verification | Native validity, saved dimension/hole/placement/clearance checks, requested tolerance and mesh convergence reports |
 | Lattices | Six sampled TPMS families, distance offsets, envelopes, mesh booleans and hybrid geometry |
-| Engineering | Bounded joints, reconstruction workflows, manufacturing screening, reference drawings and background jobs |
+| Engineering | AI tools for bounded joints, reconstruction, manufacturing screening, reference drawings and background jobs; manual engineering panels are omitted |
 | Simulation | Supported 3D steady conduction, linear elasticity and creeping-flow Stokes with revision-bound results |
 | Exports | STEP for native solids; STL, GLB and 3MF meshes; project JSON and Python; FCStd for structured designs |
 
-Version **0.12.1** exposes **54 MCP tools**. See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
+Version **0.12.2** exposes **53 MCP tools**. See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
 
 ## Example workflows
 

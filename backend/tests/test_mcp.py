@@ -18,12 +18,12 @@ def stop_viewer(root):
         try:os.kill(json.loads(path.read_text())['pid'],signal.SIGTERM)
         except ProcessLookupError:pass
 
-async def test_reference_approval_and_scope(tmp_path):
+async def test_legacy_reference_tool_removed_and_3d_simulation_retained(tmp_path):
     engine=IntactMCP(tmp_path)
     async with Client(create_server(engine)) as client:
-        args={'kind':'beam','length':180,'width':30,'height':8,'material':'aluminum','study':{'force':25},'approved':False}
-        response=await client.call_tool('analyze_reference',args);assert response.is_error
-        invalid=await client.call_tool('analyze_reference',{**args,'kind':'CFD','approved':True});assert invalid.is_error
+        tools={t.name for t in (await client.list_tools()).tools}
+        assert 'analyze_reference' not in tools
+        assert {'run_3d_simulation','engineering_evidence','cancel_engineering_job','verify_design','get_feature_tree'}<=tools
         response=await client.call_tool('status');assert response.structured_content['cad_ready']
 
 @pytest.mark.parametrize('mode',['auto','legacy'])
