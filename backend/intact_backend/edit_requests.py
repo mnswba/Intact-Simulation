@@ -124,4 +124,3 @@ class EditRequests:
         except BaseException as exc:
             fresh.update(status='failed',error=str(exc)[:2000]);raise
         finally:atomic_json(self.path(key,request_id),fresh)
-

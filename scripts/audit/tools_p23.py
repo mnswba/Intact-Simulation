@@ -11,7 +11,7 @@ def build(params):
 '''
 async def main():
  server=json.loads((Path.home()/'.codex/plugins/intact-simulation/.mcp.json').read_text())['mcpServers']['intact'];params=StdioServerParameters(command=server['command'],args=server['args'],env={**{k:v for k,v in os.environ.items() if k!='PYTHONPATH'},'INTACT_STATE_DIR':str(ROOT)})
- 
+
  if os.environ.get('INTACT_AUDIT_SOURCE'):params.env['PYTHONPATH']=str(REPO/'backend')
  report={'tools':{},'checks':[]}
  async with Client(params,read_timeout_seconds=150) as c:

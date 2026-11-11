@@ -1,0 +1,4 @@
+# Bundled third-party GLSL templates intentionally retain whitespace.
+backend/intact_backend/viewer.js -whitespace
+backend/intact_backend/draft_viewer.js -whitespace
+*.sh text eol=lf
