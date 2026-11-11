@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "intact": {
+      "command": "./server/launch.sh",
+      "args": []
+    }
+  }
+}

@@ -1,0 +1,400 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-11-10",
+  "reference_product": "text-to-CAD / CAD Viewer",
+  "reference_version": "0.7.10",
+  "access": {
+    "live_viewer_url": "http://127.0.0.1:3245/?file=iphone.step",
+    "server_platform": "win32",
+    "server_pid": 43224,
+    "original_project": "C:/Users/User/Documents/Codex/2026-11-10/new-chat-2/outputs",
+    "method": "Browser interactions with the live Windows CAD Viewer; Python source and saved STEP/GLB inspection.",
+    "windows_chatgpt_window_controlled": false,
+    "browser_context": "Separate temporary automation profile. Settings observed here are not a readout of the user's existing ChatGPT browser preferences."
+  },
+  "model": {
+    "name": "iphone_pro_concept",
+    "description": "User-created simplified iPhone-style exterior concept, not a dimensional reference for an Apple product.",
+    "solid_count": 23,
+    "named_component_count": 23,
+    "component_names": [
+      "titanium_frame",
+      "rear_glass",
+      "front_bezel",
+      "display",
+      "dynamic_island",
+      "home_indicator",
+      "camera_platform",
+      "lens_ring_1",
+      "lens_glass_1",
+      "lens_optic_1",
+      "lens_ring_2",
+      "lens_glass_2",
+      "lens_optic_2",
+      "lens_ring_3",
+      "lens_glass_3",
+      "lens_optic_3",
+      "flash",
+      "lidar",
+      "microphone",
+      "power",
+      "volume_up",
+      "volume_down",
+      "action"
+    ],
+    "frame_dimensions_mm": [
+      71.5,
+      147,
+      7.8
+    ],
+    "assembly_bounds_mm": [
+      72.5,
+      147.0,
+      11.75
+    ],
+    "file_integrity": {
+      "iphone.step": {
+        "sha256": "51a118deaab8670b519c0a17dca5bb45d8cd05aa8f9c29229931934b9ad4f856",
+        "unchanged_during_review": true
+      },
+      "iphone.glb": {
+        "sha256": "7e72220ba5a74f17e5c2ce20bd498af7e43d584b459e45091ef061a0aaae486c",
+        "unchanged_during_review": true
+      }
+    }
+  },
+  "confirmed_ui": {
+    "layout": [
+      "Large primary CAD canvas",
+      "Compact floating tool palette",
+      "Collapsible/resizable model/features panel",
+      "Floating selection inspector",
+      "Floating Quick Edit panel",
+      "Settings panel",
+      "File browser"
+    ],
+    "display_presets": {
+      "Mode": [
+        "Solid",
+        "Render",
+        "X-ray",
+        "Hidden line",
+        "Wireframe",
+        "Grid"
+      ],
+      "Appearance": [
+        "System",
+        "Light",
+        "Dark"
+      ],
+      "Projection": [
+        "Orthographic",
+        "Perspective"
+      ],
+      "Surface style": [
+        "Shaded",
+        "Flat",
+        "Hidden",
+        "Off"
+      ],
+      "Parts": [
+        "Original",
+        "Single color",
+        "Color by part"
+      ],
+      "Edge visibility": [
+        "Visible",
+        "All"
+      ]
+    },
+    "additional_display_settings": {
+      "quality": [
+        "Preview",
+        "Final"
+      ],
+      "surface_opacity": "numeric percentage",
+      "edge_color": "hex color picker",
+      "grid_axes": "independent grid and axis colors",
+      "lighting": [
+        "exposure EV",
+        "rotation degrees",
+        "softbox size",
+        "fill ratio"
+      ],
+      "background": "enable/disable and color",
+      "floor": [
+        "enable/disable",
+        "color",
+        "Model origin or Lowest point"
+      ],
+      "palette": "Original / Single color / Color by part; palette add/remove controls",
+      "analytics": "anonymous usage toggle observed; not changed"
+    },
+    "selection": [
+      "parts",
+      "faces",
+      "edges",
+      "grouped faces",
+      "grouped edges",
+      "model-name filtering",
+      "hide component",
+      "isolate component"
+    ],
+    "features": {
+      "frame": [
+        "Pocket 1",
+        "Bores (8)",
+        "Other geometry"
+      ],
+      "repeated_component_groups": [
+        "lens_ring (3)",
+        "lens_glass (3)",
+        "lens_optic (3)",
+        "volume (2)"
+      ],
+      "meaning": "The UI explicitly describes these as inspection groups; it does not claim a source feature history or pattern operation."
+    },
+    "geometry_reference_example": {
+      "file": "iphone.step",
+      "reference": "o1.1.f11",
+      "type": "Cylindrical face",
+      "diameter_mm": 1.3,
+      "radius_mm": 0.65,
+      "displayed_area_mm2": 10.62,
+      "owner_component": "o1.1",
+      "additional_inspector_fields": [
+        "area",
+        "bounds",
+        "center XYZ",
+        "normal for planar face",
+        "material",
+        "color"
+      ]
+    },
+    "measurement": {
+      "tools": [
+        "point-to-point distance",
+        "angle readout",
+        "snapping filters All/Points/Edges/Faces",
+        "persistent dimension overlay",
+        "delete individual measurement"
+      ],
+      "observed_frame_width_mm": 71.5,
+      "observed_angle_degrees": 0.0,
+      "native_frame_width_mm": 71.5
+    },
+    "inspection_tools": {
+      "clip": {
+        "axes": [
+          "X",
+          "Y",
+          "Z"
+        ],
+        "amount_range_percent": [
+          0,
+          100
+        ],
+        "interaction_tested": true
+      },
+      "explode": {
+        "amount_range_percent": [
+          0,
+          100
+        ],
+        "interaction_tested": true
+      },
+      "camera": [
+        "orthographic",
+        "perspective",
+        "face/edge/corner view cube",
+        "orbit/pan/zoom"
+      ],
+      "preview": {
+        "full_canvas": true,
+        "playback": "Orbit",
+        "orbit_speed_control_observed": "1x"
+      }
+    },
+    "drawing": [
+      "select/move",
+      "pan",
+      "pen",
+      "line",
+      "arrow",
+      "rectangle",
+      "ellipse",
+      "text",
+      "fill",
+      "eraser",
+      "color",
+      "stroke width",
+      "undo",
+      "redo",
+      "clear"
+    ],
+    "quick_edit": {
+      "context": [
+        "selected geometry references",
+        "drawing draft"
+      ],
+      "controls": [
+        "Describe your changes",
+        "Copy Prompt",
+        "Copy Drawing"
+      ],
+      "tested": "Opened selected-reference editing and drew/cleared a temporary arrow. No prompt was submitted to an AI agent."
+    },
+    "files": {
+      "tested": [
+        "iphone.step",
+        "iphone.glb"
+      ],
+      "actions_observed": [
+        "Copy path",
+        "Copy relative path",
+        "Show in Explorer"
+      ],
+      "format_capability_difference": "The GLB view showed a simplified toolbar; detailed native topology inspection was present in STEP."
+    }
+  },
+  "engineering_observations": [
+    "Appearance and engineering material must be separate: the named titanium_frame component still reports material Unassigned.",
+    "Frame volume displayed as 81,157 mm3; independently read native STEP volume is 81,159.79455171192 mm3. Preserve measurement provenance and precision in Intact.",
+    "Source assigns frame color #85888D via cadgen.srgb; STEP viewer reports #3C3F44. Color-space/export round trips need an explicit test; root cause was not diagnosed in this review.",
+    "Geometry references belong to a saved file revision. Rebuilds need selection invalidation or remapping."
+  ],
+  "intact_priorities": [
+    {
+      "priority": 0,
+      "feature": "Topology-aware CAD import and references",
+      "work": "Import STEP assemblies with names/colors, preserve occurrences, map preview triangles to native faces/edges, and resolve revision-bound geometry references in Python."
+    },
+    {
+      "priority": 0,
+      "feature": "Native inspection and interactive measurements",
+      "work": "Add face type, diameters/radii, area, centroid, normals, edge lengths, point snapping and point-to-point measurements."
+    },
+    {
+      "priority": 0,
+      "feature": "Selection-driven AI edits",
+      "work": "Combine exact references, user instructions and optional viewport annotations in an editable AI request; rebuild atomically and refresh the viewer."
+    },
+    {
+      "priority": 1,
+      "feature": "Assembly and feature navigation",
+      "work": "Add repeated-part grouping, filtering, isolate and geometric feature groups. Label inferred groups honestly; preserve source history separately."
+    },
+    {
+      "priority": 1,
+      "feature": "Display and camera controls",
+      "work": "Add six display presets, orthographic/perspective switching, a view cube and shared settings schema across the plugin and website viewers."
+    },
+    {
+      "priority": 1,
+      "feature": "Presentation and rendering",
+      "work": "Add light/dark/system themes, exposure, lighting, background and floor controls plus consistent original colors across exports."
+    },
+    {
+      "priority": 1,
+      "feature": "Broader acceptance benchmark",
+      "work": "Use the 23-component phone as a private integration case for scene hierarchy, small features, labels, source regeneration and STEP/GLB consistency."
+    }
+  ],
+  "review_limits": [
+    "Inspected the running Windows CAD Viewer, not the ChatGPT desktop application window.",
+    "Final render quality was listed but not executed as a quality benchmark.",
+    "Source regeneration and AI prompt submission were not tested on the original model.",
+    "This review records implementation guidance; it does not fine-tune model weights."
+  ],
+  "evidence_directory": "outputs/reference-audit/",
+  "evidence_files": [
+    "annotation-draft.json",
+    "bore-face-properties.json",
+    "clip-active.json",
+    "clip-tool.json",
+    "dark-color-by-part.json",
+    "draw-tool.json",
+    "explode-active.json",
+    "explode-tool.json",
+    "file-actions.json",
+    "file-browser.json",
+    "glb-model.json",
+    "grid-settings.json",
+    "iphone-kernel.json",
+    "measure-fit.json",
+    "measure-snapping.json",
+    "measure-tool.json",
+    "measure-top-ready.json",
+    "measure-two-points.json",
+    "part-selection.json",
+    "preset-grid.json",
+    "preset-hidden-line.json",
+    "preset-wireframe.json",
+    "preset-x-ray.json",
+    "preview-mode.json",
+    "preview-settings.json",
+    "recognized-bores.json",
+    "render-mode.json",
+    "review-final-state.json",
+    "selection-filters.json",
+    "settings-extra-menus.json",
+    "settings-menus.json",
+    "settings.json",
+    "topology-tree.json",
+    "annotation-draft.png",
+    "bore-face-properties.png",
+    "clip-active.png",
+    "clip-tool.png",
+    "dark-color-by-part.png",
+    "draw-tool.png",
+    "explode-active.png",
+    "explode-tool.png",
+    "file-actions.png",
+    "file-browser.png",
+    "glb-model.png",
+    "grid-settings.png",
+    "live-viewer.png",
+    "measure-fit.png",
+    "measure-snapping.png",
+    "measure-tool.png",
+    "measure-top-ready.png",
+    "measure-two-points.png",
+    "part-selection.png",
+    "preset-grid.png",
+    "preset-hidden-line.png",
+    "preset-wireframe.png",
+    "preset-x-ray.png",
+    "preview-mode.png",
+    "preview-settings.png",
+    "recognized-bores.png",
+    "render-mode.png",
+    "review-final-state.png",
+    "selection-filters.png",
+    "settings.png",
+    "topology-tree.png"
+  ],
+  "modeling_workflow": {
+    "source_file": "iphone.py",
+    "cadgen_version": "0.7.10",
+    "build123d_version": "0.11.1",
+    "pattern": [
+      "Reusable rounded-rectangle extrusion helper",
+      "Boolean subtraction for the charging-port recess and eight cylindrical speaker bores",
+      "Loops for camera optics and side controls",
+      "Per-component labels and colors",
+      "Compound assembly of 23 solids",
+      "STEP and GLB export decorators"
+    ],
+    "source_parameters": [
+      "WIDTH = 71.5",
+      "HEIGHT = 147.0",
+      "THICKNESS = 7.8"
+    ],
+    "intact_learning": [
+      "Keep editable Python as the reproducible source of geometry.",
+      "Preserve labels, colors and occurrence placements through export and import.",
+      "Support general CAD operations and repeated components without selecting an unrelated template.",
+      "Treat geometry references as revision-bound context for AI edits."
+    ]
+  }
+}

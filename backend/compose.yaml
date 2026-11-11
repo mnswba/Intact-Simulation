@@ -1,0 +1,21 @@
+services:
+  engineering:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file: .env
+    environment:
+      INTACT_STATE_DIR: /data
+    volumes:
+      - intact-state:/data
+    tmpfs:
+      - /tmp:size=1g,mode=1777
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 2g
+    cpus: 2
+    pids_limit: 128
+    restart: unless-stopped
+volumes:
+  intact-state:

@@ -1,0 +1,5 @@
+import {authorizedBackend} from '@/lib/engineering/backend-proxy';
+export async function GET(request:Request,{params}:{params:Promise<{id:string;kind:string}>}){
+  const {id,kind}=await params;const names:Record<string,string>={step:'model.step',stl:'model.stl',mesh:'mesh.json',source:'program.py'};if(!/^[a-f0-9]{64}$/.test(id)||!Object.hasOwn(names,kind))return Response.json({error:'Artifact not found.'},{status:404});
+  try{const service=await authorizedBackend(request);const response=await fetch(service.root+`/v1/geometry/${id}/${names[kind]}`,{headers:service.headers,signal:AbortSignal.timeout(30000),redirect:'error'});if(!response.ok)return Response.json({error:'The generated CAD artifact is unavailable.'},{status:response.status});return new Response(response.body,{headers:{'Content-Type':kind==='mesh'?'application/json':kind==='source'?'text/x-python':'application/octet-stream','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff',...(kind==='mesh'?{}:{'Content-Disposition':`attachment; filename="${names[kind]}"`})}});}catch{return Response.json({error:'Connect the Python backend to access this CAD artifact.'},{status:503});}
+}

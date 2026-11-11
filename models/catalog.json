@@ -1,0 +1,23 @@
+{
+  "flange": {
+    "source": "flange.py",
+    "parameters": {"diameter":80,"thickness":8,"bore":24,"bolt_circle":60,"hole_diameter":6},
+    "expected_parts": 1,
+    "bounds_mm": [80,80,8],
+    "formats": ["step","stl","glb","3mf"]
+  },
+  "enclosure": {
+    "source": "enclosure.py",
+    "parameters": {"length":60,"width":40,"height":20,"wall":2,"lid_gap":5},
+    "expected_parts": 2,
+    "bounds_mm": [60,40,27],
+    "formats": ["step","stl","glb","3mf"]
+  },
+  "gyroid": {
+    "source": "gyroid.py",
+    "parameters": {"size":24,"cell_size":8,"band":0.3,"samples_per_cell":16},
+    "expected_parts": 1,
+    "bounds_mm": [24,24,24],
+    "formats": ["stl","glb","3mf"]
+  }
+}

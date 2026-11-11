@@ -1,0 +1,25 @@
+{
+  "name": "intact-simulation",
+  "version": "0.12.1",
+  "description": "ChatGPT CAD with constrained sketches, explicit feature history, design verification, stable references and TPMS.",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Intact Simulation",
+    "shortDescription": "AI CAD, visualization and reference simulation",
+    "longDescription": "Create and edit CAD through ChatGPT using isolated open-source engines. Includes real FreeCAD constrained sketches and diagnostics, explicit editable feature graphs, native hole/clearance/interference checks, named references with ambiguity detection, requested accuracy and mesh convergence checks, immutable history previews, native CAD/mesh exports and six sampled TPMS families. No separate AI service. Includes distance-offset lattices, mesh booleans, faceted STEP, bounded joints, reconstruction, screening and real 3D conduction, linear elasticity and creeping-flow Stokes. Turbulence, nonlinear/contact, multiphysics and smooth TPMS fitting remain unavailable. Viewer Ask AI opens a ChatGPT browser annotation with selected geometry and supports clarification replies. Ordinary browsers may use a separate signed-in OpenAI local task with model-scoped tools, read-only questions, progress and cancellation.",
+    "developerName": "Intact Simulation",
+    "category": "Productivity",
+    "capabilities": [
+      "Write",
+      "Interactive"
+    ],
+    "websiteURL": "https://www.intactsimulation.com/",
+    "brandColor": "#249DDD",
+    "defaultPrompt": [
+      "Create a six-hole pipe flange with an 80 mm outer diameter and a 24 mm bore.",
+      "Design a two-part electronics enclosure and show an exploded view."
+    ]
+  },
+  "requires_local_executor": true
+}

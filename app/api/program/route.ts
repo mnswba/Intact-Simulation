@@ -1,0 +1,3 @@
+import {validateSpec} from '@/lib/engineering/spec';
+import {backendJson} from '@/lib/engineering/backend-proxy';
+export async function POST(request:Request){try{const raw=await request.text();if(raw.length>180000)return Response.json({error:'Request too large.'},{status:413});const data=JSON.parse(raw);return backendJson(request,'/v1/program/jobs','POST',{spec:validateSpec(data.spec),source:data.source,parameters:data.parameters});}catch(e){return Response.json({error:e instanceof Error?e.message:'Invalid CAD program.'},{status:400});}}

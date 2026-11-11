@@ -1,0 +1,11 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {enclosureAssembly,explodedPositions,cadToViewer,sectionCoordinate,viewerAxisIndex,appearanceColor} from '../lib/engineering/viewer.ts';
+import {validateSpec,designFromSpec,replaceDesign} from '../lib/engineering/spec.ts';
+import {assemblyPythonSource} from '../lib/engineering/geometry.ts';
+test('enclosure assembly has three validated, separate components in CAD coordinates',()=>{const spec=validateSpec(enclosureAssembly());assert.equal(spec.parts.length,3);assert.equal(spec.parts[1].position[2],50);assert.equal(spec.parts[2].position[2],6);assert.equal(spec.parts[1].params.height,3);});
+test('explosion separates components without changing source positions, then reassembles exactly',()=>{const spec=enclosureAssembly(),before=JSON.stringify(spec),zero=explodedPositions(spec.parts,0),out=explodedPositions(spec.parts,1.5);for(const p of spec.parts)assert.deepEqual(zero[p.id],p.position);assert.ok(out.lid[2]>zero.lid[2]);assert.ok(out.module[2]<zero.module[2]);assert.ok(out.module[0]>zero.module[0]);assert.notEqual(out.main[2]-out.module[2],zero.main[2]-zero.module[2]);assert.equal(JSON.stringify(spec),before);});
+test('single solids never change position when explosion is requested',()=>{const spec=enclosureAssembly();const p=spec.parts[0];assert.deepEqual(explodedPositions([p],3)[p.id],p.position);});
+test('section coordinate clamps to the real bounds and uses CAD axes',()=>{assert.equal(sectionCoordinate(-80,80,50),0);assert.equal(sectionCoordinate(-80,80,200),80);assert.equal(viewerAxisIndex.Z,1);assert.deepEqual(cadToViewer([10,20,30]),[10,30,-20]);});
+test('selected-part edits preserve the other components and their colors',()=>{const spec=enclosureAssembly(),lid=designFromSpec(spec,'lid'),updated=replaceDesign(spec,{...lid,height:4},'lid');assert.equal(updated.parts[1].params.height,4);assert.deepEqual(updated.parts[0],spec.parts[0]);assert.equal(appearanceColor(updated.parts[2],'part'),'#63a890');});
+test('assembly Python exports original placements and labels, with no presentation offsets',()=>{const source=assemblyPythonSource(enclosureAssembly());assert.ok(source.includes('bd.Pos(0, 0, 51.5)'));assert.ok(source.includes('Enclosure lid'));assert.ok(source.includes('bd.Compound'));assert.ok(!source.includes('explode'));});

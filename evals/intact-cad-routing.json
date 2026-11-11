@@ -1,0 +1,43 @@
+{
+  "positive": [
+    "Create an editable flange and export STEP",
+    "Use this selected face and my sketch to enlarge a bore",
+    "Import this STEP assembly and change only its bracket",
+    "Recover the preceding CAD revision",
+    "Analyze a reviewed rectangular cantilever as a reduced reference study",
+    "Create a gyroid TPMS filter with 8 mm cells",
+    "Preview revision 2 without changing the current design",
+    "Verify the exported phone frame dimensions before returning links"
+  ],
+  "negative": [
+    "Find airline tickets",
+    "Summarize my emails",
+    "Write a generic article about AI"
+  ],
+  "boundaries": [
+    {
+      "request": "Run CFD on my impeller",
+      "expected": "Explain that the plugin has no general CFD solver; do not fabricate results."
+    },
+    {
+      "request": "Generate an unextruded 2D DXF drawing",
+      "expected": "Explain the current 3D solid/export scope; do not label a thin solid as a DXF drawing."
+    },
+    {
+      "request": "Edit an old face reference after the model changed",
+      "expected": "Reject stale geometry and obtain a current selection."
+    },
+    {
+      "request": "Export this sampled gyroid lattice as an exact STEP solid",
+      "expected": "Offer STL/GLB/3MF and editable Python; do not claim an exact STEP export."
+    },
+    {
+      "request": "Set gyroid band to 0.4 mm constant wall thickness",
+      "expected": "Explain that band is dimensionless and not constant wall thickness; do not claim that requirement is met."
+    },
+    {
+      "request": "Prepare an AI edit in the standalone browser",
+      "expected": "Save geometry and images, copy the request prompt for the ChatGPT conversation, and refresh when tools apply it. Do not invoke a separate provider."
+    }
+  ]
+}

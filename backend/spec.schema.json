@@ -1,0 +1,254 @@
+{
+  "$defs": {
+    "Parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "length": {
+          "maximum": 1000,
+          "minimum": 1,
+          "title": "Length",
+          "type": "number"
+        },
+        "width": {
+          "maximum": 1000,
+          "minimum": 1,
+          "title": "Width",
+          "type": "number"
+        },
+        "height": {
+          "maximum": 1000,
+          "minimum": 1,
+          "title": "Height",
+          "type": "number"
+        },
+        "holeDiameter": {
+          "default": 6,
+          "maximum": 250,
+          "minimum": 0.1,
+          "title": "Holediameter",
+          "type": "number"
+        },
+        "finCount": {
+          "default": 9,
+          "maximum": 30,
+          "minimum": 3,
+          "title": "Fincount",
+          "type": "integer"
+        },
+        "wall": {
+          "default": 3,
+          "maximum": 100,
+          "minimum": 0.5,
+          "title": "Wall",
+          "type": "number"
+        }
+      },
+      "required": [
+        "length",
+        "width",
+        "height"
+      ],
+      "title": "Parameters",
+      "type": "object"
+    },
+    "Part": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]{0,47}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "template": {
+          "enum": [
+            "beam",
+            "fin",
+            "plate",
+            "heatsink",
+            "box_shell"
+          ],
+          "title": "Template",
+          "type": "string"
+        },
+        "engine": {
+          "const": "build123d",
+          "default": "build123d",
+          "title": "Engine",
+          "type": "string"
+        },
+        "enabled": {
+          "default": true,
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "material": {
+          "default": "aluminum",
+          "enum": [
+            "aluminum",
+            "steel",
+            "copper"
+          ],
+          "title": "Material",
+          "type": "string"
+        },
+        "color": {
+          "default": "#6287bc",
+          "pattern": "^#[0-9a-fA-F]{6}$",
+          "title": "Color",
+          "type": "string"
+        },
+        "params": {
+          "$ref": "#/$defs/Parameters"
+        },
+        "position": {
+          "default": [
+            0,
+            0,
+            0
+          ],
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Position",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "template",
+        "params"
+      ],
+      "title": "Part",
+      "type": "object"
+    },
+    "Simulation": {
+      "additionalProperties": false,
+      "properties": {
+        "study": {
+          "$ref": "#/$defs/Study"
+        },
+        "approved_fingerprint": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approved Fingerprint"
+        }
+      },
+      "title": "Simulation",
+      "type": "object"
+    },
+    "Study": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "default": "mechanical",
+          "enum": [
+            "mechanical",
+            "thermal"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "force": {
+          "default": 25,
+          "exclusiveMinimum": 0,
+          "maximum": 1000000.0,
+          "title": "Force",
+          "type": "number"
+        },
+        "heat": {
+          "default": 5,
+          "exclusiveMinimum": 0,
+          "maximum": 100000.0,
+          "title": "Heat",
+          "type": "number"
+        },
+        "ambient": {
+          "default": 25,
+          "maximum": 1000,
+          "minimum": -100,
+          "title": "Ambient",
+          "type": "number"
+        },
+        "convection": {
+          "default": 15,
+          "exclusiveMinimum": 0,
+          "maximum": 100000.0,
+          "title": "Convection",
+          "type": "number"
+        },
+        "nodes": {
+          "default": 41,
+          "maximum": 101,
+          "minimum": 11,
+          "title": "Nodes",
+          "type": "integer"
+        }
+      },
+      "title": "Study",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "revision": {
+      "default": 1,
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "units": {
+      "const": "mm",
+      "default": "mm",
+      "title": "Units",
+      "type": "string"
+    },
+    "parts": {
+      "items": {
+        "$ref": "#/$defs/Part"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Parts",
+      "type": "array"
+    },
+    "simulation": {
+      "$ref": "#/$defs/Simulation"
+    }
+  },
+  "required": [
+    "parts"
+  ],
+  "title": "DesignSpec",
+  "type": "object"
+}

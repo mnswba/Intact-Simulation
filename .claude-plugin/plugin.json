@@ -1,0 +1,21 @@
+{
+  "name": "intact-simulation",
+  "version": "0.12.1",
+  "description": "Local parametric CAD, geometry inspection and bounded engineering studies.",
+  "author": {
+    "name": "Intact Simulation"
+  },
+  "repository": "https://github.com/mnswba/Intact-Simulation",
+  "license": "Apache-2.0",
+  "skills": [
+    "./plugin/skills/"
+  ],
+  "mcpServers": {
+    "intact": {
+      "command": "sh",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/plugin/server/launch.sh"
+      ]
+    }
+  }
+}
