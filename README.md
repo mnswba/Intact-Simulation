@@ -46,13 +46,13 @@ This installs a local development plugin. Publishing this repository does not li
 | Simulation | Separate Virtual and Mechanical workspaces: rigid-body motors/contact or prescribed gait previews; 3D thermal, static stress and creeping-flow Stokes, face-based boundaries, colored fields, playback and CSV/VTU/rig downloads |
 | Exports | STEP, ASCII/binary STL, GLB, 3MF, Python, project JSON, binary USD and text USDA; Project adds annotated PNG, PPTX, BOM CSV, 2D DXF/DWG and conditional FCStd/source STEP |
 
-Version **0.14.0** exposes **56 MCP tools**. See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
+Version **0.14.1** exposes **56 MCP tools**. See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
 
 The **Tutorial** button next to Settings includes 119 searchable help topics and an optional guided tour. Each topic explains a control, its purpose and usage steps. Use the mouse wheel for zoom and **Zoom to fit** beside Grid.
 
 ![Viewer with the guided tutorial and export formats](docs/images/tutorial.png)
 
-See [Simulation workspace instructions and limits](docs/SIMULATION_0_14.md) and [verification results](docs/SIMULATION_0_14_AUDIT.md). The complete v0.13 Design workspace remains available under **Design**.
+See [Simulation workspace instructions and limits](docs/SIMULATION_0_14.md) and [verification results](docs/SIMULATION_0_14_AUDIT.md). The complete v0.13 Design workspace remains available under **Design**. [v0.14.1 viewer changes](docs/VIEWER_0_14_1.md) add body selection, multi-click selection, XYZ orientation and a compact Simulation setup.
 
 ## Example workflows
 

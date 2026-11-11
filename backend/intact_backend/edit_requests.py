@@ -20,6 +20,9 @@ class EditRequests:
         for p in topology['parts']:
             for kind in ('faces','edges','vertices'):
                 for f in p[kind]:lookup[f['ref']]=f
+        if any('.b' in ref for ref in refs):
+            from .body_selection import bodies
+            for body in bodies(self.projects,r)['bodies']:lookup[body['ref']]=body
         if any(ref not in lookup for ref in refs):raise ValueError('A selected geometry reference does not exist in this CAD artifact.')
         return {'model_id':key,'revision':revision,'artifact_id':artifact_id,'units':'mm','coordinate_system':'cad_z_up','references':[lookup[ref] for ref in dict.fromkeys(refs)]}
     def image(self,item):

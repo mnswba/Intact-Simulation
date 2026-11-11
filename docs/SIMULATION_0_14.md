@@ -1,6 +1,6 @@
 # Simulation workspace — v0.14.0
 
-The **Design · v0.13** tab retains the existing modeling workspace, exports, appearance, annotation, inspection and revision workflows. **Simulation** holds independent study definitions and results; solving or playing motion does not create a design revision. Returning to Design restores its camera and display preferences. Existing saved models are preserved.
+The **Design** tab retains the existing modeling workspace, exports, appearance, annotation, inspection and revision workflows. **Simulation** holds independent study definitions and results; solving or playing motion does not create a design revision. Returning to Design restores its camera and display preferences. Existing saved models are preserved.
 
 ## Mechanical Analysis
 
@@ -14,7 +14,7 @@ The default thermal setup prescribes temperatures at opposite axis-end planes. D
 
 Material values are representative inputs, not certified material properties. Supply values for the actual material and temperature range. Use absolute temperatures in K, SI material/load values, and mm for CAD geometry and prescribed displacements.
 
-Set mesh size, enable refinement comparison, then **Save study → Run analysis**. Jobs run in isolated workers; their status and Cancel controls appear below. Open a result to see scalar fields and their blue-to-red minimum/maximum legend. Structural displacement magnification is a display option only. Download `results.csv`, `results.vtu` or `report.json` for numerical data.
+Use **Advanced settings → Mesh & accuracy** to adjust refinement if needed, then **Run analysis**. Run saves the setup automatically. Jobs run in isolated workers; their status and Cancel controls appear below. Open a result to see scalar fields and their blue-to-red minimum/maximum legend. Structural displacement magnification is a display option only. Download `results.csv`, `results.vtu` or `report.json` for numerical data.
 
 The solver checks residual and conservation, compares mesh-refinement metrics and flags invalid strain/flow regimes. Stress refinement is reported separately: displacement convergence does not certify a local stress peak. Nodal stress colors are averaged values; use the reported element peak and stress convergence for interpretation. This is bounded single-solid linear analysis, not contact, plasticity, buckling, transient heat transfer, radiation, turbulence or coupled multiphysics.
 
@@ -36,7 +36,7 @@ Runs use a 240 Hz internal step, at most 10 seconds and 600 recorded intervals, 
 
 ## Ask AI
 
-Save the study and click **Ask AI to simulate**. The Ask AI panel opens in **Simulate · preserve Design** mode with a study-aware request. Describe additional needs, then click Ask AI. In a compatible ChatGPT viewer, review/send the native annotation and reply in the conversation. Outside that viewer, the existing locally signed-in scoped task workflow is used. No separate model API account is required.
+Click **Ask AI** in Simulation; the setup is saved automatically. The Ask AI panel opens in **Simulate · preserve Design** mode with a study-aware request. Describe additional needs, then click Ask AI. In a compatible ChatGPT viewer, review/send the native annotation and reply in the conversation. Outside that viewer, the existing locally signed-in scoped task workflow is used. No separate model API account is required.
 
 AI tools:
 
@@ -47,4 +47,4 @@ AI tools:
 
 AI must explain missing physical inputs or ask for clarification; it must not invent numerical results. Simulation-mode scoped tasks cannot change CAD or submit design-mutating jobs. Native conversational tools follow the same instruction in the plugin skill. Creating a new CAD revision requires a separate design request.
 
-A stale study can be replaced with **New study on current model**. This clears its local definition and result display; prior exported results remain saved on disk.
+A stale study can be replaced with **Advanced settings → Reset study**. This clears its local definition and result display; prior exported results remain saved on disk.
