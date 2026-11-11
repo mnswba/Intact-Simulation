@@ -9,3 +9,5 @@ Files & exports pins the open model first, followed by at most four other models
 Source and bundled JavaScript are rebuilt together. The local installer updates the durable runtime and both plugin profiles while preserving user CAD and the viewer address. The prepared GitHub checkout is updated separately; remote publication still requires authenticated GitHub access.
 
 Validation covers recent-model ordering/deduplication, saved/draft metadata, retained engine tools, absent legacy tool, collapsible component inspection, filtering, refresh behavior, historical previews and Ask AI handoff/replies. Browser annotation API tests use a simulated host in Chromium, not the native Windows ChatGPT editor.
+
+Release checks passed: 26 targeted backend tests, 31 JavaScript tests and 17 browser groups against source and the installed runtime. A fresh installed MCP client confirmed version 0.12.2, 53 tools, removal of analyze_reference and retention of structured editing, verification, Ask AI responses and 3D studies. Evidence is retained locally in ignored outputs/navigation-audit and outputs/chat-handoff-audit.
