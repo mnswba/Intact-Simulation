@@ -1,6 +1,6 @@
 {
   "name": "intact-simulation",
-  "version": "0.12.2",
+  "version": "0.13.0",
   "description": "Local parametric CAD, geometry inspection and bounded engineering studies.",
   "author": {
     "name": "Intact Simulation"

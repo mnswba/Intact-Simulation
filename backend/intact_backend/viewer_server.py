@@ -8,7 +8,7 @@ from urllib.parse import urlsplit,parse_qs
 from urllib.request import urlopen
 from .projects import ProjectService, atomic_json, EXPORTS
 
-VERSION='0.12.2'
+VERSION='0.13.0'
 
 def registry(root):return Path(root)/'viewer-session.json'
 
@@ -84,6 +84,12 @@ class ViewerHandler(BaseHTTPRequestHandler):
             if kind in ('view','viewer.js'):
                 file=Path(__file__).with_name('viewer.html' if kind=='view' else kind)
                 return self.send(200,file.read_bytes(),'text/html; charset=utf-8' if kind=='view' else 'text/javascript')
+            if kind=='project-file':
+                from .project_exports import read_file
+                query=parse_qs(urlsplit(self.path).query);filename=query.get('file',[''])[0]
+                path=read_file(self.projects,key,query.get('export_id',[''])[0],filename)
+                mime={'bom.csv':'text/csv; charset=utf-8','slides.pptx':'application/vnd.openxmlformats-officedocument.presentationml.presentation','drawing.dxf':'application/dxf','drawing.dwg':'application/acad'}[filename]
+                return self.send(200,path.read_bytes(),mime,filename)
             if kind=='models.json':return self.send(200,{'models':self.projects.list()})
             if kind=='requests.json':
                 from .edit_requests import EditRequests
@@ -146,6 +152,9 @@ class ViewerHandler(BaseHTTPRequestHandler):
                     result=check_accuracy(self.projects,key)
                 else:raise ValueError('Unknown engineering operation.')
                 return self.send(200,result)
+            if kind=='project-export':
+                from .project_exports import create
+                return self.send(200,create(self.projects,key,data))
             if kind=='edit-request':
                 from .edit_requests import EditRequests
                 return self.send(200,EditRequests(self.projects).create(key,data))

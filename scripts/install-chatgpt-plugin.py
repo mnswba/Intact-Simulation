@@ -28,6 +28,7 @@ for obsolete in ('agent.py','codex_transport.py','model_connection.py','edit_job
 subprocess.run([uv,'sync','--project',str(runtime),'--extra','cad','--frozen'],check=True)
 runtime_python=str(runtime/'.venv/bin/python')
 subprocess.run([sys.executable,str(repo/'scripts/install-engineering-runtime.py')],check=True)
+subprocess.run([runtime_python,str(repo/'scripts/install-project-tools.py')],check=True)
 subprocess.run([runtime_python,'-m','playwright','install','chromium'],check=True)
 
 def backup(path):

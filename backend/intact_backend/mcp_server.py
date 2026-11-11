@@ -15,6 +15,7 @@ from .spec import from_legacy, Study, MATERIALS
 from .analysis import evaluate
 from .program import SandboxUnavailable
 from .edit_requests import EditRequests
+from .interchange import FORMATS as INTERCHANGE_FORMATS
 from .engineering_schema import Requirements,Sketch,Constraint,Geometry,Feature,Accuracy
 from mcp.server.mcpserver.exceptions import ToolError
 
@@ -75,7 +76,7 @@ class IntactMCP:
             return check_accuracy(self.projects,args['model_id'],args.get('convergence',True),cancel_event)
         if name=='status':
             from .feature_graph import FreeCADRuntime
-            return {'structured_design':FreeCADRuntime(self.projects).status(),'version':VERSION,'cad_ready':self.programs.available(),'engine':'build123d 0.13 / OpenCASCADE + distance/implicit TPMS meshes + Manifold','agent':'ChatGPT conversation tools and user-triggered, model-scoped Ask AI tasks; no external model service','analysis':['3D steady conduction','3D linear elasticity','3D creeping-flow Stokes','1D rectangular beam FEM','1D single-fin thermal FVM'],'unavailable':['turbulent/inertial CFD','nonlinear/contact/multiphysics','smooth analytic TPMS STEP fitting','general photogrammetry'],'state_directory':str(self.root),'exports':list(EXPORTS),'limits':{'named_parts':128,'source_bytes':120000,'numeric_parameters':150,'preview_triangles':1200000,'tpms_samples':2500000,'worker_seconds':120,'simulation_tetrahedra':18000,'engineering_jobs':3}}
+            return {'structured_design':FreeCADRuntime(self.projects).status(),'version':VERSION,'cad_ready':self.programs.available(),'engine':'build123d 0.13 / OpenCASCADE + distance/implicit TPMS meshes + Manifold','agent':'ChatGPT conversation tools and user-triggered, model-scoped Ask AI tasks; no external model service','analysis':['3D steady conduction','3D linear elasticity','3D creeping-flow Stokes','1D rectangular beam FEM','1D single-fin thermal FVM'],'unavailable':['turbulent/inertial CFD','nonlinear/contact/multiphysics','smooth analytic TPMS STEP fitting','general photogrammetry'],'state_directory':str(self.root),'exports':list(EXPORTS)+list(INTERCHANGE_FORMATS),'limits':{'named_parts':128,'source_bytes':120000,'numeric_parameters':150,'preview_triangles':1200000,'tpms_samples':2500000,'worker_seconds':120,'simulation_tetrahedra':18000,'engineering_jobs':3}}
         if name=='import_cad':return self.result(self.projects.import_cad(args['path'],cancel_event))
         if name=='resolve_references':
             refs=args['references']
@@ -112,8 +113,8 @@ class IntactMCP:
             r=self.load(args['model_id']);return {'units':'mm','engine':r['geometry']['engine'],'program_parameters':r['spec']['program']['parameters'],'parts':[{'id':p['id'],'name':p['name'],'bounds':{k:p['params'][k] for k in ('length','width','height')},'position':p['position'],**p['measurements']} for p in r['spec']['parts']]}
         if name=='export_model':
             key=args['model_id'];kind=args['format']
-            if kind not in EXPORTS:raise ValueError('Unsupported export format.')
-            filename=EXPORTS[kind];url=self.viewer(key).removesuffix('view')+filename
+            if kind not in EXPORTS and kind not in INTERCHANGE_FORMATS:raise ValueError('Unsupported export format.')
+            filename=({**EXPORTS,**INTERCHANGE_FORMATS})[kind];url=self.viewer(key).removesuffix('view')+filename
             return {'format':kind,'url':url,'path':str(self.projects.artifact(key,filename)) if kind!='project' else None,'assembled':True}
         if name=='analyze_reference':
             if args.get('approved') is not True:raise ValueError('Review and approve the analysis dimensions, material and boundary conditions first.')
@@ -254,8 +255,8 @@ def create_server(engine:IntactMCP|None=None):
             return Image(data=png,format='png')
         except Exception as exc:raise ToolError('Snapshot failed: '+str(exc)[:2000]) from exc
     @server.tool(annotations=write)
-    def export_model(model_id:str,format:Literal['step','stl','glb','3mf','python','project'])->dict[str,Any]:
-        """Return a persistent download URL and local path for the actual assembled model."""
+    def export_model(model_id:str,format:Literal['step','stl','stl_ascii','stl_binary','glb','3mf','python','project','usd','usda'])->dict[str,Any]:
+        """Return a persistent download URL and local path for the assembled model. Supports explicit ASCII/binary STL and binary USD/text USDA mesh scenes with millimeter scale. STEP is native B-rep; USD and STL are tessellated."""
         return engine.call('export_model',{'model_id':model_id,'format':format})
     @server.tool(annotations=write)
     async def import_project(path:str,ctx:Context)->dict[str,Any]:

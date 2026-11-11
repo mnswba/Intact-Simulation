@@ -31,3 +31,5 @@ flowchart LR
 - `app/`, `components/`, `lib/`: separately hosted website development source.
 
 The local viewer has a private tokenized URL. It must not be exposed as a public multi-user service. History previews are read-only; restoring is a separate guarded operation. Replies retain conversation text; stale native selections are not silently reused. Artifacts, solver results and sampled approximations carry distinct provenance and limitations.
+
+Version 0.13 adds `project_exports.py` for revision-bound BOM/PPTX/DXF/DWG files, separate from geometry revisions. GNU LibreDWG executes on internally generated DXF and validates DWG read-back. Model text annotations store part identity, CAD XYZ point and artifact identity; the viewer projects the anchor each frame and applies display explosion offsets. Geometry rebuilds clear stale anchors using the existing annotation-artifact rules. Fullscreen uses a viewport-only layout with a native Fullscreen API attempt and a CSS fallback.

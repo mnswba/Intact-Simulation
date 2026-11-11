@@ -10,8 +10,10 @@ class ViewSettings(StrictModel):
     cap:bool=True
     explode:float=Field(default=0,ge=0,le=100)
     wire:bool=False
-    hidden:list[str]=Field(default_factory=list,max_length=32)
+    hidden:list[str]=Field(default_factory=list,max_length=128)
     camera:list[float]|None=Field(default=None,min_length=6,max_length=6)
+    camera_span:float|None=Field(default=None,gt=0,lt=1e9)
+    camera_zoom:float=Field(default=1,ge=.02,le=100)
     mode:Literal['solid','render','xray','hidden-line','wireframe','grid']='solid'
     theme:Literal['light','medium-light','medium','dark']='light'
     projection:Literal['perspective','orthographic']='perspective'
@@ -42,6 +44,7 @@ class ViewSettings(StrictModel):
     orbit_speed:float=Field(default=1,ge=.1,le=5)
     measurements:list[dict]=Field(default_factory=list,max_length=50)
     annotation_artifact:str|None=Field(default=None,pattern=r'^[a-f0-9]{64}$')
+    component_names:bool=False
     annotations:list[dict]=Field(default_factory=list,max_length=300)
     @field_validator('theme',mode='before')
     @classmethod
@@ -76,12 +79,20 @@ class ViewSettings(StrictModel):
     def drawings(cls,items):
         for item in items:
             if not isinstance(item,dict) or not isinstance(item.get('id'),str) or not 1<=len(item['id'])<=100:raise ValueError('Each annotation needs a nonempty identifier.')
-            if set(item)-{'id','tool','points','color','width','text'}:raise ValueError('Unknown annotation field.')
+            if set(item)-{'id','tool','points','color','width','text','anchor'}:raise ValueError('Unknown annotation field.')
             if item.get('tool') not in ('pen','line','arrow','rectangle','ellipse','text','fill'):raise ValueError('Invalid annotation tool.')
             cls.color(item.get('color',''))
             if not isinstance(item.get('width'),(int,float)) or not .1<=item['width']<=30:raise ValueError('Invalid stroke width.')
             pts=item.get('points')
             if not isinstance(pts,list) or not 1<=len(pts)<=2000 or any(not isinstance(p,list) or len(p)!=2 or any(not isinstance(n,(int,float)) or not 0<=n<=1 for n in p) for p in pts):raise ValueError('Invalid drawing coordinates.')
+            if 'anchor' in item:
+                anchor=item['anchor']
+                if item['tool']!='text' or not isinstance(anchor,dict) or set(anchor)!={'part_id','point','artifact_id'}:raise ValueError('Only text annotations accept a model anchor.')
+                import re,math
+                if not isinstance(anchor['part_id'],str) or not re.fullmatch('[a-zA-Z0-9_-]{1,64}',anchor['part_id']):raise ValueError('Invalid anchored part.')
+                if not isinstance(anchor['artifact_id'],str) or not re.fullmatch('[a-f0-9]{64}',anchor['artifact_id']):raise ValueError('Invalid annotation artifact.')
+                point=anchor['point']
+                if not isinstance(point,list) or len(point)!=3 or any(isinstance(v,bool) or not isinstance(v,(int,float)) or not math.isfinite(v) or abs(v)>1e7 for v in point):raise ValueError('Invalid model anchor coordinates.')
             if not isinstance(item.get('text',''),str) or len(item.get('text',''))>500:raise ValueError('Annotation text is too long.')
             if not isinstance(item.get('id',''),str) or len(item.get('id',''))>100:raise ValueError('Invalid annotation id.')
         return items

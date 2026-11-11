@@ -14,7 +14,7 @@ The supported local execution environment is **Linux x86-64 or Windows with WSL2
 git clone https://github.com/mnswba/Intact-Simulation.git
 cd Intact-Simulation
 sudo apt-get update
-sudo apt-get install -y bubblewrap libgl1 libglu1-mesa libxft2
+sudo apt-get install -y build-essential bubblewrap libgl1 libglu1-mesa libxft2
 python3 scripts/install-chatgpt-plugin.py
 ```
 
@@ -38,15 +38,19 @@ This installs a local development plugin. Publishing this repository does not li
 | Design intent | Structured dimensions and requirements, FreeCAD sketch constraints and actual solver diagnostics |
 | Editable history | Explicit feature graphs with supported sketch/extrude/revolve/hole/fillet/chamfer/boolean/pattern/transform operations |
 | Geometry inspection | Parts, faces, edges, vertices, native measurements, snapping and named references with ambiguity detection |
-| Viewer | Collapsible components, current model plus four recent models, four themes, grid, colors, sections/caps, exploded views and revision previews |
+| Viewer | Viewport-only fullscreen, right-click geometry actions, zoom/fit, standard projections, model-attached text, exploded component labels, collapsible components and five recent models |
 | Ask AI | Select geometry, attach references/sketches, describe an edit or question, rebuild and refresh; ChatGPT annotation handoff and clarification replies |
 | Verification | Native validity, saved dimension/hole/placement/clearance checks, requested tolerance and mesh convergence reports |
 | Lattices | Six sampled TPMS families, distance offsets, envelopes, mesh booleans and hybrid geometry |
 | Engineering | AI tools for bounded joints, reconstruction, manufacturing screening, reference drawings and background jobs; manual engineering panels are omitted |
 | Simulation | Supported 3D steady conduction, linear elasticity and creeping-flow Stokes with revision-bound results |
-| Exports | STEP for native solids; STL, GLB and 3MF meshes; project JSON and Python; FCStd for structured designs |
+| Exports | STEP, ASCII/binary STL, GLB, 3MF, Python, project JSON, binary USD and text USDA; Project adds annotated PNG, PPTX, BOM CSV, 2D DXF/DWG and conditional FCStd/source STEP |
 
-Version **0.12.2** exposes **53 MCP tools**. See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
+Version **0.13.0** exposes **53 MCP tools**. See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
+
+The **Tutorial** button next to Settings includes 107 searchable help topics and an optional guided tour. Each topic explains a control, its purpose and usage steps. Use the mouse wheel for zoom and **Zoom to fit** beside Grid.
+
+![Viewer with the guided tutorial and export formats](docs/images/tutorial.png)
 
 ## Example workflows
 

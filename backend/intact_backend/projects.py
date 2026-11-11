@@ -132,7 +132,11 @@ class ProjectService:
         from .view_settings import ViewSettings
         view=ViewSettings.model_validate(view).model_dump(mode='json',exclude_unset=True)
         with self.lock(key):
-            record=self.load(key);record['view'].update(view);atomic_json(self.path(key),record)
+            record=self.load(key)
+            for item in view.get('annotations',[]):
+                anchor=item.get('anchor')
+                if anchor and (anchor['artifact_id']!=record['spec']['program']['artifact_id'] or anchor['part_id'] not in {p['id'] for p in record['spec']['parts']}):raise ValueError('Annotation anchor belongs to stale or missing geometry. Place it on the current model again.')
+            record['view'].update(view);atomic_json(self.path(key),record)
         return record['view']
     def revisions(self,key):
         current=self.load(key);items=[{'revision':current['spec']['revision'],'name':current['name'],'current':True}]
@@ -171,6 +175,8 @@ class ProjectService:
     def artifact(self,key,filename):
         return self.record_artifact(self.ensure_ready(key),filename)
     def record_artifact(self,record,filename):
+        from .interchange import NAMES,export_record
+        if filename in NAMES:return export_record(self,record,filename)
         if filename=='design.FCStd':
             key=record.get('engineering',{}).get('diagnostics',{}).get('cache_id','')
             if not re.fullmatch('[a-f0-9]{64}',key):raise ValueError('No native feature document is available.')

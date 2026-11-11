@@ -18,7 +18,7 @@ async def snapshot(url:str,output:Path,view='current'):
             if view!='current':
                 # These keyboard-accessible buttons share space with the cube.
                 # A forced pointer click can hit the cube instead of the button.
-                await page.locator('[data-view="'+view+'"]').evaluate('(button)=>button.click()')
+                await page.locator('#view-cube [data-view="'+view+'"]').evaluate('(button)=>button.click()')
                 directions={'iso':[1,.8,1],'front':[0,0,1],'back':[0,0,-1],'right':[1,0,0],'left':[-1,0,0],'top':[0,1,0],'bottom':[0,-1,0]}
                 await page.wait_for_timeout(400)
                 actual=await page.evaluate('window.intactInspect.camera().direction')
