@@ -14,3 +14,5 @@ The independently maintained https://github.com/earthtojake/text-to-cad is a ref
 Project exports add python-pptx (MIT), ezdxf (MIT), and separately executed GNU LibreDWG 0.14 (GPL-3.0-or-later). LibreDWG is built from https://ftp.gnu.org/gnu/libredwg/libredwg-0.14.tar.xz with SHA256 `62ebb73b984f865960f20ed26619ea5f8789d5e3fd088fa40a2598384da81275`. The installer retains COPYING and source/download provenance; no LibreDWG binary is committed. Preserve its notices and applicable source obligations when redistributing the compiled tools.
 
 USD/USDA exports use OpenUSD (`usd-core`, locked in backend/uv.lock). Preserve its upstream Apache-2.0 notices and bundled third-party license files. No USD runtime binaries are included in this Git repository.
+
+Virtual Analysis uses PyBullet 3.2.7 from Bullet Physics (zlib license). Upstream source and license: https://github.com/bulletphysics/bullet3. The runtime is installed as a dependency; no PyBullet binaries are committed.

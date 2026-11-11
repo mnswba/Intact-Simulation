@@ -4,12 +4,21 @@ from typing import Any,Literal
 from pathlib import Path
 from pydantic import StrictInt,StrictFloat
 from mcp.server.mcpserver import Context
+from .simulation_schema import Motion
 from .p23_schema import LatticeMM,AdaptiveLattice,HybridSpec,Assembly,Freeform,Simulation,Manufacturing,SheetMetal,Reconstruction,Optimization,Comparison
 NAMES={'build_lattice_mm','refine_lattice','build_hybrid','convert_mesh_to_cad','set_assembly_joints','build_freeform','compare_designs','reconstruct_geometry','component_catalog','insert_component','manufacturing_review','engineering_drawing','build_sheet_metal','run_3d_simulation','optimize_design','engineering_evidence','submit_engineering_job','get_engineering_job','cancel_engineering_job'}
-NAMES.add('measure_mesh_quality')
+NAMES.update({'measure_mesh_quality','configure_simulation','get_simulation_workspace','run_virtual_analysis'})
 def dispatch(engine,name,args,cancel=None):
  from .advanced import Advanced
  a=Advanced(engine.projects);key=args.get('model_id');s=args.get('settings')
+ if name=='configure_simulation':
+  from .simulation_workspace import configure
+  return configure(engine.projects,key,s,args['operation'])
+ if name=='get_simulation_workspace':
+  from .simulation_workspace import workspace
+  return workspace(engine.projects,key)
+ if name=='run_virtual_analysis':
+  result=a.motion(key,s,cancel);url=engine.viewer(key);base=url.removesuffix('view')+'engineering-file?report_id='+result['report_id']+'&file=';return {**{k:v for k,v in result.items() if k!='frames'},'viewer_url':url,'report_url':base+'report.json','trajectory_url':base+'trajectory.csv','joints_url':base+'joints.csv','rig_url':base+'rig.zip'}
  if name=='build_lattice_mm':return engine.result(a.lattice(s,key,args.get('expected_revision'),cancel))
  if name=='refine_lattice':
   r=a.adaptive(s,cancel);r['model']=engine.result(r['model']);return r
@@ -41,15 +50,33 @@ def dispatch(engine,name,args,cancel=None):
  elif name in ('submit_engineering_job','get_engineering_job','cancel_engineering_job'):
   from . import engineering_jobs as jobs
   if name=='submit_engineering_job':return jobs.submit(engine.projects,args['operation'],s,key)
-  if name=='get_engineering_job':return jobs.status(engine.projects,args['job_id'],key)
+  if name=='get_engineering_job':
+   job=jobs.status(engine.projects,args['job_id'],key)
+   if job.get('result',{}).get('kind') in ('thermal','structural','stokes','motion'):
+    from .simulation_workspace import compact
+    job={**job,'result':compact(job['result'])}
+   return job
   return jobs.cancel(engine.projects,args['job_id'],key)
  else:raise ValueError('Unknown advanced tool.')
- r={k:v for k,v in r.items() if k not in ('positions_mm','triangles','values')};r['viewer_url']=engine.viewer(key);base=r['viewer_url'].removesuffix('view');r['report_url']=base+'engineering-file?report_id='+r['report_id']+'&file=report.json'
+ r={k:v for k,v in r.items() if k not in ('positions_mm','triangles','values','fields','frames')};r['viewer_url']=engine.viewer(key);base=r['viewer_url'].removesuffix('view');r['report_url']=base+'engineering-file?report_id='+r['report_id']+'&file=report.json'
  if name=='engineering_drawing':r['drawing_url']=base+'engineering-file?report_id='+r['report_id']+'&file=drawing.pdf'
  if name=='run_3d_simulation':r['results_url']=base+'engineering-file?report_id='+r['report_id']+'&file=results.vtu'
  return r
 
 def register(server,engine,execute,read,write):
+ @server.tool(annotations=write)
+ def configure_simulation(model_id:str,operation:Literal['simulate','motion'],settings:dict[str,Any])->dict[str,Any]:
+  """Save a validated mechanical or virtual study without changing CAD. Read get_simulation_workspace first; use Simulation/Motion schema and revision/artifact guards."""
+  return engine.call('configure_simulation',dict(model_id=model_id,operation=operation,settings=settings))
+ @server.tool(annotations=read)
+ def get_simulation_workspace(model_id:str)->dict[str,Any]:
+  """Read saved simulation definitions, available parts, revision identity and compact job/results summaries."""
+  return engine.call('get_simulation_workspace',dict(model_id=model_id))
+ @server.tool(annotations=read)
+ async def run_virtual_analysis(model_id:str,settings:Motion,ctx:Context)->dict[str,Any]:
+  """Run bounded PyBullet rigid-body motors/gravity/contact, or explicitly prescribed kinematic trajectories. Separate named parts, acyclic joints, SI mass/effort and CAD mm/degrees. Returns actual motion data; no automatic robot balance or flexible-body simulation. Preserves CAD."""
+  return await execute('run_virtual_analysis',dict(model_id=model_id,settings=settings.model_dump(mode='json')),ctx)
+
  @server.tool(annotations=read)
  async def measure_mesh_quality(model_id:str,ctx:Context)->dict[str,Any]:
   """Measure exported mesh volume, bounds, watertightness and finite surface-normal wall chords. Returns minimum/maximum sampled thickness, not a certified global minimum. Useful for distance-offset TPMS and scan quality."""
@@ -108,7 +135,7 @@ def register(server,engine,execute,read,write):
   return await execute('build_sheet_metal',{'settings':settings.model_dump(mode='json')},ctx)
  @server.tool(annotations=read)
  async def run_3d_simulation(model_id:str,settings:Simulation,ctx:Context)->dict[str,Any]:
-  """Gmsh tetrahedra + scikit-fem: 3D steady conduction, small-strain linear elasticity, or incompressible creeping-flow Stokes P2/P1. Select one native solid; axis extrema define BC planes. Explicit SI material/load inputs; CAD mm converted to m. Checks residual/conservation and optional mesh convergence; verified only when convergence passes. No turbulent/inertial CFD, contact, nonlinear mechanics or multiphysics. Returns VTU and viewer scalar overlay."""
+  """Gmsh tetrahedra + scikit-fem: 3D steady conduction, small-strain linear elasticity, or incompressible creeping-flow Stokes P2/P1. Select one native solid; Axis extrema or revision-bound native faces define temperature, heat flux, convection, supports, displacement, force and pressure conditions. Explicit SI material/load inputs; CAD mm converted to m. Checks residual/conservation and optional mesh convergence; verified only when convergence passes. No turbulent/inertial CFD, contact, nonlinear mechanics or multiphysics. Returns VTU and viewer scalar overlay."""
   return await execute('run_3d_simulation',dict(model_id=model_id,settings=settings.model_dump(mode='json')),ctx)
  @server.tool(annotations=write)
  async def optimize_design(model_id:str,settings:Optimization,ctx:Context)->dict[str,Any]:
@@ -119,7 +146,7 @@ def register(server,engine,execute,read,write):
   """Read revision/artifact-bound engineering reports and mark stale results. Does not validate stale physics against changed geometry."""
   return engine.call('engineering_evidence',{'model_id':model_id})
  @server.tool(annotations=write)
- def submit_engineering_job(operation:Literal['adaptive','simulate','optimize','convert','manufacture','drawing','freeform','sheet','lattice','hybrid','assembly','reconstruct'],settings:dict[str,Any],model_id:str|None=None)->dict[str,Any]:
+ def submit_engineering_job(operation:Literal['motion','adaptive','simulate','optimize','convert','manufacture','drawing','freeform','sheet','lattice','hybrid','assembly','reconstruct'],settings:dict[str,Any],model_id:str|None=None)->dict[str,Any]:
   """Start a durable detached engineering job (<=3 active, <=15 minutes, each worker separately bounded). Use the corresponding tool's settings schema. Status/progress survive tool disconnects; stale queued edits are rejected. Cancellation preserves prior valid designs and completed artifacts."""
   return engine.call('submit_engineering_job',dict(operation=operation,settings=settings,model_id=model_id))
  @server.tool(annotations=read)

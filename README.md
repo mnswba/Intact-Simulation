@@ -42,15 +42,17 @@ This installs a local development plugin. Publishing this repository does not li
 | Ask AI | Select geometry, attach references/sketches, describe an edit or question, rebuild and refresh; ChatGPT annotation handoff and clarification replies |
 | Verification | Native validity, saved dimension/hole/placement/clearance checks, requested tolerance and mesh convergence reports |
 | Lattices | Six sampled TPMS families, distance offsets, envelopes, mesh booleans and hybrid geometry |
-| Engineering | AI tools for bounded joints, reconstruction, manufacturing screening, reference drawings and background jobs; manual engineering panels are omitted |
-| Simulation | Supported 3D steady conduction, linear elasticity and creeping-flow Stokes with revision-bound results |
+| Engineering | AI tools for bounded joints, reconstruction, manufacturing screening, reference drawings and background jobs; Design stays focused; simulation jobs appear in Simulation |
+| Simulation | Separate Virtual and Mechanical workspaces: rigid-body motors/contact or prescribed gait previews; 3D thermal, static stress and creeping-flow Stokes, face-based boundaries, colored fields, playback and CSV/VTU/rig downloads |
 | Exports | STEP, ASCII/binary STL, GLB, 3MF, Python, project JSON, binary USD and text USDA; Project adds annotated PNG, PPTX, BOM CSV, 2D DXF/DWG and conditional FCStd/source STEP |
 
-Version **0.13.0** exposes **53 MCP tools**. See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
+Version **0.14.0** exposes **56 MCP tools**. See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
 
-The **Tutorial** button next to Settings includes 107 searchable help topics and an optional guided tour. Each topic explains a control, its purpose and usage steps. Use the mouse wheel for zoom and **Zoom to fit** beside Grid.
+The **Tutorial** button next to Settings includes 119 searchable help topics and an optional guided tour. Each topic explains a control, its purpose and usage steps. Use the mouse wheel for zoom and **Zoom to fit** beside Grid.
 
 ![Viewer with the guided tutorial and export formats](docs/images/tutorial.png)
+
+See [Simulation workspace instructions and limits](docs/SIMULATION_0_14.md) and [verification results](docs/SIMULATION_0_14_AUDIT.md). The complete v0.13 Design workspace remains available under **Design**.
 
 ## Example workflows
 

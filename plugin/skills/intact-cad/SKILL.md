@@ -19,6 +19,12 @@ For geometry that should survive edits, `bind_reference` names an inspected curr
 
 Drafts can open in the viewer as solved 2D sketches with constraint controls. Built projects use a compact CAD viewer: Components is collapsible and Files & exports lists the current model and four recent others. Requirements, feature-history and job panels are omitted; edit and verify these capabilities through AI tools. Native FCStd remains in Files & exports. Structured projects download a native `.FCStd` document and standalone **FreeCAD** Python (not a build123d program); its exported STEP and native document rebuild from the saved graph. General Python/TPMS projects retain their existing export workflow. The viewport Draw/annotate feature remains a reference sketch, separate from a solved CAD sketch.
 
+## Simulation workspace
+
+For virtual motion or mechanical/thermal/creeping-flow requests read [simulation workspace](references/simulation.md). Start with get_simulation_workspace. Configure revision-bound study inputs with configure_simulation; run_virtual_analysis executes PyBullet; run_3d_simulation executes Gmsh/scikit-fem. Prefer submit_engineering_job with operation motion or simulate for a detached run, then get_engineering_job. Keep CAD geometry and revisions unchanged. Missing joints, masses, material data or physical boundary conditions require explicit assumptions or clarification. A prescribed gait is a kinematic preview, not dynamically validated walking. Read numerical checks and field-specific convergence before claiming accuracy.
+
+Viewer requests with intent simulation MUST preserve Design. Read the request, follow the simulation workflow and respond_to_edit_request with measured results or needs_reply=true for missing inputs. Do not apply_edit_request or change CAD for a simulation request. Geometry changes require a separate user edit request.
+
 ## Priority 2/3 engineering
 
 Read [priority 2/3 contracts](references/priority23.md) when using hybrid lattices, millimeter offsets, motion, reconstruction, manufacturing, 3D simulation, alternatives or background engineering jobs. These tools have explicit bounded domains; report unverified results and scope honestly.

@@ -1,6 +1,20 @@
 import {settings} from './settings.mjs';
 const topic=(id,target,name,definition,...how)=>({id,target,name,definition,how});
 export const topics=[
+ ...[
+ ['workspace','Design / Simulation','Switch between preserved CAD design and separate simulation studies.','Click Simulation to configure a study; click Design to restore your design display.'],
+ ['virtual','Virtual Analysis','Rigid-body dynamics or prescribed motion with separate named parts.','Open Simulation → Virtual Analysis; choose dynamics or prescribed motion.'],
+ ['mechanical','Mechanical Analysis','Steady conduction, static linear stress and creeping-flow Stokes.','Open Simulation → Mechanical Analysis and choose a native solid.'],
+ ['bodies','Motion bodies','Mass, friction, root motion and fixed-base settings for every component.','Expand Bodies and set measured masses and appropriate fixed roots.'],
+ ['joints','Joints and motors','Fixed, hinge, continuous wheel and slider joints connect separate components.','Add a joint, choose parent/child, CAD pivot, axis, limits and motor.'],
+ ['gait','Gait / machine cycles','Sine amplitude, frequency and phase prescribe repeated motor trajectories.','Configure phased sine joints. A gait preview does not certify dynamic balance.'],
+ ['boundaries','Boundary conditions','Temperatures, flux, convection, supports, displacement, forces and pressure.','Add a condition. Choose an axis end or pick native faces and click Use selected faces.'],
+ ['materials','Materials and loads','Explicit conductivity, elastic constants, density and volume/face loads.','Enter values in the displayed SI units; defaults are representative assumptions.'],
+ ['mesh','Mesh and accuracy','Refinement comparison, residual and conservation checks expose numerical limits.','Set mesh size and tolerance. Increase mesh size if the bounded mesh budget is exceeded.'],
+ ['fields','Result fields','Colored temperature, displacement and stress fields from actual solver nodes.','Open a completed result, choose its field and read the blue-to-red range.'],
+ ['playback','Motion playback','Play, pause or scrub recorded poses and inspect joint/contact data.','Open a motion result and use Play / pause or the frame slider.'],
+ ['data','Simulation data and AI','Download reports, CSV, VTU or a URDF rig; ask AI to run saved studies.','Save the study and click Ask AI to simulate, then send the request through Ask AI.'],
+ ].map(([id,name,definition,how])=>topic('simulation-'+id,'#workspace-simulation',name,definition,how)),
  topic('fullscreen','#toggle-fullscreen','Full screen / Compact screen','A model-only viewport with a reversible exit.','Click Full screen to hide workspace panels.','Click Compact screen or press Escape to return.'),
  topic('orbit','#cad-canvas','Orbit, pan and wheel zoom','Move the camera without changing CAD geometry.','Drag the left mouse button to orbit.','Drag the right mouse button to pan; use the wheel to zoom.'),
  topic('components','#components-summary','Components','A collapsible navigator of saved parts, their colors and native geometry.','Expand Components and select a named part.','Ctrl/Cmd-click adds or removes selections.'),

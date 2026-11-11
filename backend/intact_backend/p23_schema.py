@@ -4,6 +4,7 @@ from typing import Literal,Annotated,Any
 from pydantic import Field,StrictBool,StrictFloat,StrictInt,model_validator
 from .spec import StrictModel
 from .engineering_schema import Id
+from .simulation_schema import Boundary
 Vec=tuple[StrictFloat,StrictFloat,StrictFloat]
 class LatticeMM(StrictModel):
     family:Literal['gyroid','schwarz_p','diamond','neovius','lidinoid','split_p']='gyroid'
@@ -43,6 +44,11 @@ class Freeform(StrictModel):
     sections:list[list[Vec]]=Field(min_length=2,max_length=12)
     ruled:StrictBool=False
 class Simulation(StrictModel):
+    name:str=Field(default='Mechanical analysis',min_length=1,max_length=100)
+    boundary_conditions:list[Boundary]=Field(default_factory=list,max_length=32)
+    gravity_m_s2:Vec=(0,0,0)
+    source_revision:StrictInt|None=None
+    source_artifact:str|None=None
     kind:Literal['thermal','structural','stokes']
     part_id:Id
     axis:StrictInt=Field(default=0,ge=0,le=2)
@@ -59,6 +65,15 @@ class Simulation(StrictModel):
     pressure_drop_pa:StrictFloat=Field(default=1,gt=0,le=1e8)
     convergence:StrictBool=True
     convergence_tolerance:StrictFloat=Field(default=.1,ge=.001,le=.5)
+    @model_validator(mode='after')
+    def boundaries(self):
+        thermal={'temperature','heat_flux','convection','insulated'}
+        structural={'fixed','displacement','force','pressure'}
+        allowed=thermal if self.kind=='thermal' else structural if self.kind=='structural' else set()
+        if any(b.kind not in allowed for b in self.boundary_conditions):raise ValueError('A boundary condition does not match the analysis type.')
+        if len({b.id for b in self.boundary_conditions})!=len(self.boundary_conditions):raise ValueError('Boundary condition names must be unique.')
+        if any(b.selector=='faces' for b in self.boundary_conditions) and (self.source_revision is None or self.source_artifact is None):raise ValueError('Selected-face conditions need their originating revision and artifact.')
+        return self
 class Manufacturing(StrictModel):
     part_id:Id
     process:Literal['cnc','molding','additive']

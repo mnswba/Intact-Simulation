@@ -8,7 +8,7 @@ from urllib.parse import urlsplit,parse_qs
 from urllib.request import urlopen
 from .projects import ProjectService, atomic_json, EXPORTS
 
-VERSION='0.13.0'
+VERSION='0.14.0'
 
 def registry(root):return Path(root)/'viewer-session.json'
 
@@ -94,6 +94,9 @@ class ViewerHandler(BaseHTTPRequestHandler):
             if kind=='requests.json':
                 from .edit_requests import EditRequests
                 return self.send(200,{'requests':EditRequests(self.projects).list(key)})
+            if kind=='simulation.json':
+                from .simulation_workspace import workspace
+                return self.send(200,workspace(self.projects,key))
             if kind=='engineering-evidence.json':
                 from .advanced import Advanced
                 evidence=Advanced(self.projects).evidence(key)
@@ -102,7 +105,7 @@ class ViewerHandler(BaseHTTPRequestHandler):
             if kind=='engineering-file':
                 import re
                 query=parse_qs(urlsplit(self.path).query);rid=query.get('report_id',[''])[0];filename=query.get('file',['report.json'])[0]
-                if not re.fullmatch('[a-f0-9]{32}',rid) or filename not in ('report.json','results.vtu','drawing.pdf','result.step','result.stl'):raise ValueError('Invalid engineering artifact.')
+                if not re.fullmatch('[a-f0-9]{32}',rid) or filename not in ('report.json','results.vtu','results.csv','trajectory.csv','joints.csv','rig.zip','drawing.pdf','result.step','result.stl'):raise ValueError('Invalid engineering artifact.')
                 folder=self.projects.root/'engineering'/rid;report=json.loads((folder/'report.json').read_text())
                 if report.get('model_id')!=key:raise ValueError('Report belongs to another model.')
                 return self.send(200,(folder/filename).read_bytes(),'application/pdf' if filename.endswith('.pdf') else 'application/json' if filename.endswith('.json') else 'application/octet-stream',filename if filename!='report.json' else None)
@@ -161,6 +164,9 @@ class ViewerHandler(BaseHTTPRequestHandler):
             if kind in ('run-edit','cancel-edit'):
                 from .ask_ai import start,cancel
                 return self.send(200,(start if kind=='run-edit' else cancel)(self.projects,key,data['request_id']))
+            if kind=='simulation-setup':
+                from .simulation_workspace import configure
+                return self.send(200,configure(self.projects,key,data['settings'],data['operation']))
             if kind=='engineering-job':
                 from . import engineering_jobs as jobs
                 if data.get('action')=='cancel':return self.send(200,jobs.cancel(self.projects,data['job_id'],key))

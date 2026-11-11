@@ -40,7 +40,7 @@ class EditRequests:
         conversation=self.conversation(key,parent) if parent else []
         if len(conversation)>=40:raise ValueError('This conversation is full. Start a new request with your current requirements.')
         intent=data.get('intent',parent.get('intent','edit') if parent else 'edit')
-        if intent not in ('edit','question'):raise ValueError('Choose edit or question mode.')
+        if intent not in ('edit','question','simulation'):raise ValueError('Choose edit or question, or simulation mode.')
         instructions=data.get('instructions','')
         if not isinstance(instructions,str) or not 1<=len(instructions.strip())<=4000:raise ValueError('Describe the requested edit in 1–4,000 characters.')
         preferences=ViewSettings(annotations=data.get('annotations',[]),measurements=data.get('measurements',[]));drawings=preferences.annotations
@@ -103,14 +103,14 @@ class EditRequests:
             if r.get('direct_run') and r['status']=='processing':raise ValueError('The local AI task owns this request.')
             if r['status'] not in ('pending','succeeded','awaiting_reply','needs_review'):raise ValueError('This request is not available for a response.')
             revision=self.projects.load(key)['spec']['revision']
-            if r['intent']=='question' and revision!=r['context']['revision']:raise ValueError('Geometry changed during this question. Start a fresh request.')
+            if r['intent'] in ('question','simulation') and revision!=r['context']['revision']:raise ValueError('Geometry changed during this question. Start a fresh request.')
             for field in ('conversation','program','current_revision','stale'):r.pop(field,None)
             r.update(answer=message.strip(),status='awaiting_reply' if needs_reply else 'succeeded',result_revision=revision,geometry_changed=revision!=r['context']['revision'])
             atomic_json(self.path(key,request_id),r)
             return self.summary(r)
     def apply(self,key,request_id,source,parameters,cancel_event=None):
         r=self.read(key,request_id)
-        if r.get('intent')=='question':raise ValueError('Geometry questions are read-only.')
+        if r.get('intent') in ('question','simulation'):raise ValueError('This request is read-only for CAD and preserves Design geometry.')
         if r['stale']:raise ValueError('Stale edit request. Select geometry in the current revision and create a new request.')
         if r['status'] not in ('pending','failed'):raise ValueError('This request is already processing or completed.')
         # Atomically claim the request across concurrent agent connections.

@@ -13,14 +13,17 @@ class Advanced:
   if r['geometry']['engine']=='implicit_mesh':raise ValueError('This operation requires native STEP geometry. Convert a bounded mesh explicitly first.')
   return r
  def worker(self,key,spec,worker='advanced_worker.py',files=None,cancel=None):
-  r=self.projects.ensure_ready(key) if key else None;fingerprint=uuid.uuid4().hex;target=self.root/fingerprint;target.mkdir()
+  r=self.projects.ensure_ready(key) if key else None
+  if r and (spec.get('source_revision') is not None and spec['source_revision']!=r['spec']['revision'] or spec.get('source_artifact') is not None and spec['source_artifact']!=r['spec']['program']['artifact_id']):raise ValueError('Simulation geometry changed before the worker started.')
+  fingerprint=uuid.uuid4().hex;target=self.root/fingerprint;target.mkdir()
   with tempfile.TemporaryDirectory(prefix='intact-engineering-') as tmp:
    i=Path(tmp)/'input';o=Path(tmp)/'output';i.mkdir();o.mkdir()
    if key:
-    for name in ('model.step','model.stl'):
+    for name in ('model.step','model.stl','mesh.json','topology.json'):
      if name=='model.step' and r['geometry']['engine']=='implicit_mesh':continue
      shutil.copyfile(self.projects.record_artifact(r,name),i/name)
    for name,path in (files or {}).items():shutil.copyfile(path,i/name)
+   if r:(i/'model.json').write_text(json.dumps({'model_id':key,'name':r['name'],'spec':{'parts':r['spec']['parts'],'revision':r['spec']['revision']}}))
    shutil.copyfile(Path(__file__).with_name('intact_lattice.py'),i/'intact_lattice.py');(i/'request.json').write_text(json.dumps(spec,allow_nan=False))
    import sys
    env={'LD_LIBRARY_PATH':str(Path(sys.prefix)/'intact-native-libs'),'PYTHONPATH':'/input'}
@@ -30,12 +33,12 @@ class Advanced:
     if p.is_file() and p.stat().st_size<=64*1024**2:shutil.copyfile(p,target/p.name)
   result.update(report_id=fingerprint,model_id=key,revision=r['spec']['revision'] if r else None,artifact_id=r['spec']['program']['artifact_id'] if r else None)
   atomic_json(target/'report.json',result)
-  if key:atomic_json(self.root/(key+'-'+(spec['kind']+'-simulation' if worker=='simulation_worker.py' else spec['operation'])+'.json'),result)
+  if key:atomic_json(self.root/(key+'-'+(spec['kind']+'-simulation' if worker=='simulation_worker.py' else spec.get('operation','motion'))+'.json'),result)
   return result,target
  def evidence(self,key):
   r=self.projects.load(key);items=[];seen=set()
   for p in self.root.glob(key+'-*.json'):
-   v=json.loads(p.read_text());v={k:x for k,x in v.items() if k not in ('positions_mm','triangles','values')};v['stale']=v.get('artifact_id')!=r['spec']['program']['artifact_id']
+   v=json.loads(p.read_text());v={k:x for k,x in v.items() if k not in ('positions_mm','triangles','values','fields','frames')};v['stale']=v.get('artifact_id')!=r['spec']['program']['artifact_id']
    if v['report_id'] not in seen:items.append(v);seen.add(v['report_id'])
   return {'model_id':key,'reports':items}
  def lattice(self,settings,model_id=None,expected_revision=None,cancel=None):
@@ -76,7 +79,15 @@ class Advanced:
  def simulate(self,key,settings,cancel=None):
   record=self.native(key);s=Simulation.model_validate(settings)
   if s.part_id not in [p['id'] for p in record['spec']['parts']]:raise ValueError('Simulation part not found.')
+  if s.source_revision is not None and s.source_revision!=record['spec']['revision'] or s.source_artifact is not None and s.source_artifact!=record['spec']['program']['artifact_id']:raise ValueError('Simulation definition belongs to stale geometry. Review the boundaries on the current model.')
   result,_=self.worker(key,s.model_dump(mode='json'),'simulation_worker.py',cancel=cancel);return result
+ def motion(self,key,settings,cancel=None):
+  from .simulation_schema import Motion
+  s=Motion.model_validate(settings);record=self.projects.ensure_ready(key)
+  ids={p['id'] for p in record['spec']['parts']}
+  if {b.part_id for b in s.bodies}!=ids:raise ValueError('Virtual analysis must define every saved part exactly once.')
+  if s.source_revision is not None and s.source_revision!=record['spec']['revision'] or s.source_artifact is not None and s.source_artifact!=record['spec']['program']['artifact_id']:raise ValueError('Motion setup belongs to stale geometry. Review it on the current model.')
+  result,_=self.worker(key,{'operation':'motion',**s.model_dump(mode='json')},'motion_worker.py',cancel=cancel);return result
  def manufacture(self,key,settings,cancel=None):
   self.native(key);s=Manufacturing.model_validate(settings)
   if sum(x*x for x in s.direction)<1e-12:raise ValueError('Tool/pull direction cannot be zero.')

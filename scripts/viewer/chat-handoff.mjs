@@ -4,7 +4,7 @@ export function chatHandoff(target,{instructions,model_id,request_id,revision,in
  if(!hasChatHandoff(doc))return {available:false,accepted:false};
  // The full description remains in the visible target and persisted request.
  const initialComment=instructions.length<=240?instructions:'Please handle the attached Intact CAD request and its full description.';
- const metadata={model_id,request_id,revision,intent,workflow:'Intact Ask AI: read_edit_request, edit or clarify, respond_to_edit_request'};
+ const metadata={model_id,request_id,revision,intent,workflow:intent==='simulation'?'Intact Simulation: read_edit_request, get_simulation_workspace, simulate without changing CAD, respond_to_edit_request':'Intact Ask AI: read_edit_request, edit or clarify, respond_to_edit_request'};
  const result=doc.oai.annotation.request(target,{initialComment,metadata,mode:'advanced',enterAnnotationMode:true,omitScreenshot:false});
  return {available:true,accepted:result?.accepted===true};
 }
