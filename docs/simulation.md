@@ -1,15 +1,7 @@
-# Simulation scope
+# Simulation
 
-The current engineering tools provide bounded implementations with explicit inputs and checks. They do not make every AI-generated shape automatically suitable for simulation.
+Use the current [v0.15 workflow, tool contracts and verification guide](RELEASE_0_15.md).
 
-| Tool family | Current scope | Important exclusions |
-| --- | --- | --- |
-| Thermal | 3D steady conduction on supported meshed solids | Transient/radiation/coupled thermal-fluid analysis is not claimed |
-| Mechanical | 3D small-displacement linear elasticity with supported boundary conditions | Contact, plasticity, fracture and nonlinear deformation are unavailable |
-| Fluid | Creeping-flow Stokes in supported domains | General inertial, turbulent or compressible CFD is unavailable |
-| Reference studies | Reduced 1D rectangular beam and fin examples | These do not solve arbitrary selected assemblies |
-| Assembly motion | Bounded geometric joints and checks | General dynamics and contact simulation are unavailable |
+Mechanical Analysis is driven by a description and Ask AI / Run Analysis. Actual numerical solvers return fields and data; required physical inputs must be supplied or clarified. Virtual Analysis uses a model-bound kinematic driving/walking/machine preview and restores the viewer objects afterward. It does not predict dynamics or balance.
 
-Before a solve, identify the current model/revision, material constants with units, domain, loads, constraints and boundary selections. Inspect actual mesh quality. Report solver residuals, boundary assumptions, convergence evidence and unsupported conditions. Save results against their originating artifact; display stale results as stale after geometry changes.
-
-AI-written explanations are not numerical evidence. Mesh convergence and agreement with an analytical benchmark support only the tested domain, not universal accuracy. Read the detailed [engineering contracts](../plugin/skills/intact-cad/references/priority23.md) for tool schemas and current limits.
+The older [v0.14 guide](SIMULATION_0_14.md) and [audit](SIMULATION_0_14_AUDIT.md) describe historical releases. Their manual simulation forms and PyBullet Virtual Analysis were replaced in v0.15.

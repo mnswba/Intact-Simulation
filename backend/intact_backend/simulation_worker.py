@@ -19,11 +19,11 @@ def calculate(spec,h):
         volumes=gmsh.model.getEntities(3);chosen=[v for v in volumes if gmsh.model.getEntityName(*v).split('/')[-1]==spec['part_id']]
         if not chosen and len(volumes)==1:chosen=volumes
         if len(chosen)!=1:raise ValueError('Select a uniquely named single native solid for meshing: '+str([(v,gmsh.model.getEntityName(*v)) for v in volumes]))
-        gmsh.model.occ.remove([v for v in volumes if v not in chosen],recursive=True);gmsh.model.occ.synchronize();gmsh.option.setNumber('Mesh.MeshSizeMin',h);gmsh.option.setNumber('Mesh.MeshSizeMax',h);gmsh.option.setNumber('Mesh.MeshSizeFromCurvature',12);gmsh.model.mesh.generate(3)
+        gmsh.model.occ.remove([v for v in volumes if v not in chosen],recursive=True);gmsh.model.occ.synchronize();gmsh.option.setNumber('Mesh.MeshSizeMin',h);gmsh.option.setNumber('Mesh.MeshSizeMax',h);gmsh.option.setNumber('Mesh.MeshSizeFromCurvature',8);gmsh.option.setNumber('Mesh.MeshSizeFromPoints',0);gmsh.option.setNumber('Mesh.MeshSizeExtendFromBoundary',0);gmsh.model.mesh.generate(3)
         tags,coords,_=gmsh.model.mesh.getNodes();index={int(t):i for i,t in enumerate(tags)};points=np.asarray(coords).reshape(-1,3)*.001;types,_,blocks=gmsh.model.mesh.getElements(3);cells=[]
         for kind,block in zip(types,blocks):
             if kind==4:cells.extend([[index[int(v)] for v in row] for row in np.asarray(block).reshape(-1,4)])
-        if not cells or len(cells)>18000 or len(points)>6000:raise ValueError('Simulation mesh budget exceeded: <=18,000 tetrahedra and <=6,000 vertices. Increase mesh_size_mm.')
+        if not cells or len(cells)>18000 or len(points)>6000:raise ValueError(f'Simulation mesh budget exceeded: {len(cells)} tetrahedra, {len(points)} vertices; limits 18000 / 6000.')
         mesh=MeshTet(points.T,np.asarray(cells).T);axis=spec['axis'];lo=points.min(0);hi=points.max(0);tol=max(hi-lo)*1e-7
         low=mesh.facets_satisfying(lambda x:np.abs(x[axis]-lo[axis])<tol,boundaries_only=True);high=mesh.facets_satisfying(lambda x:np.abs(x[axis]-hi[axis])<tol,boundaries_only=True)
         if not spec.get('boundary_conditions') and (len(low)==0 or len(high)==0):raise ValueError('The selected axis needs nonempty planar inlet/end boundary facets at both extrema.')
@@ -150,17 +150,34 @@ def calculate(spec,h):
     finally:gmsh.finalize()
 
 def main():
-    spec=json.loads(Path('/input/request.json').read_text());coarse=calculate(spec,spec['mesh_size_mm']);result=coarse
-    if spec['convergence']:
+    spec=json.loads(Path('/input/request.json').read_text());requested=spec['mesh_size_mm'];h=requested;attempts=[]
+    if spec.get('auto_mesh',True):
+        gmsh.initialize(['-nopopup'])
         try:
-            fine=calculate(spec,spec['mesh_size_mm']*.7);change=abs(fine['metric']-coarse['metric'])/max(abs(fine['metric']),1e-15);fine['convergence']={'coarse_metric':coarse['metric'],'fine_metric':fine['metric'],'relative_change':change,'tolerance':spec['convergence_tolerance'],'passed':change<=spec['convergence_tolerance']};result=fine
+            gmsh.option.setNumber('General.Terminal',0);gmsh.model.occ.importShapes('/input/model.step');gmsh.model.occ.synchronize();volumes=gmsh.model.getEntities(3);chosen=[v for v in volumes if gmsh.model.getEntityName(*v).split('/')[-1]==spec['part_id']]
+            if not chosen and len(volumes)==1:chosen=volumes
+            if len(chosen)==1:h=max(h,(gmsh.model.occ.getMass(*chosen[0])/(650 if spec.get('convergence') else 1800))**(1/3))
+        finally:gmsh.finalize()
+    for attempt in range(5):
+        try:coarse=calculate(spec,h);attempts.append({'mesh_size_mm':h,'status':'accepted','tetrahedra':coarse['tetrahedra'],'vertices':coarse['vertices']});break
+        except ValueError as exc:
+            if not spec.get('auto_mesh',True) or not any(word in str(exc) for word in ('mesh budget exceeded','DOF budget exceeded')):raise
+            attempts.append({'mesh_size_mm':h,'status':'budget exceeded','reason':str(exc)});h*=1.7
+    else:raise ValueError('This geometry still exceeds the bounded meshing budget after automatic sizing. Isolate a simpler native solid or simplify small features before analysis.')
+    result=coarse
+    if spec['convergence']:
+        coarse_files={name:Path('/work/'+name).read_bytes() for name in ('results.vtu','results.csv')}
+        try:
+            fine=calculate(spec,h*.7);change=abs(fine['metric']-coarse['metric'])/max(abs(fine['metric']),1e-15);fine['convergence']={'coarse_metric':coarse['metric'],'fine_metric':fine['metric'],'relative_change':change,'tolerance':spec['convergence_tolerance'],'passed':change<=spec['convergence_tolerance']};result=fine
             if spec['kind']=='thermal':
                 peak_change=max(abs(fine[k]-coarse[k])/max(abs(fine[k]),1e-15) for k in ('minimum','maximum'));result['peak_temperature_convergence']={'relative_change':peak_change,'passed':peak_change<=spec['convergence_tolerance']};result['convergence']['passed']=result['convergence']['passed'] and result['peak_temperature_convergence']['passed']
             if spec['kind']=='structural':
                 stress_change=abs(fine['maximum_von_mises_pa']-coarse['maximum_von_mises_pa'])/max(abs(fine['maximum_von_mises_pa']),1e-15);result['stress_convergence']={'relative_change':stress_change,'passed':stress_change<=spec['convergence_tolerance'],'scope':'Peak element-average stress refinement; local singularities may not converge.'}
-        except ValueError as exc:result['convergence']={'passed':False,'reason':str(exc)}
+        except ValueError as exc:
+            result['convergence']={'passed':False,'reason':str(exc)}
+            for name,data in coarse_files.items():Path('/work/'+name).write_bytes(data)
     else:result['convergence']={'passed':False,'reason':'Mesh refinement comparison was not requested.'}
-    result['solver_checks_passed']=True;result['verified']=result['convergence']['passed'] and result.get('regime_valid',True);result['verified_fields']={result['field_name']:result['verified']};
+    result['mesh_adaptation']={'requested_mm':requested,'effective_mm':result['mesh_size_mm'],'coarsened':result['mesh_size_mm']>requested,'automatically_sized':h>requested,'initial_size_mm':h,'attempts':attempts};result['solver_checks_passed']=True;result['verified']=result['convergence']['passed'] and result.get('regime_valid',True);result['verified_fields']={result['field_name']:result['verified']};
     if spec['kind']=='structural':result['verified_fields']['von_mises_Pa']=result['verified'] and result.get('stress_convergence',{}).get('passed',False)
     result['study_definition']=spec;result['unit_system']='CAD coordinates mm converted to m; force N, pressure Pa, temperature K, conductivity W/(m K), viscosity Pa s. Defaults are representative inputs, not supplier-certified properties.';Path('/work/report.json').write_text(json.dumps(result,allow_nan=False))
 try:main()

@@ -8,7 +8,7 @@ from urllib.parse import urlsplit,parse_qs
 from urllib.request import urlopen
 from .projects import ProjectService, atomic_json, EXPORTS
 
-VERSION='0.14.1'
+VERSION='0.15.0'
 
 def registry(root):return Path(root)/'viewer-session.json'
 
@@ -96,7 +96,7 @@ class ViewerHandler(BaseHTTPRequestHandler):
                 return self.send(200,{'requests':EditRequests(self.projects).list(key)})
             if kind=='bodies.json':
                 from .body_selection import bodies
-                try:return self.send(200,bodies(self.projects,record))
+                try:return self.send(200,bodies(self.projects,record,parse_qs(urlsplit(self.path).query).get('part_id',[None])[0]))
                 except ValueError as exc:return self.send(400,{'error':str(exc)[:1500]})
             if kind=='simulation.json':
                 from .simulation_workspace import workspace

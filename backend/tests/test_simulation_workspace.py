@@ -4,7 +4,7 @@ import pytest
 from intact_backend.projects import ProjectService
 from intact_backend.advanced import Advanced
 from intact_backend.simulation_workspace import configure,workspace
-from intact_backend.simulation_schema import Motion
+from intact_backend.preview_schema import PreviewStudy
 from intact_backend.edit_requests import EditRequests
 
 @pytest.fixture
@@ -37,18 +37,6 @@ def test_convection_flux_and_no_support_rejected(rod):
  assert report['minimum']==pytest.approx(400,abs=1e-6);assert report['maximum']==pytest.approx(401,abs=1e-6)
  with pytest.raises(ValueError,match='supports'):a.simulate(r['model_id'],{'kind':'structural','part_id':'rod','boundary_conditions':[{'id':'load','kind':'force','side':'high','vector':[1,0,0]}]})
 
-def test_prescribed_motion_and_gravity(rod):
- s,a,r=rod;before=s.load(r['model_id']);settings={'mode':'kinematic','duration_s':1,'ground':False,'bodies':[{'part_id':'rod','linear_velocity_mm_s':[100,0,0]}],**guard(r)}
- report=a.motion(r['model_id'],settings);assert report['root_displacement_mm']['rod']==pytest.approx([100,0,0]);assert not report['verified'];assert len(report['frames'])==31
- report=a.motion(r['model_id'],{**settings,'mode':'dynamics','duration_s':.2,'bodies':[{'part_id':'rod'}]});assert report['root_displacement_mm']['rod'][2]<-150
- assert s.load(r['model_id'])==before;assert (a.root/report['report_id']/'rig.zip').is_file()
-
-def test_kinematic_joint_pivot_and_limits(tmp_path):
- s=ProjectService(tmp_path);r=s.build('import build123d as b\ndef build(params):\n return {"base":b.Box(2,2,2),"arm":b.Pos(10,0,0)*b.Box(10,2,2)}',{});report=Advanced(s).motion(r['model_id'],{'mode':'kinematic','duration_s':1,'ground':False,'bodies':[{'part_id':'base','fixed':True},{'part_id':'arm'}],'joints':[{'id':'hinge','parent':'base','child':'arm','origin_mm':[0,0,0],'mode':'position','target':90}]})
- assert report['frames'][0]['joints']['hinge']['position']==pytest.approx(0);assert report['frames'][0]['joints']['hinge']['velocity']==pytest.approx(90);assert report['frames'][0]['joints']['hinge']['effort'] is None
- pos=report['frames'][-1]['poses']['arm']['position_mm'];original=next(p['position'] for p in r['spec']['parts'] if p['id']=='arm');assert pos==pytest.approx([-original[1],original[0],original[2]],abs=1e-4)
- with pytest.raises(ValueError):Motion.model_validate({'bodies':[{'part_id':'a'},{'part_id':'b'}],'joints':[{'id':'j1','parent':'a','child':'b'},{'id':'j2','parent':'b','child':'a'}]})
-
 def test_simulation_ai_preserves_design(rod):
  s,a,r=rod;q=EditRequests(s);request=q.create(r['model_id'],{'intent':'simulation','instructions':'Run thermal study','revision':r['spec']['revision'],'artifact_id':guard(r)['source_artifact']})
  with pytest.raises(ValueError,match='preserves'):q.apply(r['model_id'],request['request_id'],'',{})
@@ -66,14 +54,3 @@ def test_pressure_and_prescribed_displacement_reactions(rod,mode):
  assert report['maximum']==pytest.approx(.02 if mode=='pressure' else .01,rel=1e-6)
  assert report['maximum_von_mises_pa']==pytest.approx(1e6 if mode=='pressure' else .5e6,rel=1e-6)
  assert report['relative_balance_error']<1e-7
-
-def test_motor_vehicle_moves_through_ground_contact(tmp_path):
- s=ProjectService(tmp_path);source='import build123d as b\ndef build(params):\n parts={"chassis":b.Pos(0,0,18)*b.Box(40,20,5)}\n for i,x in enumerate([-14,14]):\n  for j,y in enumerate([-14,14]):\n   parts["wheel_"+str(i)+str(j)]=b.Pos(x,y,10)*b.Rot(90,0,0)*b.Cylinder(10,4)\n return parts'
- r=s.build(source,{});before=s.load(r['model_id']);bodies=[{'part_id':p['id'],'mass_kg':.2 if p['id']=='chassis' else .05,'friction':1.0} for p in r['spec']['parts']];joints=[]
- for i,x in enumerate([-14,14]):
-  for j,y in enumerate([-14,14]):
-   child='wheel_'+str(i)+str(j);joints.append({'id':'drive_'+child,'parent':'chassis','child':child,'kind':'continuous','axis':[0,1,0],'origin_mm':[x,y,10],'mode':'velocity','target':180,'maximum_effort':.1})
- report=Advanced(s).motion(r['model_id'],{'duration_s':1,'bodies':bodies,'joints':joints,'ground':True})
- assert report['root_displacement_mm']['chassis'][0]>10
- assert report['maximum_contact_count']>0 and report['joint_count']==4
- assert s.load(r['model_id'])==before

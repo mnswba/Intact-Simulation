@@ -16,3 +16,9 @@ Project exports add python-pptx (MIT), ezdxf (MIT), and separately executed GNU 
 USD/USDA exports use OpenUSD (`usd-core`, locked in backend/uv.lock). Preserve its upstream Apache-2.0 notices and bundled third-party license files. No USD runtime binaries are included in this Git repository.
 
 Virtual Analysis uses PyBullet 3.2.7 from Bullet Physics (zlib license). Upstream source and license: https://github.com/bulletphysics/bullet3. The runtime is installed as a dependency; no PyBullet binaries are committed.
+
+v0.15 optionally integrates LEAP 71 PicoGK through an exact `2.4.0-alpha04` NuGet package reference and dependency content hashes in `backend/picogk/packages.lock.json`. PicoGK and its native runtime are Apache-2.0; OpenVDB, TBB, SkiaSharp and .NET retain their upstream notices/licenses. The official Linux runtime is a prerelease. Source references: https://github.com/leap71/PicoGK and https://github.com/leap71/PicoGK.Legacy. Installer output, SDK/runtime binaries and generated meshes are not committed.
+
+The kinematic driving controller under `scripts/viewer/vendor/` was supplied by the user in `scout-driving-source` for this integration. Its provenance is retained in the source header and release guide; only controller code is reused. The supplied Three.js runtime and private SCOUT GLB/packed geometry are not copied into this repository. Intact continues using its existing Three.js dependency and CAD geometry.
+
+The historical PyBullet integration described above was retired in v0.15, along with its runtime dependency. Existing saved reports remain user data.

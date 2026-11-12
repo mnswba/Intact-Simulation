@@ -44,6 +44,8 @@ class Freeform(StrictModel):
     sections:list[list[Vec]]=Field(min_length=2,max_length=12)
     ruled:StrictBool=False
 class Simulation(StrictModel):
+    user_request:str=Field(default='',max_length=4000)
+    auto_mesh:StrictBool=True
     name:str=Field(default='Mechanical analysis',min_length=1,max_length=100)
     boundary_conditions:list[Boundary]=Field(default_factory=list,max_length=32)
     gravity_m_s2:Vec=(0,0,0)

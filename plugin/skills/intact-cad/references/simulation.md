@@ -1,50 +1,65 @@
-# Simulation workspace — v0.14.0
+# Intact v0.15 — AI simulation and kinematic previews
 
-The **Design** tab retains the existing modeling workspace, exports, appearance, annotation, inspection and revision workflows. **Simulation** holds independent study definitions and results; solving or playing motion does not create a design revision. Returning to Design restores its camera and display preferences. Existing saved models are preserved.
+## Viewer
 
-## Mechanical Analysis
-
-Choose a native solid and one of:
-
-- **Steady-state thermal:** isotropic conductivity, volumetric heating, temperature (K), inward-positive heat flux (W/m²), convection coefficient and ambient temperature. Unassigned faces are insulated.
-- **Static stress / displacement:** isotropic Young’s modulus and Poisson ratio, density/gravity, fixed supports, prescribed component displacements (mm), total face force (N), or inward-positive pressure (Pa). Supports must constrain all six rigid-body modes. Results include displacement magnitude/components, reaction forces, element-average peak von Mises stress and a volume-weighted nodal stress display.
-- **Creeping-flow CFD:** incompressible Stokes with pressure-traction inlet, zero-traction outlet and no-slip walls. This is only valid at very low Reynolds number; the conservative acceptance bound is Re ≤ 0.1. General vehicle aerodynamics is outside this solver.
-
-The default thermal setup prescribes temperatures at opposite axis-end planes. Default structural loading fixes the low end and applies a total force to the high end. **Adding custom conditions replaces these defaults**. Select a condition’s axis end, or pick native faces in the viewer (Ctrl/Cmd-click for multiple selection) and click **Use selected faces**. Conditions on an older CAD artifact cannot run against new geometry. Missing or ambiguous face mappings fail explicitly.
-
-Material values are representative inputs, not certified material properties. Supply values for the actual material and temperature range. Use absolute temperatures in K, SI material/load values, and mm for CAD geometry and prescribed displacements.
-
-Use **Advanced settings → Mesh & accuracy** to adjust refinement if needed, then **Run analysis**. Run saves the setup automatically. Jobs run in isolated workers; their status and Cancel controls appear below. Open a result to see scalar fields and their blue-to-red minimum/maximum legend. Structural displacement magnification is a display option only. Download `results.csv`, `results.vtu` or `report.json` for numerical data.
-
-The solver checks residual and conservation, compares mesh-refinement metrics and flags invalid strain/flow regimes. Stress refinement is reported separately: displacement convergence does not certify a local stress peak. Nodal stress colors are averaged values; use the reported element peak and stress convergence for interpretation. This is bounded single-solid linear analysis, not contact, plasticity, buckling, transient heat transfer, radiation, turbulence or coupled multiphysics.
-
-Mesh limits: 18,000 tetrahedra / 6,000 vertices; Stokes has a separate 24,000 mixed-DOF limit. Increase mesh size if a limit is exceeded. Unconverged results remain available but must not be described as verified.
+The selection menu contains Part, Face and Edge. Native browser click counts distinguish double-click (named part) from triple-click (clicked native solid body), independent of the menu. CAD body metadata and revision guards remain available to AI. Presentation and Auto orbit stay accessible in fullscreen. Active previews have fullscreen play/pause, replay, scrubbing and Close controls.
 
 ## Virtual Analysis
 
-Choose **Rigid-body dynamics** for PyBullet gravity, motors and contact, or **Prescribed motion / gait preview** for explicit trajectories.
+Virtual Analysis replaces the former rigid-body/PyBullet workflow with kinematic previews. Describe driving, a walking robot or a machine cycle, then use Ask AI. AI inspects the actual stable part IDs, identifies moving components and supplies a `PreviewStudy` to `run_virtual_analysis`. Recognized wheel assemblies can start a driving preview directly. Articulated walking needs separate limb/link parts and explicit pivots; fused geometry does not acquire invented joints. Clarifications remain in ChatGPT and can also be answered in the Simulation response/reply panel.
 
-1. Assign a mass and friction to every CAD component. Mark stationary root bodies fixed. Set ground elevation and gravity as appropriate. Root velocities use mm/s and deg/s.
-2. Create joints between separate components: fixed, hinge, continuous wheel or slider. Set the CAD-space pivot, axis, limits and initial state. A child has one parent; cycles are rejected.
-3. Select position, velocity, sine/gait or torque/force drive. Angular coordinates use degrees, sliders use mm, and motor effort is N m or N. A continuous wheel velocity drives a vehicle only when the wheel orientation, mass, ground contact and friction are physically suitable. The software does not infer or certify a vehicle controller.
-4. For a robot/machine cycle, set sine amplitude, frequency and phase on the relevant joints. Prescribed motion can show a walking sequence but does not predict balance. Dynamically stable walking needs a suitable controller and physical model, which this version does not automatically synthesize.
-5. Run, open the result, then play/pause or scrub frames. Joint positions/velocities, motor effort and contact data are recorded. Download trajectory/joint CSV files, the report, or a ZIP containing the generated URDF rig, collision meshes and settings.
+The supplied `scout-driving-source/src/driving-controller.mjs` is reused, with a bounded 1–16-wheel binding adaptation. Its original eight-second acceleration/cruise/braking/stopped timeline remains intact. At 0.30 m/s the final visual travel is 1.80 m. The native CAD model, its parameters, geometry, revisions and exports are unchanged.
 
-Dynamics approximates each part with a convex hull or bounding box. Holes and concave contact surfaces are not retained by these approximations. Default inertia uses the component bounding box and supplied mass. **Advanced study settings** accepts explicit center of mass and physical inertia tensor `[Ixx,Iyy,Izz,Ixy,Ixz,Iyz]` in kg m²; the tensor is validated. Virtual Analysis is not flexible-body stress analysis or a stability certificate. Kinematic contact queries do not represent predicted contact forces; motor effort is null. Position targets ramp from the initial value over the preview duration.
+Coordinate contract: preview pivots use assembled **CAD metres, +X forward, +Y left, +Z up**. The display adapter maps these to Intact's mm, Y-up display. Existing part objects are temporarily reparented with identity preserved, and the viewer's existing render loop supplies frame deltas. Play, pause, replay and seek derive poses from timeline time, rather than accumulated wheel spin. Closing the preview restores original parents, child order, local matrices, transforms and camera. Preview stops before rebuilds, model changes, section/explosion changes, downloads/project exports and AI edit annotations. A hidden tab pauses playback, and reduced-motion preference suppresses automatic playback.
 
-Runs use a 240 Hz internal step, at most 10 seconds and 600 recorded intervals, with a bounded total body-pose recording budget. Separate isolated engineering jobs have concurrency and timeout limits.
+Walking and machine joints use prescribed sine trajectories; whole-object translation/rotation are also available. These are **visual kinematic trajectories**, not traction, collision, motor-torque, suspension-force, dynamic-stability or balance predictions. The old dynamics worker and PyBullet dependency have been retired. Saved historical reports are preserved on disk.
 
-## Ask AI
+## Mechanical Analysis
 
-Click **Ask AI** in Simulation; the setup is saved automatically. The Ask AI panel opens in **Simulate · preserve Design** mode with a study-aware request. Describe additional needs, then click Ask AI. In a compatible ChatGPT viewer, review/send the native annotation and reply in the conversation. Outside that viewer, the existing locally signed-in scoped task workflow is used. No separate model API account is required.
+Enter the intended analysis, material, supports, loads and requested results. The two primary actions are **Ask AI** and **Run Analysis**. There are no manual analysis/material/mesh forms in this section.
 
-AI tools:
+AI reads `get_simulation_workspace`, clarifies critical missing physical inputs, then calls `configure_simulation(operation="simulate")` using the existing typed `Simulation` schema. It must copy the user's description exactly into `settings.user_request` and bind the current source revision/artifact. Ask AI prepares/explains the study. Run Analysis executes a matching prepared study; when no matching study exists, it asks AI to prepare and run it. An old default study is never silently substituted for a new description. AI can submit a `simulate` engineering job and inspect its result. Numerical fields, ranges, convergence/residual checks, actual mesh size, CSV and VTU downloads appear in Mechanical Analysis. AI responses and clarification replies also appear there.
 
-- `get_simulation_workspace(model_id)` reads study definitions, part IDs, revision identity and compact job/report summaries.
-- `configure_simulation(model_id, operation, settings)` validates/saves `simulate` or `motion` settings, with matching `source_revision` and `source_artifact`.
-- `run_3d_simulation` and `run_virtual_analysis` execute their typed schemas synchronously.
-- `submit_engineering_job(operation='simulate'|'motion', ...)`, `get_engineering_job`, and `cancel_engineering_job` support background work.
+The actual numerical domains remain steady isotropic conduction, small-strain linear elasticity and creeping-flow Stokes. Their documented material, support and flow-regime limits still apply. This is not general turbulent CFD, contact/nonlinear FEA or multiphysics.
 
-AI must explain missing physical inputs or ask for clarification; it must not invent numerical results. Simulation-mode scoped tasks cannot change CAD or submit design-mutating jobs. Native conversational tools follow the same instruction in the plugin skill. Creating a new CAD revision requires a separate design request.
+### Mesh budget recovery
 
-A stale study can be replaced with **Advanced settings → Reset study**. This clears its local definition and result display; prior exported results remain saved on disk.
+Overly fine requests now receive a geometry-volume-based initial sizing estimate and bounded coarsening retries. Gmsh point-based refinement and boundary-size propagation no longer defeat the requested global size. Limits remain **18,000 tetrahedra / 6,000 vertices**, with a separate Stokes mixed-DOF limit. No native geometry is simplified or changed to fit a budget.
+
+`mesh_adaptation` records requested size, effective size and attempts. The UI shows effective size and whether it was automatically sized. Refined-mesh comparison uses a genuinely finer mesh; when refinement exceeds a budget, convergence stays false and the accepted coarse result remains available. A geometry that still exceeds the budget fails explicitly with an isolation/simplification instruction. Automatic sizing is not an accuracy certificate. `auto_mesh=false` remains available through the typed AI tool when a fixed mesh request is required.
+
+## Optional PicoGK TPMS
+
+Install with:
+
+```bash
+python3 scripts/install-picogk.py
+# or
+python3 scripts/install-chatgpt-plugin.py --with-picogk --windows-home /mnt/c/Users/YOUR_WINDOWS_USER
+```
+
+The optional bridge uses official PicoGK **2.4.0-alpha04** because that package supplies the Linux native runtime needed by this installation. It is a pinned **prerelease**, with an exact NuGet package reference and dependency content hashes. The bridge targets .NET 9. It runs headlessly in the existing no-network sandbox; arbitrary C# from an AI is not accepted. `status.picogk` reports readiness, and `build_picogk_tpms` creates a **new** mesh model while preserving prior models. The built-in Intact TPMS engine remains available; no silent fallback masquerades as PicoGK.
+
+Six families are supported: gyroid, Schwarz P, diamond, neovius, lidinoid and split P. Inputs include envelope size, cell size, nominal wall, thickness gradient and voxel size. Validation bounds the sampling domain to four million voxels and requires at least three voxels across the thinnest nominal wall. PicoGK evaluates an implicit shell using a local-gradient distance approximation, clips it to the envelope, and exports an actual voxel mesh. The adapter verifies closed positive-volume geometry and a bounded triangle count before importing it into Intact. Reports identify engine, package version, voxel size and approximation scope.
+
+STL/GLB/3MF and the existing mesh scene exports are available. This does **not** produce a smooth analytic STEP surface or certify constant wall thickness. An explicit bounded faceted STEP conversion is a separate operation and may require a coarser mesh.
+
+Upstream: [PicoGK](https://github.com/leap71/PicoGK), [official build/distribution source](https://github.com/leap71/PicoGK.Legacy). PicoGK retains Apache-2.0 and its dependencies' notices. No native binaries or user SCOUT geometry are committed to this repository.
+
+## Verification
+
+- Exact scene graph, transforms, child order, geometry-buffer and identity restoration under non-identity display transforms; deterministic seek/replay and prescribed walking joints.
+- Browser test on an isolated copy of the existing **110-component SCOUT CAD**, not a replacement primitive: actual wheel IDs, eight-second timeline, ~1.80 m travel, replay/scrubbing/fullscreen controls and restoration. Original user model records remain untouched.
+- Actual description-matched thermal job with an initially excessive mesh request: automatic sizing, valid node/cell budget, 300–350 K patch solution, real result overlay and numerical metadata.
+- Existing independent thermal, elastic and Stokes benchmarks; selected-face, reaction/load, revision and Ask AI permission regressions.
+- Real sandboxed PicoGK gyroid and Schwarz-P meshes with positive volume, closed geometry and GLB exports. STEP is rejected for these mesh models unless explicitly converted.
+- Native annotation behavior is exercised with a browser API mock; no claim is made that an unattended live ChatGPT conversation supplied material data or ran these tests.
+
+Useful commands:
+
+```bash
+node --experimental-strip-types --test tests/*.test.ts
+PYTHONPATH=backend python -m pytest backend/tests/test_ai_simulation_015.py backend/tests/test_simulation_workspace.py backend/tests/test_ask_ai.py -q
+PYTHONPATH=backend python -m pytest backend/tests/test_priority23.py -k pde_benchmarks -q
+python3 scripts/check-publication.py
+```

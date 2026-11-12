@@ -4,13 +4,17 @@ from typing import Any,Literal
 from pathlib import Path
 from pydantic import StrictInt,StrictFloat
 from mcp.server.mcpserver import Context
-from .simulation_schema import Motion
+from .preview_schema import PreviewStudy
+from .picogk import PicoGKSettings
 from .p23_schema import LatticeMM,AdaptiveLattice,HybridSpec,Assembly,Freeform,Simulation,Manufacturing,SheetMetal,Reconstruction,Optimization,Comparison
 NAMES={'build_lattice_mm','refine_lattice','build_hybrid','convert_mesh_to_cad','set_assembly_joints','build_freeform','compare_designs','reconstruct_geometry','component_catalog','insert_component','manufacturing_review','engineering_drawing','build_sheet_metal','run_3d_simulation','optimize_design','engineering_evidence','submit_engineering_job','get_engineering_job','cancel_engineering_job'}
-NAMES.update({'measure_mesh_quality','configure_simulation','get_simulation_workspace','run_virtual_analysis'})
+NAMES.update({'build_picogk_tpms','measure_mesh_quality','configure_simulation','get_simulation_workspace','run_virtual_analysis'})
 def dispatch(engine,name,args,cancel=None):
  from .advanced import Advanced
  a=Advanced(engine.projects);key=args.get('model_id');s=args.get('settings')
+ if name=='build_picogk_tpms':
+  from .picogk import build
+  result=build(engine.projects,s,cancel);result['model']=engine.result(result['model']);return result
  if name=='configure_simulation':
   from .simulation_workspace import configure
   return configure(engine.projects,key,s,args['operation'])
@@ -18,7 +22,8 @@ def dispatch(engine,name,args,cancel=None):
   from .simulation_workspace import workspace
   return workspace(engine.projects,key)
  if name=='run_virtual_analysis':
-  result=a.motion(key,s,cancel);url=engine.viewer(key);base=url.removesuffix('view')+'engineering-file?report_id='+result['report_id']+'&file=';return {**{k:v for k,v in result.items() if k!='frames'},'viewer_url':url,'report_url':base+'report.json','trajectory_url':base+'trajectory.csv','joints_url':base+'joints.csv','rig_url':base+'rig.zip'}
+  from .simulation_workspace import configure
+  result=configure(engine.projects,key,s,'preview');return {'model_id':key,'preview':result['studies']['preview'],'mode':'kinematic-preview','viewer_url':engine.viewer(key),'scope':'Visual trajectories only. No dynamics, contact, force or walking stability prediction.'}
  if name=='build_lattice_mm':return engine.result(a.lattice(s,key,args.get('expected_revision'),cancel))
  if name=='refine_lattice':
   r=a.adaptive(s,cancel);r['model']=engine.result(r['model']);return r
@@ -65,16 +70,21 @@ def dispatch(engine,name,args,cancel=None):
 
 def register(server,engine,execute,read,write):
  @server.tool(annotations=write)
- def configure_simulation(model_id:str,operation:Literal['simulate','motion'],settings:dict[str,Any])->dict[str,Any]:
-  """Save a validated mechanical or virtual study without changing CAD. Read get_simulation_workspace first; use Simulation/Motion schema and revision/artifact guards."""
+ async def build_picogk_tpms(settings:PicoGKSettings,ctx:Context)->dict[str,Any]:
+  """Generate a real PicoGK voxel TPMS mesh through the pinned optional Linux bridge (2.4.0-alpha04 prerelease). Six families; <=4 million bounding voxels, >=3 voxels across nominal minimum wall. Local-gradient distance approximation, not certified uniform thickness. Creates a new mesh model; STL/GLB/3MF, no smooth STEP. No silent fallback. Readiness appears in status."""
+  return await execute('build_picogk_tpms',{'settings':settings.model_dump(mode='json')},ctx)
+
+ @server.tool(annotations=write)
+ def configure_simulation(model_id:str,operation:Literal['simulate','preview'],settings:dict[str,Any])->dict[str,Any]:
+  """Save a validated mechanical or virtual study without changing CAD. Read get_simulation_workspace first; use Simulation/PreviewStudy schema and revision/artifact guards."""
   return engine.call('configure_simulation',dict(model_id=model_id,operation=operation,settings=settings))
  @server.tool(annotations=read)
  def get_simulation_workspace(model_id:str)->dict[str,Any]:
   """Read saved simulation definitions, available parts, revision identity and compact job/results summaries."""
   return engine.call('get_simulation_workspace',dict(model_id=model_id))
  @server.tool(annotations=read)
- async def run_virtual_analysis(model_id:str,settings:Motion,ctx:Context)->dict[str,Any]:
-  """Run bounded PyBullet rigid-body motors/gravity/contact, or explicitly prescribed kinematic trajectories. Separate named parts, acyclic joints, SI mass/effort and CAD mm/degrees. Returns actual motion data; no automatic robot balance or flexible-body simulation. Preserves CAD."""
+ async def run_virtual_analysis(model_id:str,settings:PreviewStudy,ctx:Context)->dict[str,Any]:
+  """Configure a viewer-only kinematic driving, walking or machine preview using stable CAD part IDs. All pivots are assembled CAD XYZ in METRES; directions are CAD +Z up, +X forward. Supply explicit wheel groups or limb/link joints from inspected geometry. No physical simulation, balance, contact or force predictions. Preserves CAD and exports."""
   return await execute('run_virtual_analysis',dict(model_id=model_id,settings=settings.model_dump(mode='json')),ctx)
 
  @server.tool(annotations=read)
@@ -146,7 +156,7 @@ def register(server,engine,execute,read,write):
   """Read revision/artifact-bound engineering reports and mark stale results. Does not validate stale physics against changed geometry."""
   return engine.call('engineering_evidence',{'model_id':model_id})
  @server.tool(annotations=write)
- def submit_engineering_job(operation:Literal['motion','adaptive','simulate','optimize','convert','manufacture','drawing','freeform','sheet','lattice','hybrid','assembly','reconstruct'],settings:dict[str,Any],model_id:str|None=None)->dict[str,Any]:
+ def submit_engineering_job(operation:Literal['adaptive','simulate','optimize','convert','manufacture','drawing','freeform','sheet','lattice','hybrid','assembly','reconstruct'],settings:dict[str,Any],model_id:str|None=None)->dict[str,Any]:
   """Start a durable detached engineering job (<=3 active, <=15 minutes, each worker separately bounded). Use the corresponding tool's settings schema. Status/progress survive tool disconnects; stale queued edits are rejected. Cancellation preserves prior valid designs and completed artifacts."""
   return engine.call('submit_engineering_job',dict(operation=operation,settings=settings,model_id=model_id))
  @server.tool(annotations=read)

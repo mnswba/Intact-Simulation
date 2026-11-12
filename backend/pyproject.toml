@@ -1,6 +1,6 @@
 [project]
 name = "intact-simulation-backend"
-version = "0.14.1"
+version = "0.15.0"
 description = "ChatGPT CAD tools, validated solids and implicit TPMS lattices for Intact Simulation"
 requires-python = ">=3.12,<3.14"
 dependencies = [
@@ -26,7 +26,6 @@ cad = [
     "python-pptx>=1,<2",
     "ezdxf>=1.4,<2",
     "usd-core>=25,<27",
-    "pybullet>=3.2.7,<4",
 ]
 dev = ["pytest>=8,<10", "pytest-asyncio>=0.25,<2", "httpx>=0.28,<1"]
 [build-system]

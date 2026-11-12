@@ -81,13 +81,6 @@ class Advanced:
   if s.part_id not in [p['id'] for p in record['spec']['parts']]:raise ValueError('Simulation part not found.')
   if s.source_revision is not None and s.source_revision!=record['spec']['revision'] or s.source_artifact is not None and s.source_artifact!=record['spec']['program']['artifact_id']:raise ValueError('Simulation definition belongs to stale geometry. Review the boundaries on the current model.')
   result,_=self.worker(key,s.model_dump(mode='json'),'simulation_worker.py',cancel=cancel);return result
- def motion(self,key,settings,cancel=None):
-  from .simulation_schema import Motion
-  s=Motion.model_validate(settings);record=self.projects.ensure_ready(key)
-  ids={p['id'] for p in record['spec']['parts']}
-  if {b.part_id for b in s.bodies}!=ids:raise ValueError('Virtual analysis must define every saved part exactly once.')
-  if s.source_revision is not None and s.source_revision!=record['spec']['revision'] or s.source_artifact is not None and s.source_artifact!=record['spec']['program']['artifact_id']:raise ValueError('Motion setup belongs to stale geometry. Review it on the current model.')
-  result,_=self.worker(key,{'operation':'motion',**s.model_dump(mode='json')},'motion_worker.py',cancel=cancel);return result
  def manufacture(self,key,settings,cancel=None):
   self.native(key);s=Manufacturing.model_validate(settings)
   if sum(x*x for x in s.direction)<1e-12:raise ValueError('Tool/pull direction cannot be zero.')

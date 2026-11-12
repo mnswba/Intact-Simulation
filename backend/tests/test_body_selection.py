@@ -10,3 +10,8 @@ def test_native_solids_are_distinct_and_referenceable_without_revisions(tmp_path
 
 def test_hollow_solid_is_one_body_with_inner_faces(tmp_path):
  s=ProjectService(tmp_path);r=s.build('import build123d as b\ndef build(params):\n return {"shell":b.Box(20,20,20)-b.Box(10,10,10)}',{});result=bodies(s,r);assert len(result['bodies'])==1;assert len(result['bodies'][0]['face_refs'])==12;assert result['bodies'][0]['volume_mm3']==pytest.approx(7000)
+
+
+def test_selected_part_body_inspection_ignores_unrelated_ambiguous_solids(tmp_path):
+ s=ProjectService(tmp_path);r=s.build('import build123d as b\ndef build(params):\n return {"good":b.Pos(30,0,0)*b.Box(10,10,10),"ambiguous":b.Compound(children=[b.Box(10,10,10),b.Box(10,10,10)])}',{})
+ result=bodies(s,r,'good');assert len(result['bodies'])==1;assert result['bodies'][0]['part_id']=='good'

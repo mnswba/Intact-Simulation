@@ -65,3 +65,7 @@ backend/.state/
 *.deb
 *.zip
 .openai/
+
+# Local PicoGK bridge build outputs
+backend/picogk/bin/
+backend/picogk/obj/

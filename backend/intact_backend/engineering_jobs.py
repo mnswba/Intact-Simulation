@@ -3,7 +3,7 @@
 import argparse,json,os,re,signal,subprocess,sys,threading,time,uuid
 from pathlib import Path
 from .projects import ProjectService,atomic_json
-OPS={'motion','adaptive','simulate','optimize','convert','manufacture','drawing','freeform','sheet','lattice','hybrid','assembly','reconstruct'}
+OPS={'adaptive','simulate','optimize','convert','manufacture','drawing','freeform','sheet','lattice','hybrid','assembly','reconstruct'}
 def update(projects,key,**fields):
  import fcntl
  p=path(projects,key)
@@ -56,10 +56,10 @@ def run(projects,key):
  try:
   update(projects,key,status='running',progress='Running isolated '+r['operation']);a=Advanced(projects);op=r['operation'];settings=r['settings'];model_id=r['model_id']
   if json.loads(p.read_text()).get('cancel_requested'):cancel_event.set();raise ValueError('Job cancelled before execution.')
-  if op in ('motion','simulate','optimize','hybrid','assembly','manufacture','drawing','convert') and not model_id:raise ValueError('This operation requires model_id.')
+  if op in ('simulate','optimize','hybrid','assembly','manufacture','drawing','convert') and not model_id:raise ValueError('This operation requires model_id.')
   if model_id and projects.load(model_id)['spec']['revision']!=r['input_revision']:raise ValueError('The model changed while this job was queued.')
   if op in ('hybrid','assembly'):result=getattr(a,op)(model_id,settings,expected_revision=r['input_revision'],cancel=cancel_event)
-  elif op in ('motion','simulate','optimize','manufacture'):result=getattr(a,op)(model_id,settings,cancel=cancel_event)
+  elif op in ('simulate','optimize','manufacture'):result=getattr(a,op)(model_id,settings,cancel=cancel_event)
   elif op in ('adaptive','lattice','freeform','sheet','reconstruct'):result=getattr(a,op)(settings,cancel=cancel_event)
   elif op=='convert':result=a.convert(model_id,settings.get('maximum_faces',4000),cancel_event)
   elif op=='drawing':result=a.drawing(model_id,settings['part_id'],settings.get('title','Engineering drawing'),settings.get('tolerance_note',''),cancel_event)

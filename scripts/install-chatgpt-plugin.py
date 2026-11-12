@@ -8,6 +8,7 @@ from pathlib import Path
 
 repo=Path(__file__).resolve().parents[1]
 parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--with-picogk',action='store_true',help='Install the optional pinned PicoGK Linux TPMS bridge')
 parser.add_argument('--windows-home',type=Path)
 parser.add_argument('--distro',default=os.environ.get('WSL_DISTRO_NAME','Ubuntu-22.04'))
 args=parser.parse_args()
@@ -22,11 +23,12 @@ shutil.copy2(repo/'plugin/skills/intact-cad/references/structured-modeling.md',r
 shutil.copy2(repo/'plugin/skills/intact-cad/references/priority23.md',runtime/'priority23.md')
 for filename in ('pyproject.toml','uv.lock'):shutil.copy2(repo/'backend'/filename,runtime/filename)
 shutil.copytree(repo/'backend/intact_backend',runtime/'intact_backend',dirs_exist_ok=True,ignore=shutil.ignore_patterns('__pycache__'))
-for obsolete in ('agent.py','codex_transport.py','model_connection.py','edit_jobs.py'):
+for obsolete in ('agent.py','codex_transport.py','model_connection.py','edit_jobs.py','motion_worker.py'):
     (runtime/'intact_backend'/obsolete).unlink(missing_ok=True)
     for cached in (runtime/'intact_backend/__pycache__').glob(obsolete[:-3]+'.*.pyc'):cached.unlink()
 subprocess.run([uv,'sync','--project',str(runtime),'--extra','cad','--frozen'],check=True)
 runtime_python=str(runtime/'.venv/bin/python')
+if args.with_picogk:subprocess.run([sys.executable,str(repo/'scripts/install-picogk.py')],check=True)
 subprocess.run([sys.executable,str(repo/'scripts/install-engineering-runtime.py')],check=True)
 subprocess.run([runtime_python,str(repo/'scripts/install-project-tools.py')],check=True)
 subprocess.run([runtime_python,'-m','playwright','install','chromium'],check=True)

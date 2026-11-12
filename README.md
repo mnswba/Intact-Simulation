@@ -43,16 +43,16 @@ This installs a local development plugin. Publishing this repository does not li
 | Verification | Native validity, saved dimension/hole/placement/clearance checks, requested tolerance and mesh convergence reports |
 | Lattices | Six sampled TPMS families, distance offsets, envelopes, mesh booleans and hybrid geometry |
 | Engineering | AI tools for bounded joints, reconstruction, manufacturing screening, reference drawings and background jobs; Design stays focused; simulation jobs appear in Simulation |
-| Simulation | Separate Virtual and Mechanical workspaces: rigid-body motors/contact or prescribed gait previews; 3D thermal, static stress and creeping-flow Stokes, face-based boundaries, colored fields, playback and CSV/VTU/rig downloads |
+| Simulation | Separate Virtual and Mechanical workspaces: kinematic driving, walking and machine previews; 3D thermal, static stress and creeping-flow Stokes, AI-prepared face conditions, automatic mesh sizing, colored fields, playback and CSV/VTU downloads |
 | Exports | STEP, ASCII/binary STL, GLB, 3MF, Python, project JSON, binary USD and text USDA; Project adds annotated PNG, PPTX, BOM CSV, 2D DXF/DWG and conditional FCStd/source STEP |
 
-Version **0.14.1** exposes **56 MCP tools**. See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
+Version **0.15.0** exposes **57 MCP tools**. See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
 
-The **Tutorial** button next to Settings includes 119 searchable help topics and an optional guided tour. Each topic explains a control, its purpose and usage steps. Use the mouse wheel for zoom and **Zoom to fit** beside Grid.
+The **Tutorial** button next to Settings includes searchable help topics and an optional guided tour. Each topic explains a control, its purpose and usage steps. Use the mouse wheel for zoom and **Zoom to fit** beside Grid.
 
 ![Viewer with the guided tutorial and export formats](docs/images/tutorial.png)
 
-See [Simulation workspace instructions and limits](docs/SIMULATION_0_14.md) and [verification results](docs/SIMULATION_0_14_AUDIT.md). The complete v0.13 Design workspace remains available under **Design**. [v0.14.1 viewer changes](docs/VIEWER_0_14_1.md) add body selection, multi-click selection, XYZ orientation and a compact Simulation setup.
+See [v0.15 workflow and verification](docs/RELEASE_0_15.md) and [Simulation instructions](docs/simulation.md) and [verification results](docs/SIMULATION_0_14_AUDIT.md). The complete v0.13 Design workspace remains available under **Design**. [v0.15 changes](docs/RELEASE_0_15.md) add native click gestures, fullscreen presentation, AI-driven analysis, kinematic previews and optional PicoGK TPMS.
 
 ## Example workflows
 
@@ -138,3 +138,5 @@ Private projects and runtime state are stored outside this repository. Example e
 ## License
 
 Original Intact source is provided under [Apache-2.0](LICENSE), with existing third-party notices preserved. Dependencies retain their own licenses, including FreeCAD/OCCT and GPL-licensed Gmsh. See [third-party notices](THIRD_PARTY_NOTICES.md). No upstream CAD engines or downloaded runtime binaries are bundled in this repository.
+
+Optional PicoGK voxel TPMS: `python3 scripts/install-picogk.py` (or add `--with-picogk` to the plugin installer). Uses the pinned official 2.4.0-alpha04 Linux prerelease and .NET 9; returns mesh geometry, not smooth STEP. Existing TPMS tools remain available.
