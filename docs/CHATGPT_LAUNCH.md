@@ -1,8 +1,14 @@
 # Publishing Intact Simulation to ChatGPT
 
-Checked against OpenAI documentation on 12 November 2026. Product: **Intact Simulation**, plugin ID `intact-simulation`, release **0.16.0**. Publisher account/repository: `mnswba`. The public directory displays the developer identity verified in the submission account, not an identity established by this source code.
+Checked against OpenAI documentation on 12 November 2026. Product: **Intact Simulation**, plugin ID `intact-simulation`, release **0.16.1**. Publisher account/repository: `mnswba`. The public directory displays the developer identity verified in the submission account, not an identity established by this source code.
 
 **The local development installation is not a public listing.** This release fixes the Ask AI submission flow and structural-analysis workflow. Public approval, publisher verification and a distributable clean-machine runtime remain separate launch work. Do not upload your private project directory, installed client profile or credentials.
+
+## Can an individual engineer publish?
+
+Yes. OpenAI supports individual identity verification and publication under your verified personal name; a registered company is not required for that route. Product name and publisher identity are different: the product may be Intact Simulation while its publisher is your verified name. GitHub ownership is not identity verification, account eligibility or directory approval. [Individual verification](https://developers.openai.com/plugins/deploy/submission).
+
+The current local MCP edition also needs OpenAI partner approval and organization allowlisting. We have not established that this account has either. You may share the source and installation instructions on GitHub independently; directory listing remains a separate review. A hosted HTTPS edition is another development/deployment option, with identity verification, authentication, hosting and review requirements of its own. No hosted edition has been deployed by this repository update. [Local submission eligibility](https://developers.openai.com/plugins/deploy/desktop-only).
 
 ## Choose the correct route
 

@@ -1,6 +1,6 @@
 [project]
 name = "intact-simulation-backend"
-version = "0.16.0"
+version = "0.16.1"
 description = "ChatGPT CAD tools, validated solids and implicit TPMS lattices for Intact Simulation"
 requires-python = ">=3.12,<3.14"
 dependencies = [

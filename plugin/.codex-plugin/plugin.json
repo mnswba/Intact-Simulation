@@ -1,6 +1,6 @@
 {
   "name": "intact-simulation",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "description": "ChatGPT CAD with constrained sketches, explicit feature history, design verification, stable references and TPMS.",
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
@@ -20,8 +20,8 @@
       "Create a six-hole pipe flange with an 80 mm outer diameter and a 24 mm bore.",
       "Design a two-part electronics enclosure and show an exploded view."
     ],
-    "logo": "./assets/logo.svg",
-    "composerIcon": "./assets/logo.svg"
+    "logo": "./assets/logo.png",
+    "composerIcon": "./assets/logo.png"
   },
   "requires_local_executor": true
 }
