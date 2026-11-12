@@ -1,6 +1,10 @@
 import {settings} from './settings.mjs';
 const topic=(id,target,name,definition,...how)=>({id,target,name,definition,how});
 export const topics=[
+ topic('ai-view','#toggle-edit','AI viewer control','Ask AI to change section planes, projection, visibility, colors or explosion without rebuilding CAD.','Describe the display change, for example: Show a Z section at 50% and hide the lid.','The AI uses control_view with the current view revision; the Design viewer refreshes automatically.'),
+ topic('ai-preview','#toggle-edit','Preview parameter changes','Try candidate dimensions in a temporary sandbox rebuild before changing saved geometry.','Ask AI: Preview length = width * 3 and report the actual dimensions and volume without committing.','Review the preview, then explicitly ask AI to apply the change. The preview adds no CAD revision or retained model files.'),
+ topic('ai-configurations','#toggle-edit','Named parameter configurations','Save and restore named numeric parameter sets for the current model.','Ask AI: Save length = width * 3 as Long. Then ask it to list saved configurations.','Ask AI to apply Long to the current revision. A successful rebuild creates one CAD revision; failures preserve the previous model.'),
+
  topic('commands','#command-palette','Commands and saved views','Search common viewer operations and bookmark camera, section and visibility settings.','Press Ctrl/Cmd+K, search a command and run it.','Enter a view name and Save current view; select its name to restore. Saved views preserve CAD revisions and refuse changed geometry.'),
  ...[
  ['workspace','Design / Simulation','Switch between preserved CAD design and separate simulation studies.','Click Simulation to configure a study; click Design to restore your design display.'],
@@ -31,7 +35,7 @@ export const topics=[
  topic('explode','#explode','Exploded view','Separate components visually while preserving their saved assembly placement.','Move the Exploded view slider to separate parts.','Return it to zero to reassemble; exports use the saved assembled geometry.'),
  topic('names','#add-names','Add name / Hide names','Component labels with leader lines that follow displayed part positions.','Click Add name, then adjust the exploded view.','Click Hide names to remove the labels.'),
  topic('reset','#reset','Reset view','Restore the usual uncut, assembled display.','Click Reset view to remove sectioning and explosion and show parts.','Use Zoom to fit to frame the currently displayed geometry.'),
- topic('parameters','#parameter-form','Parameters (mm)','Editable saved CAD parameters; length values are in millimeters.','Expand Parameters (mm), change a numeric value and click Rebuild model.','Counts, ratios and named angles retain their own units; a failed build preserves the saved model.'),
+ topic('parameters','#parameter-form','Parameters (mm)','Editable saved CAD parameters; length values are in millimeters.','Expand Parameters (mm), enter a number or an expression such as width / 2, and click Rebuild model.','Expressions use existing parameter names, parentheses and + - * /; they resolve for this edit rather than remaining constraints. Counts and angles retain their own units; failed builds preserve saved CAD.'),
  topic('history','#revisions','Revision history','Read-only previews of previous saved geometry.','Select a past revision to inspect it.','Use Restore only when you want that saved design to become current.'),
  topic('recent','#model-library','Current and recent models','The current model is pinned above the four most recently saved other models.','Expand Files & exports and choose a recent model.','Older models remain saved and can still be found through the AI tools.'),
  topic('import','#import-file','Import STEP assembly','Load a native STEP/STP part or assembly as a new saved project.','Choose a local STEP/STP file in Files & exports.','Inspect its imported components before requesting AI changes.'),
@@ -41,7 +45,7 @@ export const topics=[
  topic('projection','#projection','Perspective / Orthographic','Perspective shows depth foreshortening; orthographic uses parallel projection.','Open the projection menu and choose a projection type.','Use orthographic for comparing aligned dimensions and perspective for visual inspection.'),
  ...['top','bottom','front','back','left','right','iso'].map(view=>topic('view-'+view,`#projection-menu [data-view="${view}"]`,view==='iso'?'Isometric view':view[0].toUpperCase()+view.slice(1)+' view','A standard orthographic camera orientation.','Open the projection menu and select this view.','Use Zoom to fit if the model is outside the current frame.')),
  topic('cube','#view-cube','Orientation cube','Choose a viewing direction directly from the cube.','Click a face, edge or corner of the cube.','Camera changes do not rotate the saved CAD geometry.'),
- topic('ask','#toggle-edit','Ask AI','Send a selected-geometry question or edit request to your AI client.','Select geometry, open Ask AI and describe what you want.','Inside ChatGPT, review and send the annotation, then continue the conversation there.'),
+ topic('ask','#toggle-edit','Ask AI','Send a selected-geometry question or edit request to your AI client.','Select geometry, open Ask AI and describe what you want.','Click Ask AI to submit directly when the host supports it; otherwise a signed-in local AI task starts. Continue clarifications in ChatGPT or the viewer Reply field.'),
  topic('intent','#ai-intent','Change geometry / Read-only question','Choose whether the AI should edit CAD or only inspect it.','Choose Change geometry for an edit.','Choose Ask about geometry for measurements or explanations without design mutations.'),
  topic('description','#edit-prompt','Describe an edit or question','Your instruction is saved with the selected model, revision and references.','State the required change, dimensions and what should remain unchanged.','Click Ask AI; clarify ambiguous requirements in the conversation.'),
  topic('references','#reference-files','Reference images and sketch','Attach PNG/JPEG images and the annotated viewport to the request.','Expand References & sketch and choose reference images.','Keep Include annotated viewport enabled when your marks explain the request.'),
@@ -98,8 +102,9 @@ export const topics=[
  topic('ai-simulation','#toggle-edit','Supported engineering simulation','Run bounded steady conduction, linear elasticity or creeping-flow Stokes studies.','Describe the study, material properties, loads and boundary conditions.','Ask for mesh quality, assumptions and convergence evidence; use the AI conversation for saved results.'),
  topic('tutorial','#tutorial-toggle','Tutorial and guided-tour toggle','Use searchable help or a control-by-control tour.','Turn Guided tour on to highlight controls; turn it off to browse help without moving panels.','Search for a topic or use Previous/Next. Close Tutorial to restore the original panel layout.'),
 ];
-export function installTutorial({onRestore=()=>{}}={}){
+export function installTutorial({version='development',onRestore=()=>{}}={}){
  const $=selector=>document.querySelector(selector),panel=$('#tutorial-panel'),toggle=$('#tutorial-toggle'),jump=$('#tour-jump');let current=0,filtered=topics,saved=null,highlight=null;
+ $('#tutorial-version').textContent=`Intact Simulation v${version}`;panel.dataset.version=version;
  const panelIds=['navigator','settings-panel','quick-edit','drawing-tools','view-cube'];
  function removeHighlight(){highlight?.classList.remove('tour-target');highlight=null;}
  function snapshot(){return {details:[...document.querySelectorAll('details')].map(node=>[node,node.open]),scroll:panelIds.map(id=>[$('#'+id),$('#'+id).scrollTop]),panels:new Map(panelIds.map(id=>[id,$('#'+id).hidden]))};}

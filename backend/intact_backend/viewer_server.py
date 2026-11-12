@@ -8,7 +8,7 @@ from urllib.parse import urlsplit,parse_qs
 from urllib.request import urlopen
 from .projects import ProjectService, atomic_json, EXPORTS
 
-VERSION='0.17.0'
+VERSION='0.17.1'
 
 def registry(root):return Path(root)/'viewer-session.json'
 
