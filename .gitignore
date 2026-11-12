@@ -72,3 +72,6 @@ backend/picogk/obj/
 
 # Website thumbnails are published media; source catalog contains their URLs.
 website/site/demo/showcase-*.png
+
+# Local browser audit artifacts
+/qa/

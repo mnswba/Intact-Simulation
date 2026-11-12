@@ -5,6 +5,7 @@ from .spec import StrictModel
 
 class ViewSettings(StrictModel):
     model_config={**StrictModel.model_config,'allow_inf_nan':False}
+    edge_pick_radius:float=Field(default=16,ge=4,le=32)
     cut:Literal['none','x','y','z']='none'
     slice:float=Field(default=50,ge=0,le=100)
     flip:bool=False

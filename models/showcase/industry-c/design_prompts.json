@@ -1,0 +1,102 @@
+[
+  {
+    "slug": "ev-drive-axle",
+    "title": "Sectioned electric drive axle",
+    "category": "Mobility & transportation",
+    "design_prompt": "Design an original display-scale electric vehicle drive axle, 660 mm across, with a deliberately opened front half housing exposing a transverse electric motor and offset differential. Use an annular motor stator with copper winding bars, steel rotor and shaft, a bored differential carrier and orange service flange, two half shafts and joint bellows represented by stepped annular ribs. Add housing mounting feet with actual through bores, eight flange bolts and external cooling ribs. Separate named metal, copper, elastomer and orange service parts. Keep all native solids; this is a simplified explanatory concept, without detailed involute gearing or performance claims.",
+    "design_notes": "Front housing deliberately removed; windings and differential are visual abstractions, no tooth contact or electromagnetic analysis.",
+    "parameters": {
+      "scale": 1.0
+    }
+  },
+  {
+    "slug": "wishbone-suspension",
+    "title": "Double wishbone suspension corner",
+    "category": "Mobility & transportation",
+    "design_prompt": "Create an original exposed double wishbone suspension corner with a 360 mm tall outboard upright, two triangular tubular wishbones, bored inboard pivots and a tilted coil-over damper. Include upper and lower ball joint housings, an annular wheel hub with five genuine bolt bores, separate wheel studs, damper body and piston rod, and eight spaced coil-like spring rings. Show blue links, silver hub, dark pivots and a red spring. The spring uses individual annular rings as an explicit static simplification. Use native parts and realistic component proportions; no vehicle fitment or load claims.",
+    "design_notes": "Static spring rings approximate a helical spring; no steering sweep or chassis fitment verification.",
+    "parameters": {
+      "scale": 1.0
+    }
+  },
+  {
+    "slug": "ventilated-brake",
+    "title": "Ventilated brake and caliper study",
+    "category": "Mobility & transportation",
+    "design_prompt": "Build a native ventilated brake assembly displayed in slight axial separation so its internal vanes are visible. Use two 280 mm outer diameter drilled friction rings with 12 radial ventilation vanes between them, a central hat with five mounting bores, a bridge caliper with disc clearance, two separate friction pads and backing plates, two cylindrical pistons with bores, two retaining pins and visible fasteners. Use steel grey friction faces, dark iron hat, copper-brown pads and a coral red caliper. Disc perforations and hat bores must be actual cuts. This is an original visual engineering study without certification, friction or thermal performance claims.",
+    "design_notes": "Slightly separated disc faces expose ventilation; pad and caliper geometry simplified, no hydraulic seals or threads.",
+    "parameters": {
+      "scale": 1.0
+    }
+  },
+  {
+    "slug": "bicycle-mid-drive",
+    "title": "Electric bicycle mid-drive cutaway",
+    "category": "Mobility & transportation",
+    "design_prompt": "Design a compact original electric bicycle mid-drive display cutaway. Create a 180 by 130 mm open motor cradle, transverse motor stator and rotor, exposed copper bars, a reduction pulley pair joined by a simplified belt envelope, a perforated 160 mm chainring with eight radial windows, opposed crank arms and pedal axles. Add cooling ribs and four bored mounting lugs with steel bolts. Use teal housing, copper winding bars, satin metal chainring, dark belt and ochre cranks. Separate native components with stable descriptive IDs. Omit supplier-specific interfaces and exact belt teeth and clearly document static cutaway simplifications.",
+    "design_notes": "Belt runs and cranks simplified; no involute or sprocket tooth standard, electronics, bearings or frame fitment claim.",
+    "parameters": {
+      "scale": 1.0
+    }
+  },
+  {
+    "slug": "rail-bogie",
+    "title": "Compact rail bogie demonstrator",
+    "category": "Mobility & transportation",
+    "design_prompt": "Create an original compact rail bogie demonstrator, approximately 1500 by 1100 mm, with two wheelsets and four flanged steel wheels, a blue open rectangular frame with cross-members, four axle bearing boxes, four spring stacks using spaced annular rings, a central bored bolster and four brake shoes on hangers. Add visible suspension caps and axle shafts. Keep wheel flanges and wheel treads distinct native features, accurate symmetry and plausible assembly proportions. The rail bogie is a static visual simplification without railway gauge, brake, fatigue or standards compliance claims.",
+    "design_notes": "Four stacks use separated spring rings; simplified one-piece wheels and shoes; no gauge or service suitability asserted.",
+    "parameters": {
+      "scale": 1.0
+    }
+  },
+  {
+    "slug": "kinetic-facade",
+    "title": "Rotating louver facade module",
+    "category": "Architecture & consumer technology",
+    "design_prompt": "Create a 1200 by 1000 mm architectural kinetic facade mockup with an open perimeter frame, six individual vertical louver blades set at alternating angles, upper and lower pivot journals, a visible slotted actuator rail, a small actuator box, six linkage rods and corner mounting plates with real bolt bores. Louvers should have folded edge returns and a thin panel web rather than solid deep blocks. Use ivory blades, blue-grey frame and brass pivots and linkage. All components native and separately named; depict a fixed demonstration pose without wind, thermal or building-code claims.",
+    "design_notes": "Static alternating blade pose; actuator is a visual enclosure and linkage, with no collision or wind analysis.",
+    "parameters": {
+      "scale": 1.0
+    }
+  },
+  {
+    "slug": "modular-footbridge",
+    "title": "Modular pedestrian truss bridge",
+    "category": "Architecture & consumer technology",
+    "design_prompt": "Create an original 3000 mm long scale pedestrian footbridge module with two open Warren side trusses, deck cross-beams, eight separate walking panels with drainage slots, end bearing pads, transverse top ties and bored end connection plates. Use tubular-looking rectangular chords, cylindrical diagonal braces, timber-colored deck panels and silver gussets. Build real holes in end plates and slots in panels. Native named components with a clear walkable central deck and approximately 1100 mm side truss height. This is a display-scale conceptual module, no structural rating or code claims.",
+    "design_notes": "Scale demonstrator with solid chord simplifications and no structural, accessibility, connection or span certification.",
+    "parameters": {
+      "scale": 1.0
+    }
+  },
+  {
+    "slug": "camera-gimbal",
+    "title": "Three-axis compact camera gimbal",
+    "category": "Architecture & consumer technology",
+    "design_prompt": "Create an original three-axis tabletop camera gimbal with a bored mounting base, vertical yaw motor, offset roll motor and U-shaped tilt cradle carrying a compact camera. Include separate concentric motor caps, mounting holes, exposed mounting bolts, lens barrel with three rings and blue lens glass, camera shell with a rear screen, and vent cuts. Use black camera, teal motor housings, gold caps and silver cradle. Native solids and distinct descriptive part IDs; fixed pose only without motion range, balancing, optics or payload claims.",
+    "design_notes": "Static pose, generic motors and solid optical glass; no cables, optical prescription, balancing or motion envelope analysis.",
+    "parameters": {
+      "scale": 1.0
+    }
+  },
+  {
+    "slug": "cordless-tool",
+    "title": "Cordless driver cutaway",
+    "category": "Architecture & consumer technology",
+    "design_prompt": "Create an original cordless drill-driver cutaway about 260 mm tall with a half-open orange grip and motor shell, visible cylindrical electric motor, copper windings, planetary-style reduction carrier with four simplified bored planet discs, coaxial chuck and jaws. Include a detachable battery pack with six visible cylindrical cells, trigger, vent slots, belt clip and housing screws. Use orange polymer, dark grip and battery, copper motor elements and steel mechanisms. Keep native positive-volume components. This is a visual concept without exact tooth profiles, electrical specifications, torque or safety claims.",
+    "design_notes": "Half-open visual shell and simple planet discs omit gear teeth, cell wiring, threads and certified electrical or torque behavior.",
+    "parameters": {
+      "scale": 1.0
+    }
+  },
+  {
+    "slug": "desktop-printer",
+    "title": "Open-frame desktop additive machine",
+    "category": "Architecture & consumer technology",
+    "design_prompt": "Create an original 420 mm wide open-frame desktop additive manufacturing machine with four vertical columns, upper rails, a perforated heated bed, two horizontal guide rails and a cross carriage. Include a finned print head with visible heater block and conical nozzle, two lead screws represented by plain shafts with annular collars, four corner feet, belt runs, motor boxes, a side electronics enclosure with real ventilation slots and an overhead filament spool with bore and flanges. Use charcoal frame, turquoise carriage, copper heater and gold nozzle. Native named parts and fixed pose, no firmware, printing or precision claims.",
+    "design_notes": "Fixed printer pose; lead screws use plain shafts and collars, filament winding and complete motion hardware are simplified.",
+    "parameters": {
+      "scale": 1.0
+    }
+  }
+]

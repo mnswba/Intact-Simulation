@@ -38,9 +38,10 @@ class ProgramService:
                 for field in ('volume_mm3','surface_area_mm2'):
                     n=part.get(field)
                     if isinstance(n,bool) or not isinstance(n,(int,float)) or not math.isfinite(n) or n<=0:return None
-            names=('model.stl','mesh.json','topology.json','model.glb','model.3mf','program.py')
+            names=('audit.json','model.stl','mesh.json','topology.json','model.glb','model.3mf','program.py')
             if report.get('engine')!='implicit_mesh':names+=('model.step',)
             if report.get('asset_id'):names+=(report.get('asset_name','input.step'),)
+            if report.get('audit',{}).get('version')!=1 or report.get('audit',{}).get('status')!='passed':return None
             if report.get('valid') is not True or report.get('artifact_id')!=key:return None
             checksums=report.get('sha256',{})
             for name in names:
@@ -50,7 +51,7 @@ class ProgramService:
             return report
         except (OSError,ValueError,TypeError):return None
     def key(self,source:str,parameters:dict,asset_id=None,meshing=None)->str:
-        worker_signature=sha256(b''.join(Path(__file__).with_name(name).read_bytes() for name in ('program_worker.py','topology_worker.py','intact_lattice.py'))).hexdigest()
+        worker_signature=sha256(b''.join(Path(__file__).with_name(name).read_bytes() for name in ('program_worker.py','topology_worker.py','intact_lattice.py','geometry_audit_worker.py'))).hexdigest()
         data={'worker':5,'worker_signature':worker_signature,'asset_id':asset_id,'build123d':'0.13.0','source':source,'parameters':parameters}
         if meshing:data['meshing']=meshing
         return sha256(json.dumps(data,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -91,7 +92,7 @@ class ProgramService:
                 for path in dict.fromkeys(['/usr','/lib','/lib64',str(runtime),str(Path(sys.base_prefix)),str(Path(os.readlink(venv/'bin/python')).parent.parent),str(venv)]):command+=['--ro-bind',path,path]
                 if Path('/etc/ld.so.cache').exists():command+=['--ro-bind','/etc/ld.so.cache','/etc/ld.so.cache']
                 command+=['--proc','/proc','--dev','/dev','--tmpfs','/tmp','--dir','/home/cad','--ro-bind',str(input_dir),'/input','--ro-bind',str(worker),'/worker.py','--ro-bind',str(worker.with_name('topology_worker.py')),'/topology_worker.py','--bind',str(output_dir),'/work','--chdir','/work']
-                command+=['--ro-bind',str(worker.with_name('intact_lattice.py')),'/intact_lattice.py']
+                command+=['--ro-bind',str(worker.with_name('intact_lattice.py')),'/intact_lattice.py','--ro-bind',str(worker.with_name('geometry_audit_worker.py')),'/geometry_audit_worker.py']
                 for name,value in {'PATH':'/usr/bin:/bin','HOME':'/home/cad','PYTHONNOUSERSITE':'1','PYTHONDONTWRITEBYTECODE':'1','OPENBLAS_NUM_THREADS':'1','OMP_NUM_THREADS':'1','MKL_NUM_THREADS':'1','PYTHONUNBUFFERED':'1'}.items():command+=['--setenv',name,value]
                 command += [str(venv/'bin/python'),'/worker.py']
                 log=folder/'worker.log'
@@ -111,7 +112,7 @@ class ProgramService:
                     raise ProgramBuildError('CAD program failed validation: '+detail[-3500:])
                 if not (output_dir/'manifest.json').is_file():raise ProgramBuildError('Worker output manifest is missing.')
                 report=json.loads((output_dir/'manifest.json').read_text())
-                expected=('manifest.json','model.stl','mesh.json','topology.json','model.glb','model.3mf')
+                expected=('audit.json','manifest.json','model.stl','mesh.json','topology.json','model.glb','model.3mf')
                 if report.get('engine')!='implicit_mesh':expected+=('model.step',)
                 for filename in expected:
                     path=output_dir/filename

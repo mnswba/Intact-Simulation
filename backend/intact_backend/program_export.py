@@ -26,7 +26,9 @@ input_shape = _input
     if imported=='stl':prefix='import trimesh\nfrom pathlib import Path\nfrom intact_lattice import MeshPart\ninput_mesh = MeshPart(trimesh.load(Path(__file__).with_name("input.stl"), force="mesh", process=True))\n'
     linear=(meshing or {}).get('linear_deflection_mm',.001)
     angular=(meshing or {}).get('angular_deflection_rad',.1)
-    result=lattice_bootstrap+prefix+source+'\n\n'+'''# Requires build123d 0.13; TPMS also requires trimesh and scikit-image.
+    audit_helper=Path(__file__).with_name('geometry_audit_worker.py').read_text()
+    audit_bootstrap='import sys as _audit_sys, types as _audit_types\n_audit_module = _audit_types.ModuleType("geometry_audit_worker")\nexec('+repr(audit_helper)+', _audit_module.__dict__)\n_audit_sys.modules["geometry_audit_worker"] = _audit_module\n'
+    result=audit_bootstrap+lattice_bootstrap+prefix+source+'\n\n'+'''# Requires build123d 0.13; TPMS also requires trimesh and scikit-image.
 if __name__ == "__main__":
     import build123d as bd
     from copy import deepcopy
@@ -52,6 +54,8 @@ if __name__ == "__main__":
     else:
         result.label = "model"
         shapes = [result]
+    from geometry_audit_worker import audit_native as _intact_audit_native
+    shapes = [_intact_audit_native(shape, shape.label)[0] if isinstance(shape, bd.Shape) else shape for shape in shapes]
     saved_colors = '''+repr(colors or {})+'''
     if "intact_lattice" in sys.modules and any(isinstance(shape, sys.modules["intact_lattice"].MeshPart) for shape in shapes):
         from intact_lattice import MeshPart, write_mesh_exports

@@ -128,11 +128,19 @@ class Advanced:
   if (s.max_displacement_mm is not None or s.max_temperature_k is not None) and s.simulation is None:raise ValueError('Physics constraints require a simulation definition.')
   if s.objective=='minimum_pressure_resistance' and s.simulation.kind!='stokes':raise ValueError('Pressure resistance needs Stokes settings.')
   if s.objective=='minimum_thermal_peak' and s.simulation.kind!='thermal' or s.objective=='minimum_displacement' and s.simulation.kind!='structural':raise ValueError('Objective and physics type do not match.')
-  base=r['spec']['program'];portable=self.projects.portable(key);file=self.root/(uuid.uuid4().hex+'.json');atomic_json(file,portable)
+  base=r['spec']['program']
+  if s.parameter not in base['parameters']:raise ValueError('Unknown optimization parameter.')
+  portable=self.projects.portable(key);file=self.root/(uuid.uuid4().hex+'.json');atomic_json(file,portable)
   try:
    for value in s.values:
     if cancel and cancel.is_set():raise ValueError('Optimization cancelled; original model preserved.')
-    clone=self.projects.import_project(file);candidate=self.projects.parameters(clone['model_id'],{s.parameter:value},cancel_event=cancel);volume=sum(p['volume_mm3'] for p in candidate['geometry']['parts']);entry={'model_id':candidate['model_id'],'parameter_value':value,'volume_mm3':volume,'feasible':True};score=volume
+    clone=self.projects.import_project(file)
+    try:candidate=self.projects.parameters(clone['model_id'],{s.parameter:value},cancel_event=cancel)
+    except ValueError as exc:
+     self.projects.path(clone['model_id']).unlink(missing_ok=True);shutil.rmtree(self.projects.models/clone['model_id'],ignore_errors=True)
+     if cancel and cancel.is_set():raise
+     candidates.append({'model_id':None,'parameter_value':value,'volume_mm3':None,'objective_value':None,'feasible':False,'rejection':str(exc)[:2500]});continue
+    volume=sum(p['volume_mm3'] for p in candidate['geometry']['parts']);entry={'model_id':candidate['model_id'],'parameter_value':value,'volume_mm3':volume,'feasible':True};score=volume
     if candidate.get('engineering',{}).get('requirements',{}).get('checks'):
      from .design_checks import verify_design
      entry['feasible']=verify_design(self.projects,candidate['model_id'])['passed']

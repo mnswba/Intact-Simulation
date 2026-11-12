@@ -8,7 +8,7 @@ from urllib.parse import urlsplit,parse_qs
 from urllib.request import urlopen
 from .projects import ProjectService, atomic_json, EXPORTS
 
-VERSION='0.17.1'
+VERSION='0.18.0'
 
 def registry(root):return Path(root)/'viewer-session.json'
 
@@ -85,6 +85,9 @@ class ViewerHandler(BaseHTTPRequestHandler):
             if kind in ('view','viewer.js'):
                 file=Path(__file__).with_name('viewer.html' if kind=='view' else kind)
                 return self.send(200,file.read_bytes(),'text/html; charset=utf-8' if kind=='view' else 'text/javascript')
+            if kind=='audit.json':
+                from .geometry_audit import audit_model
+                return self.send(200,{**record['geometry']['audit'],'model_id':key,'revision':record['spec']['revision'],'historical':True} if revision is not None else audit_model(self.projects,key,False),filename='geometry-audit.json')
             if kind=='project-file':
                 from .project_exports import read_file
                 query=parse_qs(urlsplit(self.path).query);filename=query.get('file',[''])[0]

@@ -1,0 +1,122 @@
+[
+  {
+    "slug": "tidal-plate-exchanger",
+    "title": "Tidal Plate Exchanger Skid",
+    "category": "Energy & infrastructure",
+    "industry": "Energy & infrastructure",
+    "summary": "Design an original compact plate heat exchanger on a blue twin-rail skid, with a tall rectangular stack of eighteen individually spaced stainless plates, gold tie rods, drilled end frames, four annular side pipe connections, support feet, visible fasteners and a small pressure gauge.",
+    "design_notes": "Plate and nozzle geometry is illustrative; flow channels and pressure ratings are not specified.",
+    "design_prompt": "Design an original compact plate heat exchanger on a blue twin-rail skid, with a tall rectangular stack of eighteen individually spaced stainless plates, gold tie rods, drilled end frames, four annular side pipe connections, support feet, visible fasteners and a small pressure gauge. Expose the plate edges and contrasting gasket strips so the flow equipment reads clearly from a three-quarter view. Use native solids with stable component names; this is a layout concept with assumed interfaces.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    }
+  },
+  {
+    "slug": "estuary-axial-turbine",
+    "title": "Estuary Axial Turbine Cutaway",
+    "category": "Energy & infrastructure",
+    "industry": "Energy & infrastructure",
+    "summary": "Design an original horizontal axial hydraulic turbine cutaway with a half-open cylindrical blue casing, inlet and outlet flange rings with bolt holes, a central gold shaft and tapered hub, six pitched broad rotor blades, six stationary guide vanes, two bearing pedestals on a ribbed foundation, fasteners and a generator coupling.",
+    "design_notes": "The blade solids are pitched plates, not a calculated hydrofoil; casing is intentionally sectioned.",
+    "design_prompt": "Design an original horizontal axial hydraulic turbine cutaway with a half-open cylindrical blue casing, inlet and outlet flange rings with bolt holes, a central gold shaft and tapered hub, six pitched broad rotor blades, six stationary guide vanes, two bearing pedestals on a ribbed foundation, fasteners and a generator coupling. Reveal the impeller through the missing front half of the casing. Native solids only, with illustrative blade pitch and no hydraulic performance claim.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    }
+  },
+  {
+    "slug": "solstice-tracker",
+    "title": "Solstice Solar Tracking Mechanism",
+    "category": "Energy & infrastructure",
+    "industry": "Energy & infrastructure",
+    "summary": "Design an original dual-axis solar tracker demonstrator with a perforated square ground plate, cylindrical mast, azimuth slewing rings, fork yoke, tilted rectangular solar panel frame subdivided into twelve dark photovoltaic tiles, rear support beams, elevation trunnions and a gold linear actuator.",
+    "design_notes": "Panel and actuator are static layout studies; electrical and tracking systems are not simulated.",
+    "design_prompt": "Design an original dual-axis solar tracker demonstrator with a perforated square ground plate, cylindrical mast, azimuth slewing rings, fork yoke, tilted rectangular solar panel frame subdivided into twelve dark photovoltaic tiles, rear support beams, elevation trunnions and a gold linear actuator. Include realistic mounting holes, separate bearing caps, a small vented control enclosure and fasteners. Keep the tilted panel visibly attached to its supporting mechanism.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    }
+  },
+  {
+    "slug": "ionforge-electrolyzer",
+    "title": "Ionforge Electrolyzer Stack",
+    "category": "Energy & infrastructure",
+    "industry": "Energy & infrastructure",
+    "summary": "Design an original electrolyzer module on a dark support tray, with sixteen closely spaced square cell plates alternating teal and silver, gold compression rods through four corners, thick drilled endplates, two colored header manifolds, four open-bore service fittings, insulated terminal blocks and raised copper busbars.",
+    "design_notes": "Repeated cell plates illustrate stack architecture, not membranes or a validated electrochemical system.",
+    "design_prompt": "Design an original electrolyzer module on a dark support tray, with sixteen closely spaced square cell plates alternating teal and silver, gold compression rods through four corners, thick drilled endplates, two colored header manifolds, four open-bore service fittings, insulated terminal blocks and raised copper busbars. Add distinct feet, tie-rod nuts and a safety terminal shield arranged to leave the layered stack visible. Assume concept dimensions without pressure or electrochemical certification.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    }
+  },
+  {
+    "slug": "sentinel-valve-actuator",
+    "title": "Sentinel Utility Valve Actuator",
+    "category": "Energy & infrastructure",
+    "industry": "Energy & infrastructure",
+    "summary": "Design an original motorized utility valve cutaway on an anchor base with a horizontal open-bore flanged valve body, a partially exposed brass valve disc and vertical stem, a ribbed actuator gearbox with its front half removed, visible worm-like shaft collars and bronze sector wheel, a side motor with cooling ribs, manual override handwheel, mounting bolts and a red position indicator.",
+    "design_notes": "Worm collars and sector teeth show arrangement only, not conjugate or manufacturable gear profiles.",
+    "design_prompt": "Design an original motorized utility valve cutaway on an anchor base with a horizontal open-bore flanged valve body, a partially exposed brass valve disc and vertical stem, a ribbed actuator gearbox with its front half removed, visible worm-like shaft collars and bronze sector wheel, a side motor with cooling ribs, manual override handwheel, mounting bolts and a red position indicator. Include circular flange bolt patterns and a sectioned housing that reveals the mechanism. Gear forms are explicitly illustrative.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    }
+  },
+  {
+    "slug": "prism-inspection-conveyor",
+    "title": "Prism Conveyor Inspection Station",
+    "category": "Industrial automation",
+    "industry": "Industrial automation",
+    "summary": "Design an original tabletop conveyor inspection station with two blue side rails, exposed end rollers, a dark endless belt represented by a thin solid loop, four adjustable legs and leveling pads, a tall overhead camera bridge, camera lens barrel, gold illumination bars and a side sensor bracket.",
+    "design_notes": "Closed native belt loop wraps the end rollers; no motion or inspection accuracy claim.",
+    "design_prompt": "Design an original tabletop conveyor inspection station with two blue side rails, exposed end rollers, a dark endless belt represented by a thin solid loop, four adjustable legs and leveling pads, a tall overhead camera bridge, camera lens barrel, gold illumination bars and a side sensor bracket. Show a small silver sample carrier on the belt, a finned drive motor and a vented control box. Use detailed native solids and stable named components with assumed interfaces.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    }
+  },
+  {
+    "slug": "vector-ballscrew-stage",
+    "title": "Vector Ball Screw Linear Stage",
+    "category": "Industrial automation",
+    "industry": "Industrial automation",
+    "summary": "Design an original precision linear stage with a drilled aluminum base, two dark profiled guide rails, four blue bearing blocks, central gold screw shaft with closely spaced collar rings suggesting thread, end bearing supports, a carriage plate with a grid of mounting bores, a compact side-coupled motor and a raised cable chain represented by individual links.",
+    "design_notes": "Collar rings represent screw detail; this is not an actual helical raceway or accuracy-certified linear axis.",
+    "design_prompt": "Design an original precision linear stage with a drilled aluminum base, two dark profiled guide rails, four blue bearing blocks, central gold screw shaft with closely spaced collar rings suggesting thread, end bearing supports, a carriage plate with a grid of mounting bores, a compact side-coupled motor and a raised cable chain represented by individual links. Expose the screw beneath the carriage and show mounting fasteners. Thread and ball circulation are visual concepts only.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    }
+  },
+  {
+    "slug": "orbit-cycloidal-reducer",
+    "title": "Orbit Cycloidal Reducer Concept",
+    "category": "Industrial automation",
+    "industry": "Industrial automation",
+    "summary": "Design an original open cycloidal reducer concept with a blue cylindrical lower housing and sectioned upper rim, twelve separate perimeter roller pins, a silver eccentric lobed disc, three open relief bores, a gold offset input bearing, central input shaft, six output pins and a raised output carrier with six radial arms.",
+    "design_notes": "Disc lobes are illustrative polygons, not conjugate cycloidal gearing; no reduction ratio or load rating is claimed.",
+    "design_prompt": "Design an original open cycloidal reducer concept with a blue cylindrical lower housing and sectioned upper rim, twelve separate perimeter roller pins, a silver eccentric lobed disc, three open relief bores, a gold offset input bearing, central input shaft, six output pins and a raised output carrier with six radial arms. Add a drilled mounting flange and separate gold fasteners. Use a deliberately illustrative eight-lobed rounded polygon disc and explicitly avoid claiming a conjugate cycloidal gear profile.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    }
+  },
+  {
+    "slug": "swift-pneumatic-gantry",
+    "title": "Swift Pneumatic Pick and Place Gantry",
+    "category": "Industrial automation",
+    "industry": "Industrial automation",
+    "summary": "Design an original pneumatic pick-and-place gantry with a broad mounting base, two tall columns and a blue overhead crossbeam, two polished horizontal guide rods, a gold pneumatic cylinder barrel and exposed piston rod, central sliding carriage, vertical twin-rod actuator, red two-finger gripper holding a small sample block, air fittings, limit sensors and anchor fasteners.",
+    "design_notes": "Static demonstration pose; pneumatic circuits and dynamic collision envelopes are not validated.",
+    "design_prompt": "Design an original pneumatic pick-and-place gantry with a broad mounting base, two tall columns and a blue overhead crossbeam, two polished horizontal guide rods, a gold pneumatic cylinder barrel and exposed piston rod, central sliding carriage, vertical twin-rod actuator, red two-finger gripper holding a small sample block, air fittings, limit sensors and anchor fasteners. Include bores in bearing blocks and realistic open frame space to make the mechanism readable.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    }
+  },
+  {
+    "slug": "meridian-indexing-fixture",
+    "title": "Meridian Rotary Indexing Fixture",
+    "category": "Industrial automation",
+    "industry": "Industrial automation",
+    "summary": "Design an original six-station rotary indexing work fixture with a drilled baseplate, ribbed blue pedestal, circular table with six evenly spaced socket nests, separate gold clamp levers, polished locator pins, a central open-bore hub and a raised inspection workpiece at one station.",
+    "design_notes": "Fixture geometry and station pattern are conceptual; clamp force and indexing performance are not certified.",
+    "design_prompt": "Design an original six-station rotary indexing work fixture with a drilled baseplate, ribbed blue pedestal, circular table with six evenly spaced socket nests, separate gold clamp levers, polished locator pins, a central open-bore hub and a raised inspection workpiece at one station. Expose a side drive motor with cooling ribs and coupling guard, add an annular angle scale segmented into twelve ticks and mounting bolts. The fixture should read as practical production automation without claiming positioning accuracy.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    }
+  }
+]

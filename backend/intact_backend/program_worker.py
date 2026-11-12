@@ -17,6 +17,7 @@ import build123d as bd
 import numpy as np
 from topology_worker import inspect_part, imported_parts
 from intact_lattice import MeshPart,write_mesh_exports
+from geometry_audit_worker import audit_native,verify_exports,AUDIT_VERSION
 
 _REAL_IMPORT=__import__
 def cad_import(name,globals=None,locals=None,fromlist=(),level=0):
@@ -43,7 +44,7 @@ def main():
     if isinstance(output,(bd.Shape,MeshPart)):output={'model':output}
     if isinstance(output,(list,tuple)):output={f'part_{i+1}':shape for i,shape in enumerate(output)}
     if not isinstance(output,dict) or not 1<=len(output)<=128:raise ValueError('build(params) must return a shape or a dictionary of 1–128 named shapes.')
-    parts=[];meshes=[];topology=[];assembly=[];mesh_exports=[];total_vertices=0;total_triangles=0
+    audit_parts=[];parts=[];meshes=[];topology=[];assembly=[];mesh_exports=[];total_vertices=0;total_triangles=0
     mesh_mode=any(isinstance(s,MeshPart) for s in output.values())
     for name,shape in output.items():
         if not isinstance(name,str) or not re.fullmatch('[a-z][a-z0-9_]{0,47}',name):raise ValueError('Part IDs must start with a lowercase letter, contain only lowercase letters, numbers or underscores, and be at most 48 characters; for example mounting_flange.')
@@ -59,12 +60,13 @@ def main():
             part={'id':name,'name':name.replace('_',' ').capitalize(),'template':'custom','engine':'implicit_mesh','enabled':True,'material':'aluminum','color':'#6287bc','params':dict(length=float(size[0]),width=float(size[1]),height=float(size[2])),'position':origin.tolist()}
             entry={'part':part,'valid':True,'solid_count':count,'volume_mm3':float(m.volume),'surface_area_mm2':float(m.area),'face_count':len(m.faces),'provenance':'validated triangle mesh','watertight':True,'lattice':shape.metadata}
             if 'relative_density' in shape.metadata:entry['relative_density']=shape.metadata['relative_density']
+            audit_parts.append({'part_id':name,'status':'passed','checks':['finite mesh coordinates','watertight','consistent winding','positive volume'],'repairs':[]})
             parts.append(entry);meshes.append({'id':name,'positions':positions,'indices':m.faces.ravel().tolist(),'face_groups':[]})
             topology.append({'id':name,'faces':[],'edges':[],'vertices':[],'provenance':'Mesh approximation; no native CAD faces or edges.'})
             mesh_exports.append((name,m,part['color']));total_vertices+=len(m.vertices);total_triangles+=len(m.faces)
             if total_vertices>750000 or total_triangles>1200000:raise ValueError('The combined preview mesh budget was exceeded.')
             continue
-        if not isinstance(shape,bd.Shape) or not shape.is_valid or not shape.solids():raise ValueError(f'{name}: return a valid B-rep solid, not a surface or sketch.')
+        shape,part_audit=audit_native(shape,name);audit_parts.append(part_audit)
         # Located copies may share a TopoDS TShape. Give STEP/XCAF independent
         # shape identities so naming/recoloring one occurrence cannot rename another.
         shape=deepcopy(shape)
@@ -96,9 +98,12 @@ def main():
         mesher=bd.Mesher();mesher.add_shape(assembly,linear_deflection=linear if linear is not None else .1,angular_deflection=angular);mesher.write(out/'model.3mf')
     (out/'topology.json').write_text(json.dumps({'version':1,'units':'mm','coordinate_system':'cad_z_up','provenance':'OpenCASCADE B-rep; references valid for this artifact only','parts':topology},separators=(',',':'),allow_nan=False))
     (out/'mesh.json').write_text(json.dumps({'version':1,'units':'mm','coordinate_system':'viewer_y_up','parts':meshes},separators=(',',':'),allow_nan=False))
-    artifacts={'stl':'model.stl','glb':'model.glb','3mf':'model.3mf','mesh':'mesh.json','source':'program.py','topology':'topology.json'}
+    export_checks=verify_exports(out,parts,mesh_mode)
+    audit={'version':AUDIT_VERSION,'status':'passed','stage':'before CAD revision commit and viewer display','parts':audit_parts,'export_checks':export_checks,'repairs_count':sum(len(p['repairs']) for p in audit_parts),'design_verification':'Not evaluated by geometry audit. Saved requirements are checked separately when present.','scope':'Geometry/topology and exported-file preservation only; not manufacturing or physical performance certification.'}
+    (out/'audit.json').write_text(json.dumps(audit,allow_nan=False))
+    artifacts={'audit':'audit.json','stl':'model.stl','glb':'model.glb','3mf':'model.3mf','mesh':'mesh.json','source':'program.py','topology':'topology.json'}
     if not mesh_mode:artifacts['step']='model.step'
-    (out/'manifest.json').write_text(json.dumps({'engine':'implicit_mesh' if mesh_mode else 'build123d','valid':True,'mode':'program','meshing':data.get('meshing'),'parts':parts,'vertices':total_vertices,'triangles':total_triangles,'artifacts':artifacts},allow_nan=False))
+    (out/'manifest.json').write_text(json.dumps({'engine':'implicit_mesh' if mesh_mode else 'build123d','valid':True,'audit':audit,'mode':'program','meshing':data.get('meshing'),'parts':parts,'vertices':total_vertices,'triangles':total_triangles,'artifacts':artifacts},allow_nan=False))
 
 if __name__=='__main__':
     try:main()

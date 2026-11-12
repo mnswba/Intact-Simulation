@@ -100,6 +100,9 @@ class IntactMCP:
         if name=='build_tpms':
             from .lattice_tools import build_tpms
             return self.result(build_tpms(self.projects,args,cancel_event))
+        if name=='audit_model':
+            from .geometry_audit import audit_model
+            return audit_model(self.projects,args['model_id'],args.get('verify_requirements',True))
         if name=='validate_model':
             from .validation import validate_model
             result=validate_model(self.projects,**args)
@@ -215,6 +218,10 @@ def create_server(engine:IntactMCP|None=None):
         """Create an editable, capped, watertight nodal TPMS lattice in mm. Six families; box, cylinder or sphere envelopes; sheet or solid mode; phase degrees and sheet gradient. Band is a dimensionless implicit field width, NOT constant wall thickness in mm. samples_per_cell 12–64; <=2.5M grid samples. Exports STL/GLB/3MF and standalone Python; exact STEP is unavailable. Report sampled volume, area, relative density and resolution. Existing model_id edits preserve revision guards. Verify with validate_model and snapshot_model."""
         args={k:v for k,v in locals().items() if k not in ('ctx','execute')}
         return await execute('build_tpms',args,ctx)
+    @server.tool(annotations=read)
+    async def audit_model(model_id:str,ctx:Context,verify_requirements:StrictBool=True)->dict[str,Any]:
+        """Read the mandatory pre-display geometry/export audit and optionally recheck current saved design requirements. Native builds attempt bounded kernel healing/orientation correction and reject unsafe changes before publication. Returns per-part checks, repairs and STEP export preservation. Failed known requirements block new builds; unsupported checks remain explicitly unverified. Does not certify manufacturing or physics. Use the scoped source-edit workflow to repair design-intent failures; never remove required features or relax criteria to pass."""
+        return await execute('audit_model',dict(model_id=model_id,verify_requirements=verify_requirements),ctx)
     @server.tool(annotations=read)
     def validate_model(model_id:str,expected_bounds:dict[str,dict[str,StrictFloat]]|None=None,expected_part_ids:list[str]|None=None,tolerance_mm:StrictFloat=.01)->dict[str,Any]:
         """Independently reopen actual STEP or STL, check validity, volume/area/labels and checksums, and compare requested per-part length/width/height in CAD XYZ mm. Return actual curved face radii/centers for hole checks. Supply expected dimensions from the user's brief, not copied measurements. A false passed result needs repair or disclosure. Does not certify manufacturing or engineering safety."""

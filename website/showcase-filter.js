@@ -37,6 +37,7 @@
         update();
         if (search) search.focus();
       }));
+      root.querySelectorAll('[data-copy-prompt]').forEach(button=>button.addEventListener('click',async()=>{const text=button.closest('.showcase-prompt').querySelector('[data-design-prompt]').textContent;try{await navigator.clipboard.writeText(text);button.textContent='Copied';}catch{button.textContent='Select the prompt text to copy';}}));
       update();
     });
   };

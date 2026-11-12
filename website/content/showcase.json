@@ -1,5 +1,1257 @@
 [
   {
+    "slug": "helios-survey-satellite",
+    "title": "Helios Survey Satellite",
+    "category": "Aerospace & marine",
+    "summary": "Deployed solar wings, thermal bus, optical payload and communications hardware.",
+    "design_notes": "Original deployed small-satellite concept. Cell segmentation and optical/communication hardware are schematic. No orbital, power, thermal, launch-load or optical analysis.",
+    "part_count": 41,
+    "dimensions_mm": [
+      448.0,
+      171.0,
+      203.0
+    ],
+    "volume_mm3": 2007942.4215210457,
+    "representation": "native",
+    "design_prompt": "Create a detailed original small Earth-observation satellite concept with a 120 mm cube gold thermal bus, four silver structural corner rails, two deployed dark-blue segmented solar wings on hinge barrels, visible cell interconnects, an optical payload barrel and recessed dark aperture, twin dish communication elements, a top star tracker, antenna rods and launch attachment feet. Keep each material or manufactured element named and separately selectable; simplify optical and electrical function.",
+    "parameters": {
+      "bus_size_mm": 120
+    },
+    "collection": "industry30",
+    "model_key": "helios-survey-satellite",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-helios-survey-satellite.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-helios-survey-satellite.zip",
+    "package_filename": "intact-helios-survey-satellite.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 41,
+      "export_checks": 88,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "osprey-landing-gear",
+    "title": "Osprey Landing Gear Study",
+    "category": "Aerospace & marine",
+    "summary": "Telescopic strut, dual tires, drilled hubs and torque-link assembly.",
+    "design_notes": "Original dual-wheel landing gear concept. Oleo, brakes and torque links are simplified; no fatigue, shock, brake-energy or aircraft qualification analysis.",
+    "part_count": 30,
+    "dimensions_mm": [
+      90.0,
+      133.0,
+      289.0
+    ],
+    "volume_mm3": 548917.85236456,
+    "representation": "native",
+    "design_prompt": "Build an original compact aircraft dual-wheel landing gear concept with a tall telescopic oleo strut, upper mounting clevis, lower fork, twin hollow rubber tires with silver drilled hubs, axle, articulated torque links, exposed brake discs, hydraulic line and securing bolts. Use a vertical strut and transverse wheel axle; show recognizable load paths and simplified mechanical joints without claiming an aircraft rating.",
+    "parameters": {
+      "strut_height_mm": 180
+    },
+    "collection": "industry30",
+    "model_key": "osprey-landing-gear",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-osprey-landing-gear.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-osprey-landing-gear.zip",
+    "package_filename": "intact-osprey-landing-gear.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 30,
+      "export_checks": 66,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "tide-volute-pump",
+    "title": "Tide Sectioned Marine Pump",
+    "category": "Aerospace & marine",
+    "summary": "Open pump casing exposes the impeller above a coaxial finned motor.",
+    "design_notes": "Original vertical marine pump cutaway. Circular casing and straight impeller vanes simplify a real volute; no pump curve, pressure, corrosion or sealing validation.",
+    "part_count": 36,
+    "dimensions_mm": [
+      146.5,
+      125.0,
+      195.5
+    ],
+    "volume_mm3": 779199.3610690563,
+    "representation": "native",
+    "design_prompt": "Create a sectioned marine centrifugal pump concept on a rectangular mounting skid, with a blue annular casing opened over one quadrant, visible brass impeller plate and eight radial vanes, inlet flange with bolt holes, tangential outlet and flange, rear bearing cartridge, drive shaft and coaxial finned electric motor. Use through bores and distinguish fluid hardware from rotating hardware. The volute and impeller hydraulics are deliberately simplified.",
+    "parameters": {},
+    "collection": "industry30",
+    "model_key": "tide-volute-pump",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-tide-volute-pump.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-tide-volute-pump.zip",
+    "package_filename": "intact-tide-volute-pump.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 36,
+      "export_checks": 78,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "abyss-rov-thruster",
+    "title": "Abyss ROV Thruster",
+    "category": "Aerospace & marine",
+    "summary": "Ducted propulsor with pitched blades, stator supports and protective grille.",
+    "design_notes": "Original ducted ROV propulsor concept. Flat pitched blades, grille and stators are schematic; thrust, cavitation, seal integrity and pressure rating are unverified.",
+    "part_count": 29,
+    "dimensions_mm": [
+      126.0,
+      138.0,
+      101.5
+    ],
+    "volume_mm3": 262224.6912398202,
+    "representation": "native",
+    "design_prompt": "Create an original underwater ROV ducted thruster with a 110 mm inside-diameter annular nozzle, four hydrofoil-like flat pitched propeller blades on an orange hub, sealed central motor capsule, three radial rear stator supports, front protective grille bars, twin mounting saddles, drilled mounting feet, cable gland and end cap fasteners. Preserve an open flow path; use simplified blade sections and unverified sealing.",
+    "parameters": {
+      "duct_radius_mm": 60
+    },
+    "collection": "industry30",
+    "model_key": "abyss-rov-thruster",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-abyss-rov-thruster.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-abyss-rov-thruster.zip",
+    "package_filename": "intact-abyss-rov-thruster.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 29,
+      "export_checks": 64,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "stratus-turbofan-cutaway",
+    "title": "Stratus Turbofan Cutaway",
+    "category": "Aerospace & marine",
+    "summary": "Sectioned nacelle reveals fan, compression, combustion and turbine stages.",
+    "design_notes": "Original axial engine teaching cutaway. Straight pitched blades and annular combustor simplify airfoils and flow passages; no cycle, aerodynamic or thermal analysis.",
+    "part_count": 46,
+    "dimensions_mm": [
+      148.0,
+      165.0,
+      270.5
+    ],
+    "volume_mm3": 876822.5367164272,
+    "representation": "native",
+    "design_prompt": "Build a detailed original small turbofan teaching cutaway along the Z axis. Include a silver nacelle with a broad section removed, open inlet lip, twelve pitched fan blades around a nose cone, three staged compressor discs with repeated blades, amber combustor liner with perforations, red turbine disc and blades, exhaust annulus, central shaft, rear nozzle and two mounting pylons. Distinguish functional stages with color; straight pitched blades and annular flow paths are simplified and no aerodynamic performance is implied.",
+    "parameters": {
+      "engine_length_mm": 240
+    },
+    "collection": "industry30",
+    "model_key": "stratus-turbofan-cutaway",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-stratus-turbofan-cutaway.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-stratus-turbofan-cutaway.zip",
+    "package_filename": "intact-stratus-turbofan-cutaway.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 46,
+      "export_checks": 98,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "vortex-bench-centrifuge",
+    "title": "Vortex Bench Centrifuge Cutaway",
+    "category": "Medical & laboratory",
+    "summary": "Open containment housing, six-place rotor, capped tubes and hinged lid.",
+    "design_notes": "Original laboratory centrifuge teaching cutaway. Tube pockets are vertical and lid is displayed open; no rotor balance, burst containment, interlock or clinical validation.",
+    "part_count": 36,
+    "dimensions_mm": [
+      162.0,
+      164.5,
+      210.0
+    ],
+    "volume_mm3": 830247.7039923278,
+    "representation": "native",
+    "design_prompt": "Create an original benchtop laboratory centrifuge teaching cutaway. Model a pale housing with the front-right quarter removed, a stainless bowl, six-place rotor with angled-looking tube pockets represented as vertical bores, six red-capped sample tubes, exposed central spindle and motor, elevated open lid with hinge blocks, control display and keys, four rubber feet and a vent strip. Use native positive solids and label the rotor balance and containment as unverified.",
+    "parameters": {},
+    "collection": "industry30",
+    "model_key": "vortex-bench-centrifuge",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-vortex-bench-centrifuge.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-vortex-bench-centrifuge.zip",
+    "package_filename": "intact-vortex-bench-centrifuge.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 36,
+      "export_checks": 78,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "clarion-optical-microscope",
+    "title": "Clarion Optical Microscope",
+    "category": "Medical & laboratory",
+    "summary": "Binocular optics, three objectives, specimen stage and focus mechanism.",
+    "design_notes": "Original binocular microscope concept. Objective barrels, condenser and eyepieces represent optics; focus travel, optical prescription and magnification are unverified.",
+    "part_count": 32,
+    "dimensions_mm": [
+      135.0,
+      112.5,
+      239.08873291899806
+    ],
+    "volume_mm3": 992508.5566641325,
+    "representation": "native",
+    "design_prompt": "Create an original precision upright optical microscope concept with a sculptural bored arch stand, heavy foot, rectangular specimen stage with central aperture and two slide clips, vertical rack carriage, paired coaxial focus knobs, three-objective revolving nosepiece, angled binocular viewing head and two eyepieces, substage condenser and illumination base. Use contrasting ivory body, charcoal optics and teal adjustment details. Optical alignment and actual magnification remain conceptual.",
+    "parameters": {},
+    "collection": "industry30",
+    "model_key": "clarion-optical-microscope",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-clarion-optical-microscope.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-clarion-optical-microscope.zip",
+    "package_filename": "intact-clarion-optical-microscope.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 32,
+      "export_checks": 70,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "pulse-peristaltic-pump",
+    "title": "Pulse Peristaltic Pump",
+    "category": "Medical & laboratory",
+    "summary": "Three-roller open head with curved tubing, drive motor and instrument controls.",
+    "design_notes": "Original laboratory pump concept. Curved tube and straight tails have actual hollow bores; tube occlusion, fatigue, compatibility and calibrated flow are unverified.",
+    "part_count": 30,
+    "dimensions_mm": [
+      152.0,
+      129.5,
+      87.0
+    ],
+    "volume_mm3": 991113.428514008,
+    "representation": "native",
+    "design_prompt": "Create an original laboratory peristaltic pump concept with a blue instrument chassis, open circular pump head, three bearing-mounted rollers on an orange rotor, a teal flexible tube following a 240-degree planar arc plus inlet and outlet tails, tube retaining clamps, rear stepper motor, control display and adjustment knob. Include bores, hub fasteners, chassis vents and feet. The tubing arc is illustrative and occlusion and flow calibration are unverified.",
+    "parameters": {},
+    "collection": "industry30",
+    "model_key": "pulse-peristaltic-pump",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-pulse-peristaltic-pump.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-pulse-peristaltic-pump.zip",
+    "package_filename": "intact-pulse-peristaltic-pump.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 30,
+      "export_checks": 66,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "rill-microfluidic-manifold",
+    "title": "Rill Microfluidic Manifold",
+    "category": "Medical & laboratory",
+    "summary": "Branched channels, eight hollow fittings and a lifted inspection lid.",
+    "design_notes": "Original teaching manifold. Channels are intentionally enlarged and lid lifted for inspection; no seal, sterility, pressure, mixing or actual microfluidic performance validation.",
+    "part_count": 26,
+    "dimensions_mm": [
+      144.0,
+      95.0,
+      77.0
+    ],
+    "volume_mm3": 292779.6824721563,
+    "representation": "native",
+    "design_prompt": "Create an original inspectable microfluidic laboratory manifold concept: a machined aluminum rectangular base with eight top fluid ports, a turquoise channel layer showing an orthogonal branched flow network milled into the top, an offset lifted lid with matching port bores, eight gold hollow threaded-style fittings, four steel lid screws, locating dowels, dual valve blocks and a mounting flange. Deliberately enlarge channels for teaching visibility and report no validated seal, sterility or flow behavior.",
+    "parameters": {
+      "manifold_length_mm": 130
+    },
+    "collection": "industry30",
+    "model_key": "rill-microfluidic-manifold",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-rill-microfluidic-manifold.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-rill-microfluidic-manifold.zip",
+    "package_filename": "intact-rill-microfluidic-manifold.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 26,
+      "export_checks": 58,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "suture-surgical-gripper",
+    "title": "Suture Surgical Gripper Study",
+    "category": "Medical & laboratory",
+    "summary": "Exposed pull-rod, paired jaw links, serrated jaws and proximal drive hardware.",
+    "design_notes": "Original instrument mechanism teaching concept with enlarged distal features. No tissue-contact, actuation, sterilization, electrical, clinical or regulatory validation; unsuitable for clinical use.",
+    "part_count": 32,
+    "dimensions_mm": [
+      74.0,
+      40.0,
+      282.0
+    ],
+    "volume_mm3": 91390.83493399396,
+    "representation": "native",
+    "design_prompt": "Create an original robotic surgical gripper mechanism teaching concept with a slender hollow instrument shaft, exposed proximal drive drum and bracket, distal two-jaw clevis, two tapered-looking jaws built from stepped solids with six gripping teeth each, separated pivot pins, exposed pull-rod and paired actuation links. Add colored insulating collar, cable pulleys, instrument coupling and mounting fasteners. Enlarge distal mechanism for inspection and clearly label it unsuitable for clinical use without engineering and regulatory validation.",
+    "parameters": {
+      "shaft_length_mm": 180
+    },
+    "collection": "industry30",
+    "model_key": "suture-surgical-gripper",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-suture-surgical-gripper.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-suture-surgical-gripper.zip",
+    "package_filename": "intact-suture-surgical-gripper.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 32,
+      "export_checks": 70,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "tidal-plate-exchanger",
+    "title": "Tidal Plate Exchanger Skid",
+    "category": "Energy & infrastructure",
+    "summary": "Design an original compact plate heat exchanger on a blue twin-rail skid, with a tall rectangular stack of eighteen individually spaced stainless plates, gold tie rods, drilled end frames, four annular side pipe connections, support feet, visible fasteners and a small pressure gauge.",
+    "design_notes": "Plate and nozzle geometry is illustrative; flow channels and pressure ratings are not specified.",
+    "part_count": 42,
+    "dimensions_mm": [
+      190.0,
+      122.0,
+      205.0
+    ],
+    "volume_mm3": 1073359.4385138135,
+    "representation": "native",
+    "design_prompt": "Design an original compact plate heat exchanger on a blue twin-rail skid, with a tall rectangular stack of eighteen individually spaced stainless plates, gold tie rods, drilled end frames, four annular side pipe connections, support feet, visible fasteners and a small pressure gauge. Expose the plate edges and contrasting gasket strips so the flow equipment reads clearly from a three-quarter view. Use native solids with stable component names; this is a layout concept with assumed interfaces.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    },
+    "collection": "industry30",
+    "model_key": "tidal-plate-exchanger",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-tidal-plate-exchanger.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-tidal-plate-exchanger.zip",
+    "package_filename": "intact-tidal-plate-exchanger.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 42,
+      "export_checks": 90,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "estuary-axial-turbine",
+    "title": "Estuary Axial Turbine Cutaway",
+    "category": "Energy & infrastructure",
+    "summary": "Design an original horizontal axial hydraulic turbine cutaway with a half-open cylindrical blue casing, inlet and outlet flange rings with bolt holes, a central gold shaft and tapered hub, six pitched broad rotor blades, six stationary guide vanes, two bearing pedestals on a ribbed foundation, fasteners and a generator coupling.",
+    "design_notes": "The blade solids are pitched plates, not a calculated hydrofoil; casing is intentionally sectioned.",
+    "part_count": 36,
+    "dimensions_mm": [
+      252.5,
+      140.0,
+      132.0
+    ],
+    "volume_mm3": 1072547.7307025397,
+    "representation": "native",
+    "design_prompt": "Design an original horizontal axial hydraulic turbine cutaway with a half-open cylindrical blue casing, inlet and outlet flange rings with bolt holes, a central gold shaft and tapered hub, six pitched broad rotor blades, six stationary guide vanes, two bearing pedestals on a ribbed foundation, fasteners and a generator coupling. Reveal the impeller through the missing front half of the casing. Native solids only, with illustrative blade pitch and no hydraulic performance claim.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    },
+    "collection": "industry30",
+    "model_key": "estuary-axial-turbine",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-estuary-axial-turbine.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-estuary-axial-turbine.zip",
+    "package_filename": "intact-estuary-axial-turbine.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 36,
+      "export_checks": 78,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "solstice-tracker",
+    "title": "Solstice Solar Tracking Mechanism",
+    "category": "Energy & infrastructure",
+    "summary": "Design an original dual-axis solar tracker demonstrator with a perforated square ground plate, cylindrical mast, azimuth slewing rings, fork yoke, tilted rectangular solar panel frame subdivided into twelve dark photovoltaic tiles, rear support beams, elevation trunnions and a gold linear actuator.",
+    "design_notes": "Panel and actuator are static layout studies; electrical and tracking systems are not simulated.",
+    "part_count": 31,
+    "dimensions_mm": [
+      168.0,
+      120.0,
+      212.10655469732953
+    ],
+    "volume_mm3": 441786.5621996785,
+    "representation": "native",
+    "design_prompt": "Design an original dual-axis solar tracker demonstrator with a perforated square ground plate, cylindrical mast, azimuth slewing rings, fork yoke, tilted rectangular solar panel frame subdivided into twelve dark photovoltaic tiles, rear support beams, elevation trunnions and a gold linear actuator. Include realistic mounting holes, separate bearing caps, a small vented control enclosure and fasteners. Keep the tilted panel visibly attached to its supporting mechanism.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    },
+    "collection": "industry30",
+    "model_key": "solstice-tracker",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-solstice-tracker.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-solstice-tracker.zip",
+    "package_filename": "intact-solstice-tracker.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 31,
+      "export_checks": 68,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "ionforge-electrolyzer",
+    "title": "Ionforge Electrolyzer Stack",
+    "category": "Energy & infrastructure",
+    "summary": "Design an original electrolyzer module on a dark support tray, with sixteen closely spaced square cell plates alternating teal and silver, gold compression rods through four corners, thick drilled endplates, two colored header manifolds, four open-bore service fittings, insulated terminal blocks and raised copper busbars.",
+    "design_notes": "Repeated cell plates illustrate stack architecture, not membranes or a validated electrochemical system.",
+    "part_count": 40,
+    "dimensions_mm": [
+      190.0,
+      116.0,
+      165.5
+    ],
+    "volume_mm3": 1204034.8967561773,
+    "representation": "native",
+    "design_prompt": "Design an original electrolyzer module on a dark support tray, with sixteen closely spaced square cell plates alternating teal and silver, gold compression rods through four corners, thick drilled endplates, two colored header manifolds, four open-bore service fittings, insulated terminal blocks and raised copper busbars. Add distinct feet, tie-rod nuts and a safety terminal shield arranged to leave the layered stack visible. Assume concept dimensions without pressure or electrochemical certification.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    },
+    "collection": "industry30",
+    "model_key": "ionforge-electrolyzer",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-ionforge-electrolyzer.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-ionforge-electrolyzer.zip",
+    "package_filename": "intact-ionforge-electrolyzer.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 40,
+      "export_checks": 86,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "sentinel-valve-actuator",
+    "title": "Sentinel Utility Valve Actuator",
+    "category": "Energy & infrastructure",
+    "summary": "Design an original motorized utility valve cutaway on an anchor base with a horizontal open-bore flanged valve body, a partially exposed brass valve disc and vertical stem, a ribbed actuator gearbox with its front half removed, visible worm-like shaft collars and bronze sector wheel, a side motor with cooling ribs, manual override handwheel, mounting bolts and a red position indicator.",
+    "design_notes": "Worm collars and sector teeth show arrangement only, not conjugate or manufacturable gear profiles.",
+    "part_count": 36,
+    "dimensions_mm": [
+      181.0,
+      110.0,
+      185.5
+    ],
+    "volume_mm3": 637639.5706363807,
+    "representation": "native",
+    "design_prompt": "Design an original motorized utility valve cutaway on an anchor base with a horizontal open-bore flanged valve body, a partially exposed brass valve disc and vertical stem, a ribbed actuator gearbox with its front half removed, visible worm-like shaft collars and bronze sector wheel, a side motor with cooling ribs, manual override handwheel, mounting bolts and a red position indicator. Include circular flange bolt patterns and a sectioned housing that reveals the mechanism. Gear forms are explicitly illustrative.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    },
+    "collection": "industry30",
+    "model_key": "sentinel-valve-actuator",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-sentinel-valve-actuator.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-sentinel-valve-actuator.zip",
+    "package_filename": "intact-sentinel-valve-actuator.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 36,
+      "export_checks": 78,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "vector-ballscrew-stage",
+    "title": "Vector Ball Screw Linear Stage",
+    "category": "Industrial automation",
+    "summary": "Design an original precision linear stage with a drilled aluminum base, two dark profiled guide rails, four blue bearing blocks, central gold screw shaft with closely spaced collar rings suggesting thread, end bearing supports, a carriage plate with a grid of mounting bores, a compact side-coupled motor and a raised cable chain represented by individual links.",
+    "design_notes": "Collar rings represent screw detail; this is not an actual helical raceway or accuracy-certified linear axis.",
+    "part_count": 43,
+    "dimensions_mm": [
+      295.0,
+      127.0,
+      52.0
+    ],
+    "volume_mm3": 679187.863205956,
+    "representation": "native",
+    "design_prompt": "Design an original precision linear stage with a drilled aluminum base, two dark profiled guide rails, four blue bearing blocks, central gold screw shaft with closely spaced collar rings suggesting thread, end bearing supports, a carriage plate with a grid of mounting bores, a compact side-coupled motor and a raised cable chain represented by individual links. Expose the screw beneath the carriage and show mounting fasteners. Thread and ball circulation are visual concepts only.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    },
+    "collection": "industry30",
+    "model_key": "vector-ballscrew-stage",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-vector-ballscrew-stage.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-vector-ballscrew-stage.zip",
+    "package_filename": "intact-vector-ballscrew-stage.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 43,
+      "export_checks": 92,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "orbit-cycloidal-reducer",
+    "title": "Orbit Cycloidal Reducer Concept",
+    "category": "Industrial automation",
+    "summary": "Design an original open cycloidal reducer concept with a blue cylindrical lower housing and sectioned upper rim, twelve separate perimeter roller pins, a silver eccentric lobed disc, three open relief bores, a gold offset input bearing, central input shaft, six output pins and a raised output carrier with six radial arms.",
+    "design_notes": "Disc lobes are illustrative polygons, not conjugate cycloidal gearing; no reduction ratio or load rating is claimed.",
+    "part_count": 34,
+    "dimensions_mm": [
+      146.0,
+      146.0,
+      81.5
+    ],
+    "volume_mm3": 365355.349084069,
+    "representation": "native",
+    "design_prompt": "Design an original open cycloidal reducer concept with a blue cylindrical lower housing and sectioned upper rim, twelve separate perimeter roller pins, a silver eccentric lobed disc, three open relief bores, a gold offset input bearing, central input shaft, six output pins and a raised output carrier with six radial arms. Add a drilled mounting flange and separate gold fasteners. Use a deliberately illustrative eight-lobed rounded polygon disc and explicitly avoid claiming a conjugate cycloidal gear profile.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    },
+    "collection": "industry30",
+    "model_key": "orbit-cycloidal-reducer",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-orbit-cycloidal-reducer.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-orbit-cycloidal-reducer.zip",
+    "package_filename": "intact-orbit-cycloidal-reducer.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 34,
+      "export_checks": 74,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "swift-pneumatic-gantry",
+    "title": "Swift Pneumatic Pick and Place Gantry",
+    "category": "Industrial automation",
+    "summary": "Design an original pneumatic pick-and-place gantry with a broad mounting base, two tall columns and a blue overhead crossbeam, two polished horizontal guide rods, a gold pneumatic cylinder barrel and exposed piston rod, central sliding carriage, vertical twin-rod actuator, red two-finger gripper holding a small sample block, air fittings, limit sensors and anchor fasteners.",
+    "design_notes": "Static demonstration pose; pneumatic circuits and dynamic collision envelopes are not validated.",
+    "part_count": 31,
+    "dimensions_mm": [
+      240.0,
+      130.0,
+      173.0
+    ],
+    "volume_mm3": 1033663.744588735,
+    "representation": "native",
+    "design_prompt": "Design an original pneumatic pick-and-place gantry with a broad mounting base, two tall columns and a blue overhead crossbeam, two polished horizontal guide rods, a gold pneumatic cylinder barrel and exposed piston rod, central sliding carriage, vertical twin-rod actuator, red two-finger gripper holding a small sample block, air fittings, limit sensors and anchor fasteners. Include bores in bearing blocks and realistic open frame space to make the mechanism readable.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    },
+    "collection": "industry30",
+    "model_key": "swift-pneumatic-gantry",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-swift-pneumatic-gantry.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-swift-pneumatic-gantry.zip",
+    "package_filename": "intact-swift-pneumatic-gantry.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 31,
+      "export_checks": 68,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "meridian-indexing-fixture",
+    "title": "Meridian Rotary Indexing Fixture",
+    "category": "Industrial automation",
+    "summary": "Design an original six-station rotary indexing work fixture with a drilled baseplate, ribbed blue pedestal, circular table with six evenly spaced socket nests, separate gold clamp levers, polished locator pins, a central open-bore hub and a raised inspection workpiece at one station.",
+    "design_notes": "Fixture geometry and station pattern are conceptual; clamp force and indexing performance are not certified.",
+    "part_count": 53,
+    "dimensions_mm": [
+      191.5,
+      160.0,
+      96.5
+    ],
+    "volume_mm3": 870745.4350135719,
+    "representation": "native",
+    "design_prompt": "Design an original six-station rotary indexing work fixture with a drilled baseplate, ribbed blue pedestal, circular table with six evenly spaced socket nests, separate gold clamp levers, polished locator pins, a central open-bore hub and a raised inspection workpiece at one station. Expose a side drive motor with cooling ribs and coupling guard, add an annular angle scale segmented into twelve ticks and mounting bolts. The fixture should read as practical production automation without claiming positioning accuracy.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    },
+    "collection": "industry30",
+    "model_key": "meridian-indexing-fixture",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-meridian-indexing-fixture.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-meridian-indexing-fixture.zip",
+    "package_filename": "intact-meridian-indexing-fixture.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 53,
+      "export_checks": 112,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "prism-inspection-conveyor",
+    "title": "Prism Conveyor Inspection Station",
+    "category": "Industrial automation",
+    "summary": "Design an original tabletop conveyor inspection station with two blue side rails, exposed end rollers, a dark endless belt represented by a thin solid loop, four adjustable legs and leveling pads, a tall overhead camera bridge, camera lens barrel, gold illumination bars and a side sensor bracket.",
+    "design_notes": "Closed native belt loop wraps the end rollers; no motion or inspection accuracy claim.",
+    "part_count": 33,
+    "dimensions_mm": [
+      244.0,
+      164.0,
+      170.0
+    ],
+    "volume_mm3": 532074.3068949975,
+    "representation": "native",
+    "design_prompt": "Design an original tabletop conveyor inspection station with two blue side rails, exposed end rollers, a dark endless belt represented by a thin solid loop, four adjustable legs and leveling pads, a tall overhead camera bridge, camera lens barrel, gold illumination bars and a side sensor bracket. Show a small silver sample carrier on the belt, a finned drive motor and a vented control box. Use detailed native solids and stable named components with assumed interfaces.",
+    "parameters": {
+      "detail_pitch_mm": 8.0
+    },
+    "collection": "industry30",
+    "model_key": "prism-inspection-conveyor",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-prism-inspection-conveyor.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-prism-inspection-conveyor.zip",
+    "package_filename": "intact-prism-inspection-conveyor.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 33,
+      "export_checks": 72,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "ev-drive-axle",
+    "title": "Sectioned electric drive axle",
+    "category": "Mobility & transportation",
+    "summary": "Design an original display-scale electric vehicle drive axle, 660 mm across, with a deliberately opened front half housing exposing a transverse electric motor and offset differential.",
+    "design_notes": "Front housing deliberately removed; windings and differential are visual abstractions, no tooth contact or electromagnetic analysis.",
+    "part_count": 45,
+    "dimensions_mm": [
+      660.0,
+      188.0,
+      209.2
+    ],
+    "volume_mm3": 5562255.826435132,
+    "representation": "native",
+    "design_prompt": "Design an original display-scale electric vehicle drive axle, 660 mm across, with a deliberately opened front half housing exposing a transverse electric motor and offset differential. Use an annular motor stator with copper winding bars, steel rotor and shaft, a bored differential carrier and orange service flange, two half shafts and joint bellows represented by stepped annular ribs. Add housing mounting feet with actual through bores, eight flange bolts and external cooling ribs. Separate named metal, copper, elastomer and orange service parts. Keep all native solids; this is a simplified explanatory concept, without detailed involute gearing or performance claims.",
+    "parameters": {
+      "scale": 1.0
+    },
+    "collection": "industry30",
+    "model_key": "ev-drive-axle",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-ev-drive-axle.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-ev-drive-axle.zip",
+    "package_filename": "intact-ev-drive-axle.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 45,
+      "export_checks": 96,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "wishbone-suspension",
+    "title": "Double wishbone suspension corner",
+    "category": "Mobility & transportation",
+    "summary": "Create an original exposed double wishbone suspension corner with a 360 mm tall outboard upright, two triangular tubular wishbones, bored inboard pivots and a tilted coil-over damper.",
+    "design_notes": "Static spring rings approximate a helical spring; no steering sweep or chassis fitment verification.",
+    "part_count": 33,
+    "dimensions_mm": [
+      340.0,
+      275.0,
+      312.0
+    ],
+    "volume_mm3": 1914980.6859981332,
+    "representation": "native",
+    "design_prompt": "Create an original exposed double wishbone suspension corner with a 360 mm tall outboard upright, two triangular tubular wishbones, bored inboard pivots and a tilted coil-over damper. Include upper and lower ball joint housings, an annular wheel hub with five genuine bolt bores, separate wheel studs, damper body and piston rod, and eight spaced coil-like spring rings. Show blue links, silver hub, dark pivots and a red spring. The spring uses individual annular rings as an explicit static simplification. Use native parts and realistic component proportions; no vehicle fitment or load claims.",
+    "parameters": {
+      "scale": 1.0
+    },
+    "collection": "industry30",
+    "model_key": "wishbone-suspension",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-wishbone-suspension.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-wishbone-suspension.zip",
+    "package_filename": "intact-wishbone-suspension.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 33,
+      "export_checks": 72,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "ventilated-brake",
+    "title": "Ventilated brake and caliper study",
+    "category": "Mobility & transportation",
+    "summary": "Build a native ventilated brake assembly displayed in slight axial separation so its internal vanes are visible.",
+    "design_notes": "Slightly separated disc faces expose ventilation; pad and caliper geometry simplified, no hydraulic seals or threads.",
+    "part_count": 28,
+    "dimensions_mm": [
+      292.0,
+      280.0,
+      76.0
+    ],
+    "volume_mm3": 1388168.6778175943,
+    "representation": "native",
+    "design_prompt": "Build a native ventilated brake assembly displayed in slight axial separation so its internal vanes are visible. Use two 280 mm outer diameter drilled friction rings with 12 radial ventilation vanes between them, a central hat with five mounting bores, a bridge caliper with disc clearance, two separate friction pads and backing plates, two cylindrical pistons with bores, two retaining pins and visible fasteners. Use steel grey friction faces, dark iron hat, copper-brown pads and a coral red caliper. Disc perforations and hat bores must be actual cuts. This is an original visual engineering study without certification, friction or thermal performance claims.",
+    "parameters": {
+      "scale": 1.0
+    },
+    "collection": "industry30",
+    "model_key": "ventilated-brake",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-ventilated-brake.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-ventilated-brake.zip",
+    "package_filename": "intact-ventilated-brake.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 28,
+      "export_checks": 62,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "bicycle-mid-drive",
+    "title": "Electric bicycle mid-drive cutaway",
+    "category": "Mobility & transportation",
+    "summary": "Design a compact original electric bicycle mid-drive display cutaway.",
+    "design_notes": "Belt runs and cranks simplified; no involute or sprocket tooth standard, electronics, bearings or frame fitment claim.",
+    "part_count": 33,
+    "dimensions_mm": [
+      276.0,
+      220.0,
+      176.84542801323028
+    ],
+    "volume_mm3": 1415062.9737164376,
+    "representation": "native",
+    "design_prompt": "Design a compact original electric bicycle mid-drive display cutaway. Create a 180 by 130 mm open motor cradle, transverse motor stator and rotor, exposed copper bars, a reduction pulley pair joined by a simplified belt envelope, a perforated 160 mm chainring with eight radial windows, opposed crank arms and pedal axles. Add cooling ribs and four bored mounting lugs with steel bolts. Use teal housing, copper winding bars, satin metal chainring, dark belt and ochre cranks. Separate native components with stable descriptive IDs. Omit supplier-specific interfaces and exact belt teeth and clearly document static cutaway simplifications.",
+    "parameters": {
+      "scale": 1.0
+    },
+    "collection": "industry30",
+    "model_key": "bicycle-mid-drive",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-bicycle-mid-drive.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-bicycle-mid-drive.zip",
+    "package_filename": "intact-bicycle-mid-drive.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 33,
+      "export_checks": 72,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "rail-bogie",
+    "title": "Compact rail bogie demonstrator",
+    "category": "Mobility & transportation",
+    "summary": "Create an original compact rail bogie demonstrator, approximately 1500 by 1100 mm, with two wheelsets and four flanged steel wheels, a blue open rectangular frame with cross-members, four axle bearing boxes, four spring stacks using spaced annular rings, a central bored bolster and four brake shoes on hangers.",
+    "design_notes": "Four stacks use separated spring rings; simplified one-piece wheels and shoes; no gauge or service suitability asserted.",
+    "part_count": 44,
+    "dimensions_mm": [
+      1412.0,
+      1180.0,
+      493.5
+    ],
+    "volume_mm3": 132864821.43651345,
+    "representation": "native",
+    "design_prompt": "Create an original compact rail bogie demonstrator, approximately 1500 by 1100 mm, with two wheelsets and four flanged steel wheels, a blue open rectangular frame with cross-members, four axle bearing boxes, four spring stacks using spaced annular rings, a central bored bolster and four brake shoes on hangers. Add visible suspension caps and axle shafts. Keep wheel flanges and wheel treads distinct native features, accurate symmetry and plausible assembly proportions. The rail bogie is a static visual simplification without railway gauge, brake, fatigue or standards compliance claims.",
+    "parameters": {
+      "scale": 1.0
+    },
+    "collection": "industry30",
+    "model_key": "rail-bogie",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-rail-bogie.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-rail-bogie.zip",
+    "package_filename": "intact-rail-bogie.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 44,
+      "export_checks": 94,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "kinetic-facade",
+    "title": "Rotating louver facade module",
+    "category": "Architecture & consumer technology",
+    "summary": "Create a 1200 by 1000 mm architectural kinetic facade mockup with an open perimeter frame, six individual vertical louver blades set at alternating angles, upper and lower pivot journals, a visible slotted actuator rail, a small actuator box, six linkage rods and corner mounting plates with real bolt bores.",
+    "design_notes": "Static alternating blade pose; actuator is a visual enclosure and linkage, with no collision or wind analysis.",
+    "part_count": 34,
+    "dimensions_mm": [
+      1372.5,
+      155.0,
+      1085.0
+    ],
+    "volume_mm3": 22310251.212684773,
+    "representation": "native",
+    "design_prompt": "Create a 1200 by 1000 mm architectural kinetic facade mockup with an open perimeter frame, six individual vertical louver blades set at alternating angles, upper and lower pivot journals, a visible slotted actuator rail, a small actuator box, six linkage rods and corner mounting plates with real bolt bores. Louvers should have folded edge returns and a thin panel web rather than solid deep blocks. Use ivory blades, blue-grey frame and brass pivots and linkage. All components native and separately named; depict a fixed demonstration pose without wind, thermal or building-code claims.",
+    "parameters": {
+      "scale": 1.0
+    },
+    "collection": "industry30",
+    "model_key": "kinetic-facade",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-kinetic-facade.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-kinetic-facade.zip",
+    "package_filename": "intact-kinetic-facade.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 34,
+      "export_checks": 74,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "modular-footbridge",
+    "title": "Modular pedestrian truss bridge",
+    "category": "Architecture & consumer technology",
+    "summary": "Create an original 3000 mm long scale pedestrian footbridge module with two open Warren side trusses, deck cross-beams, eight separate walking panels with drainage slots, end bearing pads, transverse top ties and bored end connection plates.",
+    "design_notes": "Scale demonstrator with solid chord simplifications and no structural, accessibility, connection or span certification.",
+    "part_count": 41,
+    "dimensions_mm": [
+      3080.0,
+      1480.0,
+      1097.5
+    ],
+    "volume_mm3": 282862317.7121649,
+    "representation": "native",
+    "design_prompt": "Create an original 3000 mm long scale pedestrian footbridge module with two open Warren side trusses, deck cross-beams, eight separate walking panels with drainage slots, end bearing pads, transverse top ties and bored end connection plates. Use tubular-looking rectangular chords, cylindrical diagonal braces, timber-colored deck panels and silver gussets. Build real holes in end plates and slots in panels. Native named components with a clear walkable central deck and approximately 1100 mm side truss height. This is a display-scale conceptual module, no structural rating or code claims.",
+    "parameters": {
+      "scale": 1.0
+    },
+    "collection": "industry30",
+    "model_key": "modular-footbridge",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-modular-footbridge.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-modular-footbridge.zip",
+    "package_filename": "intact-modular-footbridge.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 41,
+      "export_checks": 88,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "camera-gimbal",
+    "title": "Three-axis compact camera gimbal",
+    "category": "Architecture & consumer technology",
+    "summary": "Create an original three-axis tabletop camera gimbal with a bored mounting base, vertical yaw motor, offset roll motor and U-shaped tilt cradle carrying a compact camera.",
+    "design_notes": "Static pose, generic motors and solid optical glass; no cables, optical prescription, balancing or motion envelope analysis.",
+    "part_count": 22,
+    "dimensions_mm": [
+      152.0,
+      128.5,
+      246.0
+    ],
+    "volume_mm3": 1103313.901933388,
+    "representation": "native",
+    "design_prompt": "Create an original three-axis tabletop camera gimbal with a bored mounting base, vertical yaw motor, offset roll motor and U-shaped tilt cradle carrying a compact camera. Include separate concentric motor caps, mounting holes, exposed mounting bolts, lens barrel with three rings and blue lens glass, camera shell with a rear screen, and vent cuts. Use black camera, teal motor housings, gold caps and silver cradle. Native solids and distinct descriptive part IDs; fixed pose only without motion range, balancing, optics or payload claims.",
+    "parameters": {
+      "scale": 1.0
+    },
+    "collection": "industry30",
+    "model_key": "camera-gimbal",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-camera-gimbal.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-camera-gimbal.zip",
+    "package_filename": "intact-camera-gimbal.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 22,
+      "export_checks": 50,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "cordless-tool",
+    "title": "Cordless driver cutaway",
+    "category": "Architecture & consumer technology",
+    "summary": "Create an original cordless drill-driver cutaway about 260 mm tall with a half-open orange grip and motor shell, visible cylindrical electric motor, copper windings, planetary-style reduction carrier with four simplified bored planet discs, coaxial chuck and jaws.",
+    "design_notes": "Half-open visual shell and simple planet discs omit gear teeth, cell wiring, threads and certified electrical or torque behavior.",
+    "part_count": 34,
+    "dimensions_mm": [
+      202.150791373456,
+      80.5,
+      227.5
+    ],
+    "volume_mm3": 887641.2163016784,
+    "representation": "native",
+    "design_prompt": "Create an original cordless drill-driver cutaway about 260 mm tall with a half-open orange grip and motor shell, visible cylindrical electric motor, copper windings, planetary-style reduction carrier with four simplified bored planet discs, coaxial chuck and jaws. Include a detachable battery pack with six visible cylindrical cells, trigger, vent slots, belt clip and housing screws. Use orange polymer, dark grip and battery, copper motor elements and steel mechanisms. Keep native positive-volume components. This is a visual concept without exact tooth profiles, electrical specifications, torque or safety claims.",
+    "parameters": {
+      "scale": 1.0
+    },
+    "collection": "industry30",
+    "model_key": "cordless-tool",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-cordless-tool.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-cordless-tool.zip",
+    "package_filename": "intact-cordless-tool.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 34,
+      "export_checks": 74,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
+    "slug": "desktop-printer",
+    "title": "Open-frame desktop additive machine",
+    "category": "Architecture & consumer technology",
+    "summary": "Create an original 420 mm wide open-frame desktop additive manufacturing machine with four vertical columns, upper rails, a perforated heated bed, two horizontal guide rails and a cross carriage.",
+    "design_notes": "Fixed printer pose; lead screws use plain shafts and collars, filament winding and complete motion hardware are simplified.",
+    "part_count": 41,
+    "dimensions_mm": [
+      482.5,
+      420.0,
+      711.0
+    ],
+    "volume_mm3": 7000652.1069289595,
+    "representation": "native",
+    "design_prompt": "Create an original 420 mm wide open-frame desktop additive manufacturing machine with four vertical columns, upper rails, a perforated heated bed, two horizontal guide rails and a cross carriage. Include a finned print head with visible heater block and conical nozzle, two lead screws represented by plain shafts with annular collars, four corner feet, belt runs, motor boxes, a side electronics enclosure with real ventilation slots and an overhead filament spool with bore and flanges. Use charcoal frame, turquoise carriage, copper heater and gold nozzle. Native named parts and fixed pose, no firmware, printing or precision claims.",
+    "parameters": {
+      "scale": 1.0
+    },
+    "collection": "industry30",
+    "model_key": "desktop-printer",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-desktop-printer.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-desktop-printer.zip",
+    "package_filename": "intact-desktop-printer.zip",
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ],
+    "audit": {
+      "status": "passed",
+      "parts_checked": 41,
+      "export_checks": 88,
+      "repairs_count": 0,
+      "design_verification": {
+        "status": "not_specified",
+        "checks": [],
+        "note": "No acceptance criteria saved; design intent and physical performance are not verified."
+      }
+    },
+    "prompt_provenance": "Exact design prompt recorded before source creation."
+  },
+  {
     "slug": "cairn-six-wheel-rover",
     "title": "Cairn Six-Wheel Rover",
     "category": "Robotics",
@@ -23,7 +1275,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Cairn Six-Wheel Rover. An original six-wheel exploration rover with open rocker suspension, twin solar wings and a stereo sensor mast. Use millimeters and named components. Hollow tires, orange wheel hubs, silver suspension links and segmented blue solar fields give this original rover a distinct silhouette. Original visual concept; mechanical function, strength and motion are unverified. Units are millimeters; native CAD Z is up. Design parameters: {}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "ember-six-axis-arm",
@@ -49,7 +1303,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Ember Six-Axis Arm. A vivid six-axis industrial manipulator in a bent inspection pose, with a parallel-jaw end effector. Use millimeters and named components. Six distinct joint housings, inset link covers, anchor hardware and an elbow cable guard communicate the articulated mechanism. Original visual concept; mechanical function, strength and motion are unverified. Units are millimeters; native CAD Z is up. Design parameters: {}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "finch-adaptive-gripper",
@@ -75,7 +1331,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Finch Adaptive Gripper. A compact parallel two-finger gripper with twin guide rods, a central drive and articulated distal fingers. Use millimeters and named components. The open gripping throat, dark tactile pads, cyan contact ribs and orange slides make its operating principle visible. Original visual concept; mechanical function, strength and motion are unverified. Units are millimeters; native CAD Z is up. Design parameters: {}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "kelp-quadruped-inspector",
@@ -101,7 +1359,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Kelp Quadruped Inspector. An orange inspection quadruped with four articulated bent legs, stereo vision and a roof-mounted lidar. Use millimeters and named components. A low armored body, exposed drive caps, compact shins and broad rounded feet suggest stable inspection work. Original visual concept; mechanical function, strength and motion are unverified. Units are millimeters; native CAD Z is up. Design parameters: {}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "lumen-humanoid-service-robot",
@@ -127,7 +1387,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Lumen Humanoid Service Robot. A complete approachable humanoid with a cyan visor, orange chest plate and articulated arms and legs. Use millimeters and named components. Rounded white armor sits over dark joints; broad feet, separate thumbs and a chest display complete the service robot concept. Original visual concept; mechanical function, strength and motion are unverified. Units are millimeters; native CAD Z is up. Design parameters: {}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "piston_rod",
@@ -155,7 +1417,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Grooved piston & split connecting rod. An open-skirt piston with three ring grooves, separate gapped rings, a hollow wrist pin and a split big end. Use millimeters and named components. Original simplified 86 mm bore concept; ring grooves and wrist-pin bores are native cuts. No thermal, strength or engine-fit claims. Design parameters: {\"bore\": 86.0}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "inline_four_crankshaft",
@@ -184,7 +1448,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Inline-four crankshaft. Five main journals, four alternate-phase crankpins, eight counterweighted webs and a six-hole flywheel flange. Use millimeters and named components. Original illustrative inline-four geometry; separate web and journal leaves. No balancing, oil-circuit or fatigue certification. Design parameters: {\"journal_pitch\": 76.0, \"crank_throw\": 38.0}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "sectioned_turbocharger",
@@ -212,7 +1478,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Sectioned turbocharger concept. Cutaway scroll-like housings reveal gold compressor blades, a rotor shaft, turbine wheel and bearing collars. Use millimeters and named components. Illustrative sectioned mechanical concept; scroll, blade and flange dimensions are original. No aerodynamic or flow-performance claims. Design parameters: {\"compressor_radius\": 52.0}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "dohc_cylinder_head",
@@ -240,7 +1508,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Open DOHC cylinder head. An open two-cylinder head displays twin lobed cams, eight valves, spring-guide details and perforated timing wheels. Use millimeters and named components. Original two-cylinder teaching concept. Annular spring proxies are not helices; cam timing, port flow and valve motion are illustrative. Design parameters: {\"cylinder_pitch\": 88.0}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "planetary_reduction_gearbox",
@@ -268,7 +1538,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Planetary reduction gearbox. A half-section housing exposes a sun, three planets, an internal ring and a three-arm carrier. Use millimeters and named components. Original arrangement with illustrative radial block teeth; not manufacturing-grade involute or certified gearing. No torque, ratio or efficiency claim. Design parameters: {\"ring_outer_radius\": 67.0}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "battery_thermal_concept",
@@ -298,7 +1570,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Battery thermal-management concept. Sectioned pack layout showing a generic cell array, copper-colored busbars and a cooling-plate manifold. Use millimeters and named components. Generic cylindrical cells; open housing exposes packing and thermal hardware. Geometry concept only; no supplier, thermal or safety performance is asserted. Design parameters: {\"cell_pitch_mm\": 32, \"cell_radius_mm\": 13, \"cell_height_mm\": 65}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "inspection_quadrotor",
@@ -327,7 +1601,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Inspection quadrotor concept. Four guarded rotors surround a sculpted canopy, landing rails and forward camera. Use millimeters and named components. Inspection-drone packaging concept with native lofted canopy, propeller solids and open rotor guards; no flight performance is asserted. Design parameters: {\"arm_reach_mm\": 115, \"prop_radius_mm\": 43}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "desktop_air_monitor",
@@ -357,7 +1633,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Desktop air-quality monitor concept. A lifted vented cover reveals a visible PCB, sensor chamber and display assembly. Use millimeters and named components. Product packaging study with ventilated shell and exploded cover. Display marks and sensor geometry are illustrative; no calibrated sensing function is claimed. Design parameters: {\"width_mm\": 112, \"depth_mm\": 92, \"height_mm\": 48}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "helical_vertical_turbine",
@@ -387,7 +1665,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Helical vertical-axis turbine concept. Three continuous twisted blades wrap around a central shaft above a generator and bolted base. Use millimeters and named components. Nine rotated elliptical sections per blade create native smooth lofts with 100 degrees of twist. Upper and lower supports follow blade endpoints; no energy or performance claim. Design parameters: {\"rotor_radius_mm\": 85, \"blade_height_mm\": 260, \"twist_deg\": 100}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "liquid_cooled_compute",
@@ -416,7 +1696,9 @@
       "step",
       "stl",
       "3mf"
-    ]
+    ],
+    "design_prompt": "Create an original CAD concept: Liquid-cooled compute module concept. Visible compute board, copper-colored waterblock, routed coolant tubes and finned radiator. Use millimeters and named components. Packaging concept showing processor block, memory, power stages and paired coolant routes. Tubes are solid swept visual envelopes; no operating pressure or cooling performance is asserted. Design parameters: {\"board_length_mm\": 170, \"board_width_mm\": 130}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "gradient-gyroid-core",
@@ -450,7 +1732,9 @@
       "stl",
       "3mf"
     ],
-    "render_color": "#58b6a1"
+    "render_color": "#58b6a1",
+    "design_prompt": "Create an original CAD concept: Gradient gyroid core. A graded periodic core with an open, flowing gyroid network. Use millimeters and named components. Dimensionless implicit band varies along Z; it is not a constant wall thickness. Design parameters: {\"sx\": 36, \"sy\": 30, \"sz\": 24, \"cell\": 12, \"band\": 0.4, \"samples\": 18, \"gradient\": 0.65}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "schwarz-flow-column",
@@ -484,7 +1768,9 @@
       "stl",
       "3mf"
     ],
-    "render_color": "#d9ad63"
+    "render_color": "#d9ad63",
+    "design_prompt": "Create an original CAD concept: Schwarz P flow column. A cylindrical Schwarz P structure with interconnected rounded passages. Use millimeters and named components. Flow-column geometry concept only; pressure drop, permeability and strength are unverified. Design parameters: {\"sx\": 30, \"sy\": 30, \"sz\": 48, \"cell\": 12, \"band\": 0.55, \"samples\": 18, \"gradient\": 0}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "diamond-exchanger-core",
@@ -518,7 +1804,9 @@
       "stl",
       "3mf"
     ],
-    "render_color": "#5d9eca"
+    "render_color": "#5d9eca",
+    "design_prompt": "Create an original CAD concept: Diamond exchanger core. A compact diamond-network core for exploring periodic internal architecture. Use millimeters and named components. Heat-exchanger concept only; no conjugate heat transfer or performance prediction. Design parameters: {\"sx\": 36, \"sy\": 24, \"sz\": 24, \"cell\": 12, \"band\": 0.35, \"samples\": 18, \"gradient\": 0}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "neovius-porous-sphere",
@@ -552,7 +1840,9 @@
       "stl",
       "3mf"
     ],
-    "render_color": "#b68bbd"
+    "render_color": "#b68bbd",
+    "design_prompt": "Create an original CAD concept: Neovius porous sphere. A spherical envelope carved by a continuous Neovius-type implicit network. Use millimeters and named components. Nodal approximation and mesh volume estimate, not an exact mathematical minimal surface. Design parameters: {\"sx\": 32, \"sy\": 32, \"sz\": 32, \"cell\": 11, \"band\": 0.8, \"samples\": 18, \"gradient\": 0}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   },
   {
     "slug": "lidinoid-lattice-panel",
@@ -586,6 +1876,8 @@
       "stl",
       "3mf"
     ],
-    "render_color": "#e08d63"
+    "render_color": "#e08d63",
+    "design_prompt": "Create an original CAD concept: Lidinoid lattice panel. A thin periodic panel with intricate Lidinoid openings and a mild Z gradient. Use millimeters and named components. Sampling resolution and band are explicit; minimum manufactured wall thickness is not certified. Design parameters: {\"sx\": 48, \"sy\": 24, \"sz\": 12, \"cell\": 12, \"band\": 0.55, \"samples\": 18, \"gradient\": 0.3}.",
+    "prompt_provenance": "Reconstructed brief from the saved design; not a verbatim generation transcript."
   }
 ]

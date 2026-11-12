@@ -46,7 +46,12 @@ class ProjectService:
         path=self.path(key)
         if not path.is_file():raise ValueError('Model not found.')
         record=json.loads(path.read_text(encoding='utf-8'));DesignSpec.model_validate(record['spec'])
-        record.setdefault('view',{});return record
+        record.setdefault('view',{})
+        audit=record.get('geometry',{}).get('audit')
+        if audit and record.get('engineering',{}).get('requirements',{}).get('checks'):
+            from .geometry_audit import requirements_hash
+            if audit.get('requirements_hash')!=requirements_hash(record.get('engineering')):audit['design_verification']={'status':'not_evaluated','note':'Requirements changed after this build. Ask AI to run audit_model or verify_design.'}
+        return record
     def list(self):
         models=[]
         for path in self.models.glob('*.json'):
@@ -87,6 +92,8 @@ class ProjectService:
         asset_id=asset_id or (old['spec']['program'].get('asset_id') if old else None)
         meshing=engineering.get('accuracy') if engineering is not None else old.get('engineering',{}).get('accuracy') if old else None
         report=self.programs.build(source,parameters,cancel_event,asset_id=asset_id,meshing=meshing)
+        from .geometry_audit import precommit_checks
+        report=precommit_checks(self.programs,report,engineering if engineering is not None else old.get('engineering') if old else None,cancel_event)
         if cancel_event and cancel_event.is_set():raise ValueError('CAD build cancelled; the previous revision was preserved.')
         spec=generated_spec(source,parameters,report,previous)
         record={'model_id':key,'name':name.strip() if name else old['name'] if old else 'Generated CAD','spec':spec.model_dump(mode='json'),'geometry':report,'view':deepcopy(old.get('view',{})) if old else {}}
@@ -105,6 +112,8 @@ class ProjectService:
         old=self.load(key);program=old['spec']['program'];folder=self.programs.root/program['artifact_id']
         if program['artifact_id']==self.programs.key(program['source'],program['parameters'],program.get('asset_id'),program.get('meshing')) and self.programs.cached_report(program['artifact_id']):return old
         report=self.programs.build(program['source'],program['parameters'],asset_id=program.get('asset_id'),meshing=program.get('meshing'))
+        from .geometry_audit import precommit_checks
+        if not old.get('engineering',{}).get('requirements',{}).get('checks'):report=precommit_checks(self.programs,report,None)
         spec=generated_spec(program['source'],program['parameters'],report,DesignSpec.model_validate(old['spec']))
         record=deepcopy(old);record.update(spec=spec.model_dump(mode='json'),geometry=report)
         # Cache repair/migration is not a user edit and must not add history.

@@ -52,7 +52,7 @@ This installs a local development plugin. Publishing this repository does not li
 | Simulation | Separate Virtual and Mechanical workspaces: kinematic driving, walking and machine previews; 3D thermal, static stress and creeping-flow Stokes, AI-prepared face conditions, automatic mesh sizing, colored fields, playback and CSV/VTU downloads |
 | Exports | STEP, ASCII/binary STL, GLB, 3MF, Python, project JSON, binary USD and text USDA; Project adds annotated PNG, PPTX, BOM CSV, 2D DXF/DWG and conditional FCStd/source STEP |
 
-Version **0.17.1** exposes **63 MCP tools**. [Latest changes](docs/RELEASE_0_17_1.md) · [Solver verification](docs/RELEASE_0_16.md). See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
+Version **0.18.0** exposes **64 MCP tools**. [Latest changes](docs/RELEASE_0_18.md) · [Solver verification](docs/RELEASE_0_16.md). See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
 
 The **Tutorial** button next to Settings shows the installed viewer version and includes searchable help topics and an optional guided tour. Each topic explains a control, its purpose and usage steps. Use the mouse wheel for zoom and **Zoom to fit** beside Grid.
 
@@ -147,4 +147,4 @@ Original Intact source is provided under [Apache-2.0](LICENSE), with existing th
 
 Optional PicoGK voxel TPMS: `python3 scripts/install-picogk.py` (or add `--with-picogk` to the plugin installer). Uses the pinned official 2.4.0-alpha04 Linux prerelease and .NET 9; returns mesh geometry, not smooth STEP. Existing TPMS tools remain available.
 
-Explore the [Finished Work gallery](https://www.intactsimulation.com/finished-work/) for 20 original robotics, powertrain, product and TPMS concepts. Sources are in [models/showcase](models/showcase). Viewer control, named views, parameter configurations and scratch previews are AI-callable; press Ctrl/Cmd+K in the viewer for commands and bookmarks.
+Explore the [Finished Work gallery](https://www.intactsimulation.com/finished-work/) for 50 original concepts across ten industry groups, including the design prompts for the 30 newest models. Sources are in [models/showcase](models/showcase). Viewer control, named views, parameter configurations and scratch previews are AI-callable; press Ctrl/Cmd+K in the viewer for commands and bookmarks.

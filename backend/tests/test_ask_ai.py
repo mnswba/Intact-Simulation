@@ -53,7 +53,10 @@ def test_concentric_circles_are_solved_by_freecad(tmp_path):
 def test_component_placement_checks_actual_step(scoped):
  s,key,_=scoped;f=FeatureService(s);f.requirements(key,{'checks':[{'id':'body_placement','kind':'placement','part_id':'body','expected':{'center_mm':[0,0,0],'min_mm':[-10,-5,-2.5]}}]})
  assert verify_design(s,key)['passed']
- s.parameters(key,{'x':10})
+ before=s.path(key).read_bytes()
+ with pytest.raises(ValueError,match='Pre-display V&V rejected'):s.parameters(key,{'x':10})
+ assert s.path(key).read_bytes()==before and verify_design(s,key)['passed']
+ f.requirements(key,{'checks':[{'id':'wrong_placement','kind':'placement','part_id':'body','expected':{'center_mm':[10,0,0]}}]})
  assert not verify_design(s,key)['passed']
 
 def test_unknown_intent_is_rejected_without_queueing(scoped):

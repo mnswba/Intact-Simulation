@@ -27,6 +27,8 @@ def main():
                 path=projects.artifact(record['model_id'],'model.'+kind)
                 package.write(path,'model.glb' if kind=='glb' else 'intact-'+item['slug']+'.'+kind)
             package.write(sources[0],'source.py')
+            package.writestr('design-prompt.txt',item.get('design_prompt',''))
+            package.writestr('geometry-audit.json',json.dumps(record['geometry']['audit'],indent=2))
             package.writestr('README.txt',item['title']+'\n'+item['summary']+'\n'+item['design_notes']+'\nOriginal showcase concept; engineering performance unverified. Apache-2.0 source. Native CAD millimeters, GLB meters/Y-up. No exact STEP for sampled TPMS.\nParameters: '+json.dumps(item['parameters']))
         print('Built',item['slug'],len(record['spec']['parts']),'parts',flush=True)
 
