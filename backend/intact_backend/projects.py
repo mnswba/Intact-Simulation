@@ -69,6 +69,9 @@ class ProjectService:
                 atomic_json(history/(str(old['spec']['revision'])+'.json'),old)
                 record['spec']['revision']=old['spec']['revision']+1
                 record['view']=deepcopy(old.get('view',{}))
+                for field in ('view_revision','named_views','parameter_configurations'):record[field]=deepcopy(old.get(field,0 if field=='view_revision' else {}))
+                ids={p['id'] for p in record['spec']['parts']}
+                record['view']['hidden']=[p for p in record['view'].get('hidden',[]) if p in ids]
             else:record['spec']['revision']=record.pop('initial_revision',1)
             DesignSpec.model_validate(record['spec'])
             atomic_json(self.path(key),record)
@@ -109,10 +112,13 @@ class ProjectService:
             latest=self.load(key)
             if latest['spec']['revision']!=old['spec']['revision']:return latest
             record['spec']['revision']=old['spec']['revision'];record['view']=latest.get('view',{})
+            for field in ('view_revision','named_views','parameter_configurations'):record[field]=deepcopy(latest.get(field,0 if field=='view_revision' else {}))
             atomic_json(self.path(key),record)
         return record
     def parameters(self,key,parameters,cancel_event=None,expected_revision=None):
         old=self.load(key)
+        from .interactive import parameter_values
+        parameters=parameter_values(old['spec']['program']['parameters'],parameters)
         if old.get('engineering',{}).get('attached'):
             from .feature_graph import FeatureService
             return FeatureService(self).parameters(key,parameters,cancel_event,expected_revision)
@@ -128,15 +134,18 @@ class ProjectService:
             if value is not None:part[field]=value
         record['spec']['simulation']['approved_fingerprint']=None
         DesignSpec.model_validate(record['spec']);return self.commit(record,expected)
-    def save_view(self,key,view):
+    def save_view(self,key,view,expected_view_revision=None):
         from .view_settings import ViewSettings
         view=ViewSettings.model_validate(view).model_dump(mode='json',exclude_unset=True)
         with self.lock(key):
             record=self.load(key)
+            if expected_view_revision is not None and expected_view_revision!=record.get('view_revision',0):raise ValueError('The view changed. Read the latest view and retry.')
+            part_ids={p['id'] for p in record['spec']['parts']}
+            if set(view.get('hidden',[]))-part_ids:raise ValueError('Unknown hidden part id.')
             for item in view.get('annotations',[]):
                 anchor=item.get('anchor')
                 if anchor and (anchor['artifact_id']!=record['spec']['program']['artifact_id'] or anchor['part_id'] not in {p['id'] for p in record['spec']['parts']}):raise ValueError('Annotation anchor belongs to stale or missing geometry. Place it on the current model again.')
-            record['view'].update(view);atomic_json(self.path(key),record)
+            record['view'].update(view);record['view_revision']=record.get('view_revision',0)+1;atomic_json(self.path(key),record)
         return record['view']
     def revisions(self,key):
         current=self.load(key);items=[{'revision':current['spec']['revision'],'name':current['name'],'current':True}]

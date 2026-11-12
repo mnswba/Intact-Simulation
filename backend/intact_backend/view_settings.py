@@ -4,6 +4,7 @@ from pydantic import Field, field_validator
 from .spec import StrictModel
 
 class ViewSettings(StrictModel):
+    model_config={**StrictModel.model_config,'allow_inf_nan':False}
     cut:Literal['none','x','y','z']='none'
     slice:float=Field(default=50,ge=0,le=100)
     flip:bool=False
@@ -61,7 +62,9 @@ class ViewSettings(StrictModel):
     @field_validator('camera')
     @classmethod
     def camera_bounds(cls,v):
-        if v and any(abs(n)>1e8 for n in v):raise ValueError('Camera exceeds display limits.')
+        import math
+        if v and any(not math.isfinite(n) or abs(n)>1e8 for n in v):raise ValueError('Camera exceeds display limits.')
+        if v and sum((v[i]-v[i+3])**2 for i in range(3))<1e-12:raise ValueError('Camera eye and target must differ.')
         return v
     @field_validator('measurements')
     @classmethod

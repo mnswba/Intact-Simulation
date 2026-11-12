@@ -1,0 +1,591 @@
+[
+  {
+    "slug": "cairn-six-wheel-rover",
+    "title": "Cairn Six-Wheel Rover",
+    "category": "Robotics",
+    "summary": "An original six-wheel exploration rover with open rocker suspension, twin solar wings and a stereo sensor mast.",
+    "design_notes": "Hollow tires, orange wheel hubs, silver suspension links and segmented blue solar fields give this original rover a distinct silhouette. Original visual concept; mechanical function, strength and motion are unverified. Units are millimeters; native CAD Z is up.",
+    "part_count": 42,
+    "dimensions_mm": [
+      466.0,
+      494.0,
+      461.0
+    ],
+    "volume_mm3": 17009719.127180677,
+    "representation": "native",
+    "model_key": "cairn-six-wheel-rover",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-cairn-six-wheel-rover.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-cairn-six-wheel-rover.zip",
+    "package_filename": "intact-cairn-six-wheel-rover.zip",
+    "parameters": {},
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "ember-six-axis-arm",
+    "title": "Ember Six-Axis Arm",
+    "category": "Robotics",
+    "summary": "A vivid six-axis industrial manipulator in a bent inspection pose, with a parallel-jaw end effector.",
+    "design_notes": "Six distinct joint housings, inset link covers, anchor hardware and an elbow cable guard communicate the articulated mechanism. Original visual concept; mechanical function, strength and motion are unverified. Units are millimeters; native CAD Z is up.",
+    "part_count": 30,
+    "dimensions_mm": [
+      654.0,
+      200.0,
+      448.0000001
+    ],
+    "volume_mm3": 7557544.747422308,
+    "representation": "native",
+    "model_key": "ember-six-axis-arm",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-ember-six-axis-arm.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-ember-six-axis-arm.zip",
+    "package_filename": "intact-ember-six-axis-arm.zip",
+    "parameters": {},
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "finch-adaptive-gripper",
+    "title": "Finch Adaptive Gripper",
+    "category": "Robotics",
+    "summary": "A compact parallel two-finger gripper with twin guide rods, a central drive and articulated distal fingers.",
+    "design_notes": "The open gripping throat, dark tactile pads, cyan contact ribs and orange slides make its operating principle visible. Original visual concept; mechanical function, strength and motion are unverified. Units are millimeters; native CAD Z is up.",
+    "part_count": 30,
+    "dimensions_mm": [
+      178.0,
+      168.5,
+      229.0
+    ],
+    "volume_mm3": 2026579.9764081275,
+    "representation": "native",
+    "model_key": "finch-adaptive-gripper",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-finch-adaptive-gripper.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-finch-adaptive-gripper.zip",
+    "package_filename": "intact-finch-adaptive-gripper.zip",
+    "parameters": {},
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "kelp-quadruped-inspector",
+    "title": "Kelp Quadruped Inspector",
+    "category": "Robotics",
+    "summary": "An orange inspection quadruped with four articulated bent legs, stereo vision and a roof-mounted lidar.",
+    "design_notes": "A low armored body, exposed drive caps, compact shins and broad rounded feet suggest stable inspection work. Original visual concept; mechanical function, strength and motion are unverified. Units are millimeters; native CAD Z is up.",
+    "part_count": 39,
+    "dimensions_mm": [
+      434.0,
+      346.0,
+      376.0
+    ],
+    "volume_mm3": 10313184.951529954,
+    "representation": "native",
+    "model_key": "kelp-quadruped-inspector",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-kelp-quadruped-inspector.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-kelp-quadruped-inspector.zip",
+    "package_filename": "intact-kelp-quadruped-inspector.zip",
+    "parameters": {},
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "lumen-humanoid-service-robot",
+    "title": "Lumen Humanoid Service Robot",
+    "category": "Robotics",
+    "summary": "A complete approachable humanoid with a cyan visor, orange chest plate and articulated arms and legs.",
+    "design_notes": "Rounded white armor sits over dark joints; broad feet, separate thumbs and a chest display complete the service robot concept. Original visual concept; mechanical function, strength and motion are unverified. Units are millimeters; native CAD Z is up.",
+    "part_count": 43,
+    "dimensions_mm": [
+      565.0,
+      231.0,
+      1249.0
+    ],
+    "volume_mm3": 38989345.98819114,
+    "representation": "native",
+    "model_key": "lumen-humanoid-service-robot",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-lumen-humanoid-service-robot.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-lumen-humanoid-service-robot.zip",
+    "package_filename": "intact-lumen-humanoid-service-robot.zip",
+    "parameters": {},
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "piston_rod",
+    "title": "Grooved piston & split connecting rod",
+    "category": "Engine & powertrain",
+    "summary": "An open-skirt piston with three ring grooves, separate gapped rings, a hollow wrist pin and a split big end.",
+    "design_notes": "Original simplified 86 mm bore concept; ring grooves and wrist-pin bores are native cuts. No thermal, strength or engine-fit claims.",
+    "part_count": 9,
+    "dimensions_mm": [
+      86.0000002,
+      86.00000020001187,
+      198.0
+    ],
+    "volume_mm3": 193414.91750732984,
+    "representation": "native",
+    "model_key": "piston_rod",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-piston_rod.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-piston_rod.zip",
+    "package_filename": "intact-piston_rod.zip",
+    "parameters": {
+      "bore": 86.0
+    },
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "inline_four_crankshaft",
+    "title": "Inline-four crankshaft",
+    "category": "Engine & powertrain",
+    "summary": "Five main journals, four alternate-phase crankpins, eight counterweighted webs and a six-hole flywheel flange.",
+    "design_notes": "Original illustrative inline-four geometry; separate web and journal leaves. No balancing, oil-circuit or fatigue certification.",
+    "part_count": 19,
+    "dimensions_mm": [
+      385.0,
+      88.0,
+      116.0
+    ],
+    "volume_mm3": 1100393.4563167098,
+    "representation": "native",
+    "model_key": "inline_four_crankshaft",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-inline_four_crankshaft.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-inline_four_crankshaft.zip",
+    "package_filename": "intact-inline_four_crankshaft.zip",
+    "parameters": {
+      "journal_pitch": 76.0,
+      "crank_throw": 38.0
+    },
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "sectioned_turbocharger",
+    "title": "Sectioned turbocharger concept",
+    "category": "Engine & powertrain",
+    "summary": "Cutaway scroll-like housings reveal gold compressor blades, a rotor shaft, turbine wheel and bearing collars.",
+    "design_notes": "Illustrative sectioned mechanical concept; scroll, blade and flange dimensions are original. No aerodynamic or flow-performance claims.",
+    "part_count": 20,
+    "dimensions_mm": [
+      152.0,
+      110.43986917954237,
+      107.5000001
+    ],
+    "volume_mm3": 321484.1563391899,
+    "representation": "native",
+    "model_key": "sectioned_turbocharger",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-sectioned_turbocharger.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-sectioned_turbocharger.zip",
+    "package_filename": "intact-sectioned_turbocharger.zip",
+    "parameters": {
+      "compressor_radius": 52.0
+    },
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "dohc_cylinder_head",
+    "title": "Open DOHC cylinder head",
+    "category": "Engine & powertrain",
+    "summary": "An open two-cylinder head displays twin lobed cams, eight valves, spring-guide details and perforated timing wheels.",
+    "design_notes": "Original two-cylinder teaching concept. Annular spring proxies are not helices; cam timing, port flow and valve motion are illustrative.",
+    "part_count": 27,
+    "dimensions_mm": [
+      220.5,
+      116.0000002,
+      97.5000001
+    ],
+    "volume_mm3": 609423.2215507528,
+    "representation": "native",
+    "model_key": "dohc_cylinder_head",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-dohc_cylinder_head.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-dohc_cylinder_head.zip",
+    "package_filename": "intact-dohc_cylinder_head.zip",
+    "parameters": {
+      "cylinder_pitch": 88.0
+    },
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "planetary_reduction_gearbox",
+    "title": "Planetary reduction gearbox",
+    "category": "Engine & powertrain",
+    "summary": "A half-section housing exposes a sun, three planets, an internal ring and a three-arm carrier.",
+    "design_notes": "Original arrangement with illustrative radial block teeth; not manufacturing-grade involute or certified gearing. No torque, ratio or efficiency claim.",
+    "part_count": 14,
+    "dimensions_mm": [
+      148.0,
+      148.0,
+      112.0
+    ],
+    "volume_mm3": 389584.6762744401,
+    "representation": "native",
+    "model_key": "planetary_reduction_gearbox",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-planetary_reduction_gearbox.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-planetary_reduction_gearbox.zip",
+    "package_filename": "intact-planetary_reduction_gearbox.zip",
+    "parameters": {
+      "ring_outer_radius": 67.0
+    },
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "battery_thermal_concept",
+    "title": "Battery thermal-management concept",
+    "category": "Product concepts",
+    "summary": "Sectioned pack layout showing a generic cell array, copper-colored busbars and a cooling-plate manifold.",
+    "design_notes": "Generic cylindrical cells; open housing exposes packing and thermal hardware. Geometry concept only; no supplier, thermal or safety performance is asserted.",
+    "part_count": 36,
+    "dimensions_mm": [
+      160.0,
+      144.0,
+      85.0
+    ],
+    "volume_mm3": 793130.6192542373,
+    "representation": "native",
+    "model_key": "battery_thermal_concept",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-battery_thermal_concept.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-battery_thermal_concept.zip",
+    "package_filename": "intact-battery_thermal_concept.zip",
+    "parameters": {
+      "cell_pitch_mm": 32,
+      "cell_radius_mm": 13,
+      "cell_height_mm": 65
+    },
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "inspection_quadrotor",
+    "title": "Inspection quadrotor concept",
+    "category": "Product concepts",
+    "summary": "Four guarded rotors surround a sculpted canopy, landing rails and forward camera.",
+    "design_notes": "Inspection-drone packaging concept with native lofted canopy, propeller solids and open rotor guards; no flight performance is asserted.",
+    "part_count": 32,
+    "dimensions_mm": [
+      262.63456,
+      262.63456,
+      65.5
+    ],
+    "volume_mm3": 381830.6525250007,
+    "representation": "native",
+    "model_key": "inspection_quadrotor",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-inspection_quadrotor.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-inspection_quadrotor.zip",
+    "package_filename": "intact-inspection_quadrotor.zip",
+    "parameters": {
+      "arm_reach_mm": 115,
+      "prop_radius_mm": 43
+    },
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "desktop_air_monitor",
+    "title": "Desktop air-quality monitor concept",
+    "category": "Product concepts",
+    "summary": "A lifted vented cover reveals a visible PCB, sensor chamber and display assembly.",
+    "design_notes": "Product packaging study with ventilated shell and exploded cover. Display marks and sensor geometry are illustrative; no calibrated sensing function is claimed.",
+    "part_count": 18,
+    "dimensions_mm": [
+      112.0,
+      115.77428,
+      90.01345
+    ],
+    "volume_mm3": 178427.60169190963,
+    "representation": "native",
+    "model_key": "desktop_air_monitor",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-desktop_air_monitor.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-desktop_air_monitor.zip",
+    "package_filename": "intact-desktop_air_monitor.zip",
+    "parameters": {
+      "width_mm": 112,
+      "depth_mm": 92,
+      "height_mm": 48
+    },
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "helical_vertical_turbine",
+    "title": "Helical vertical-axis turbine concept",
+    "category": "Product concepts",
+    "summary": "Three continuous twisted blades wrap around a central shaft above a generator and bolted base.",
+    "design_notes": "Nine rotated elliptical sections per blade create native smooth lofts with 100 degrees of twist. Upper and lower supports follow blade endpoints; no energy or performance claim.",
+    "part_count": 21,
+    "dimensions_mm": [
+      196.49021,
+      191.35629,
+      362.5
+    ],
+    "volume_mm3": 1060371.871353081,
+    "representation": "native",
+    "model_key": "helical_vertical_turbine",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-helical_vertical_turbine.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-helical_vertical_turbine.zip",
+    "package_filename": "intact-helical_vertical_turbine.zip",
+    "parameters": {
+      "rotor_radius_mm": 85,
+      "blade_height_mm": 260,
+      "twist_deg": 100
+    },
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "liquid_cooled_compute",
+    "title": "Liquid-cooled compute module concept",
+    "category": "Product concepts",
+    "summary": "Visible compute board, copper-colored waterblock, routed coolant tubes and finned radiator.",
+    "design_notes": "Packaging concept showing processor block, memory, power stages and paired coolant routes. Tubes are solid swept visual envelopes; no operating pressure or cooling performance is asserted.",
+    "part_count": 34,
+    "dimensions_mm": [
+      230.5,
+      150.0,
+      87.87446
+    ],
+    "volume_mm3": 602942.8843711131,
+    "representation": "native",
+    "model_key": "liquid_cooled_compute",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-liquid_cooled_compute.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-liquid_cooled_compute.zip",
+    "package_filename": "intact-liquid_cooled_compute.zip",
+    "parameters": {
+      "board_length_mm": 170,
+      "board_width_mm": 130
+    },
+    "formats": [
+      "glb",
+      "step",
+      "stl",
+      "3mf"
+    ]
+  },
+  {
+    "slug": "gradient-gyroid-core",
+    "title": "Gradient gyroid core",
+    "category": "TPMS",
+    "summary": "A graded periodic core with an open, flowing gyroid network.",
+    "design_notes": "Dimensionless implicit band varies along Z; it is not a constant wall thickness.",
+    "part_count": 1,
+    "dimensions_mm": [
+      35.99999809265137,
+      29.999999046325684,
+      23.999999046325684
+    ],
+    "volume_mm3": 6219.38078582304,
+    "representation": "sampled TPMS mesh",
+    "model_key": "gradient-gyroid-core",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-gradient-gyroid-core.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-gradient-gyroid-core.zip",
+    "package_filename": "intact-gradient-gyroid-core.zip",
+    "parameters": {
+      "sx": 36,
+      "sy": 30,
+      "sz": 24,
+      "cell": 12,
+      "band": 0.4,
+      "samples": 18,
+      "gradient": 0.65
+    },
+    "formats": [
+      "glb",
+      "stl",
+      "3mf"
+    ],
+    "render_color": "#58b6a1"
+  },
+  {
+    "slug": "schwarz-flow-column",
+    "title": "Schwarz P flow column",
+    "category": "TPMS",
+    "summary": "A cylindrical Schwarz P structure with interconnected rounded passages.",
+    "design_notes": "Flow-column geometry concept only; pressure drop, permeability and strength are unverified.",
+    "part_count": 1,
+    "dimensions_mm": [
+      29.999999046325684,
+      29.999999046325684,
+      47.99999809265137
+    ],
+    "volume_mm3": 10541.311747946762,
+    "representation": "sampled TPMS mesh",
+    "model_key": "schwarz-flow-column",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-schwarz-flow-column.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-schwarz-flow-column.zip",
+    "package_filename": "intact-schwarz-flow-column.zip",
+    "parameters": {
+      "sx": 30,
+      "sy": 30,
+      "sz": 48,
+      "cell": 12,
+      "band": 0.55,
+      "samples": 18,
+      "gradient": 0
+    },
+    "formats": [
+      "glb",
+      "stl",
+      "3mf"
+    ],
+    "render_color": "#d9ad63"
+  },
+  {
+    "slug": "diamond-exchanger-core",
+    "title": "Diamond exchanger core",
+    "category": "TPMS",
+    "summary": "A compact diamond-network core for exploring periodic internal architecture.",
+    "design_notes": "Heat-exchanger concept only; no conjugate heat transfer or performance prediction.",
+    "part_count": 1,
+    "dimensions_mm": [
+      35.99999809265137,
+      23.999999046325684,
+      23.999999046325684
+    ],
+    "volume_mm3": 5588.818035207186,
+    "representation": "sampled TPMS mesh",
+    "model_key": "diamond-exchanger-core",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-diamond-exchanger-core.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-diamond-exchanger-core.zip",
+    "package_filename": "intact-diamond-exchanger-core.zip",
+    "parameters": {
+      "sx": 36,
+      "sy": 24,
+      "sz": 24,
+      "cell": 12,
+      "band": 0.35,
+      "samples": 18,
+      "gradient": 0
+    },
+    "formats": [
+      "glb",
+      "stl",
+      "3mf"
+    ],
+    "render_color": "#5d9eca"
+  },
+  {
+    "slug": "neovius-porous-sphere",
+    "title": "Neovius porous sphere",
+    "category": "TPMS",
+    "summary": "A spherical envelope carved by a continuous Neovius-type implicit network.",
+    "design_notes": "Nodal approximation and mesh volume estimate, not an exact mathematical minimal surface.",
+    "part_count": 1,
+    "dimensions_mm": [
+      31.908699989318848,
+      31.908699989318848,
+      31.908699989318848
+    ],
+    "volume_mm3": 5987.017006933336,
+    "representation": "sampled TPMS mesh",
+    "model_key": "neovius-porous-sphere",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-neovius-porous-sphere.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-neovius-porous-sphere.zip",
+    "package_filename": "intact-neovius-porous-sphere.zip",
+    "parameters": {
+      "sx": 32,
+      "sy": 32,
+      "sz": 32,
+      "cell": 11,
+      "band": 0.8,
+      "samples": 18,
+      "gradient": 0
+    },
+    "formats": [
+      "glb",
+      "stl",
+      "3mf"
+    ],
+    "render_color": "#b68bbd"
+  },
+  {
+    "slug": "lidinoid-lattice-panel",
+    "title": "Lidinoid lattice panel",
+    "category": "TPMS",
+    "summary": "A thin periodic panel with intricate Lidinoid openings and a mild Z gradient.",
+    "design_notes": "Sampling resolution and band are explicit; minimum manufactured wall thickness is not certified.",
+    "part_count": 1,
+    "dimensions_mm": [
+      47.99999809265137,
+      23.999999046325684,
+      11.999997615814209
+    ],
+    "volume_mm3": 4079.7711860651957,
+    "representation": "sampled TPMS mesh",
+    "model_key": "lidinoid-lattice-panel",
+    "thumbnail_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/showcase-lidinoid-lattice-panel.png",
+    "package_url": "https://www.intactsimulation.com/wp-content/uploads/2026/11/intact-lidinoid-lattice-panel.zip",
+    "package_filename": "intact-lidinoid-lattice-panel.zip",
+    "parameters": {
+      "sx": 48,
+      "sy": 24,
+      "sz": 12,
+      "cell": 12,
+      "band": 0.55,
+      "samples": 18,
+      "gradient": 0.3
+    },
+    "formats": [
+      "glb",
+      "stl",
+      "3mf"
+    ],
+    "render_color": "#e08d63"
+  }
+]

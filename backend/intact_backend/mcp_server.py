@@ -47,6 +47,8 @@ class IntactMCP:
         try:return self._call(name,args,cancel_event)
         except (ValueError,OSError,SandboxUnavailable) as exc:raise ToolError(str(exc)[:4000]) from exc
     def _call(self,name,args,cancel_event=None):
+        from .interactive_mcp import NAMES as INTERACTIVE,dispatch as interactive_dispatch
+        if name in INTERACTIVE:return interactive_dispatch(self,name,args,cancel_event)
         from .advanced_mcp import NAMES,dispatch
         if name in NAMES:return dispatch(self,name,args,cancel_event)
         if name in ('set_design_requirements','get_design_requirements','create_sketch','set_sketch_constraints','solve_sketch','get_feature_tree','edit_feature_tree','rebuild_features'):
@@ -218,8 +220,8 @@ def create_server(engine:IntactMCP|None=None):
         """Independently reopen actual STEP or STL, check validity, volume/area/labels and checksums, and compare requested per-part length/width/height in CAD XYZ mm. Return actual curved face radii/centers for hole checks. Supply expected dimensions from the user's brief, not copied measurements. A false passed result needs repair or disclosure. Does not certify manufacturing or engineering safety."""
         return engine.call('validate_model',{'model_id':model_id,'expected_bounds':expected_bounds,'expected_part_ids':expected_part_ids,'tolerance_mm':tolerance_mm})
     @server.tool(annotations=write)
-    async def update_parameters(model_id:str,parameters:dict[str,StrictFloat],ctx:Context,expected_revision:Revision|None=None)->dict[str,Any]:
-        """Merge numeric parameter changes into saved CAD source and rebuild. Preserves model name and part colors; failed builds do not change the saved model."""
+    async def update_parameters(model_id:str,parameters:dict[str,StrictFloat|str],ctx:Context,expected_revision:Revision|None=None)->dict[str,Any]:
+        """Merge numeric or bounded arithmetic parameter changes into saved CAD source and rebuild. Expressions accept existing parameter names, parentheses and + - * / only; no functions or implicit units. Preserves model name and part colors; failed builds do not change the saved model."""
         return await execute('update_parameters',{'model_id':model_id,'parameters':parameters,'expected_revision':expected_revision},ctx)
     @server.tool(annotations=write)
     def set_appearance(model_id:str,part_id:str,color:str|None=None,material:Literal['aluminum','steel','copper']|None=None,name:str|None=None)->dict[str,Any]:
@@ -302,6 +304,8 @@ def create_server(engine:IntactMCP|None=None):
         return await execute('apply_edit_request',dict(model_id=model_id,request_id=request_id,source=source,parameters=parameters),ctx)
     from .advanced_mcp import register
     register(server,engine,execute,read,write)
+    from .interactive_mcp import register as register_interactive
+    register_interactive(server,engine,execute,read,write)
     return server
 
 def main():create_server().run(transport='stdio')

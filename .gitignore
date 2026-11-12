@@ -69,3 +69,6 @@ backend/.state/
 # Local PicoGK bridge build outputs
 backend/picogk/bin/
 backend/picogk/obj/
+
+# Website thumbnails are published media; source catalog contains their URLs.
+website/site/demo/showcase-*.png

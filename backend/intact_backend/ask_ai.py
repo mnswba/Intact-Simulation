@@ -5,12 +5,12 @@ from pathlib import Path
 from .edit_requests import EditRequests
 from .projects import ProjectService,atomic_json
 
-READ={'status','get_model','measure_model','resolve_references','get_feature_tree','get_design_requirements','verify_design','validate_model','check_accuracy','export_model','open_viewer','revisions','read_edit_request','snapshot_model'}
+READ={'status','get_model','measure_model','resolve_references','get_feature_tree','get_design_requirements','verify_design','validate_model','check_accuracy','export_model','open_viewer','revisions','read_edit_request','respond_to_edit_request','snapshot_model'}
 READ |= {'engineering_evidence','run_3d_simulation','manufacturing_review','engineering_drawing','get_engineering_job'}
 SIMULATION={'configure_simulation','get_simulation_workspace','run_virtual_analysis','submit_engineering_job','cancel_engineering_job'}
-READ |= SIMULATION | {'measure_mesh_quality'}
+READ |= SIMULATION | {'measure_mesh_quality','list_commands','describe_command','control_view','parameter_configuration','preview_parameters'}
 WRITE={'build_model','build_tpms','update_parameters','create_sketch','set_sketch_constraints','edit_feature_tree','rebuild_features','set_design_requirements','set_accuracy','bind_reference'}
-WRITE |= {'build_lattice_mm','build_hybrid','set_assembly_joints','insert_component'}
+WRITE |= {'apply_configuration','build_lattice_mm','build_hybrid','set_assembly_joints','insert_component'}
 
 def client_path():
     configured=os.environ.get('INTACT_CODEX_CLI')
@@ -175,7 +175,7 @@ def scoped_engine(root,key,rid):
         def authorize(self,name,args):
             if name not in READ|WRITE:raise ToolError('This operation is unavailable in Ask AI.')
             if name!='status' and args.get('model_id')!=key:raise ToolError('Ask AI is limited to the selected model.')
-            if name=='read_edit_request' and args.get('request_id')!=rid:raise ToolError('Ask AI is limited to this request.')
+            if name in ('read_edit_request','respond_to_edit_request') and args.get('request_id')!=rid:raise ToolError('Ask AI is limited to this request.')
             if name in WRITE and self.request.get('intent') in ('question','simulation'):raise ToolError('This request is read-only for CAD and preserves Design geometry.')
             if name=='submit_engineering_job' and args.get('operation') not in ('simulate',):raise ToolError('Ask AI jobs are limited to mechanical and virtual simulation.')
             if name=='cancel_engineering_job':

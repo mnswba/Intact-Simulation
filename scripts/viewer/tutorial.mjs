@@ -1,6 +1,7 @@
 import {settings} from './settings.mjs';
 const topic=(id,target,name,definition,...how)=>({id,target,name,definition,how});
 export const topics=[
+ topic('commands','#command-palette','Commands and saved views','Search common viewer operations and bookmark camera, section and visibility settings.','Press Ctrl/Cmd+K, search a command and run it.','Enter a view name and Save current view; select its name to restore. Saved views preserve CAD revisions and refuse changed geometry.'),
  ...[
  ['workspace','Design / Simulation','Switch between preserved CAD design and separate simulation studies.','Click Simulation to configure a study; click Design to restore your design display.'],
  ['virtual','Virtual Analysis','Kinematic driving, walking or machine trajectories using stable part IDs.','Open Simulation → Virtual Analysis, describe movement and ask AI to prepare bindings; use the preview playback controls.'],

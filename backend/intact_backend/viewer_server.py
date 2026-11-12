@@ -8,7 +8,7 @@ from urllib.parse import urlsplit,parse_qs
 from urllib.request import urlopen
 from .projects import ProjectService, atomic_json, EXPORTS
 
-VERSION='0.16.1'
+VERSION='0.17.0'
 
 def registry(root):return Path(root)/'viewer-session.json'
 
@@ -182,7 +182,11 @@ class ViewerHandler(BaseHTTPRequestHandler):
                 return self.send(200,{'model_id':record['model_id']})
             if kind=='appearance':record=self.projects.appearance(key,data['part_id'],data.get('color'),data.get('material'),data.get('name'));return self.send(200,record)
             if kind=='parameters':record=self.projects.parameters(key,data['parameters'],expected_revision=data.get('expected_revision'));return self.send(200,record)
-            if kind=='view-settings':return self.send(200,self.projects.save_view(key,data))
+            if kind=='view-settings':
+                expected=data.pop('expected_view_revision',None);self.projects.save_view(key,data,expected);return self.send(200,{'view_revision':self.projects.load(key).get('view_revision',0)})
+            if kind=='named-view':
+                from .interactive import view_command
+                return self.send(200,view_command(self.projects,key,**data))
             if kind=='restore':return self.send(200,self.projects.restore(key,data['revision']))
             raise ValueError('Unknown operation.')
         except (ValueError,KeyError,TypeError) as exc:self.send(400,{'error':str(exc)[:3000]})
