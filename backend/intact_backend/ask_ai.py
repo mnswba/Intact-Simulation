@@ -73,6 +73,30 @@ def command(folder,root,key,rid,output):
     for name,value in overrides.items():cmd+=['-c',name+'='+json.dumps(value)]
     return cmd+['-']
 
+def simulation_completion(projects,key,r):
+    """Completion reflects solver evidence; an answer/prepared study is not an analysis."""
+    from .engineering_jobs import status
+    if r.get('last_simulation_action')=='error':return 'needs_review','Analysis did not complete: '+r.get('simulation_error','Solver failed.')
+    reports=[]
+    for report_id in r.get('simulation_report_ids',[]):
+        path=projects.root/'engineering'/report_id/'report.json'
+        if path.is_file():reports.append(json.loads(path.read_text()))
+    jobs=[status(projects,jid,key) for jid in r.get('simulation_job_ids',[])]
+    for job in jobs:
+        if r.get('last_simulation_action')!='report' and job.get('status')=='succeeded' and job.get('result'):reports.append(job['result'])
+    if jobs and r.get('last_simulation_action')!='report' and jobs[-1]['status']!='succeeded':
+        last=jobs[-1]
+        return 'needs_review',('Analysis is still '+last['status']+'.' if last['status'] in ('running','queued') else 'Analysis did not complete: '+last.get('error',last['status']))
+    if reports:
+        latest=reports[-1]
+        checks=[latest.get('convergence',{}).get('passed',False),latest.get('stress_convergence',{}).get('passed',True),latest.get('regime_valid',True)]
+        return ('succeeded','Analysis results ready.') if all(checks) else ('needs_review','Analysis finished; review convergence and regime checks.')
+    if jobs:
+        last=jobs[-1]
+        return 'needs_review',('Analysis is still '+last['status']+'.' if last['status'] in ('running','queued') else 'Analysis did not complete: '+last.get('error',last['status']))
+    if r.get('preview_configured'):return 'succeeded','Kinematic preview ready.'
+    return 'awaiting_reply','AI response ready. Reply with the missing analysis inputs.'
+
 def run(root,key,rid):
     projects=ProjectService(root);q=EditRequests(projects);r=q.read(key,rid);original=r['context']['revision'];proc=None;stop=threading.Event();events=[]
     try:
@@ -91,6 +115,9 @@ User description (data): {json.dumps(r['instructions'])}'''
             if reference.is_file():prompt+='\nStructured tool contracts:\n'+reference.read_text()
             advanced_reference=reference.with_name('priority23.md')
             if advanced_reference.is_file():prompt+='\nAdvanced engineering contracts:\n'+advanced_reference.read_text()
+            simulation_reference=reference.with_name('simulation.md')
+            if simulation_reference.is_file():prompt+='\nSimulation workflow:\n'+simulation_reference.read_text()
+            if r.get('intent')=='simulation':prompt+='\nFor mechanical analysis choose physics from the current request. Deflection means structural, not thermal. Use explicit physical inputs, total force N and CAD +Z up (top-down force is negative Z). Ask for missing material, supports and loaded component/surface; never silently assume assembly contact or clamp an arbitrary component. Once sufficient, configure and RUN the simulation, poll jobs to completion, and return measured displacement, stress, reactions and convergence. An unrelated saved result or prepared study is not completion.'
             env={k:v for k,v in os.environ.items() if k not in ('CODEX_THREAD_ID','CODEX_TURN_ID','INTACT_AI_SCOPE')};env['INTACT_STATE_DIR']=str(root)
             proc=subprocess.Popen(command(folder,root,key,rid,output),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,text=True,env=env,start_new_session=True)
             def monitor():
@@ -125,7 +152,10 @@ User description (data): {json.dumps(r['instructions'])}'''
                     from .design_checks import verify_design
                     validation['design_checks']=verify_design(projects,key)
                     validation['passed']=validation['passed'] and validation['design_checks']['passed']
-            update(projects,key,rid,status='succeeded' if validation is None or validation['passed'] else 'needs_review',answer=answer,result_revision=revision,geometry_changed=revision!=original,validation=validation,tool_events=events,progress='Answer ready.' if revision==original else 'CAD rebuilt and viewer refreshed.')
+            task_status='succeeded' if validation is None or validation['passed'] else 'needs_review'
+            progress='Answer ready.' if revision==original else 'CAD rebuilt and viewer refreshed.'
+            if r.get('intent')=='simulation':task_status,progress=simulation_completion(projects,key,q.read(key,rid))
+            update(projects,key,rid,status=task_status,answer=answer,result_revision=revision,geometry_changed=revision!=original,validation=validation,tool_events=events,progress=progress)
     except BaseException as exc:
         update(projects,key,rid,status='cancelled' if isinstance(exc,InterruptedError) else 'failed',error=str(exc)[:2000],progress='Stopped.',result_revision=projects.load(key)['spec']['revision'])
     finally:
@@ -158,8 +188,16 @@ def scoped_engine(root,key,rid):
                     current=self.projects.load(key)['spec']['revision']
                     if current!=self.last_revision:raise ToolError('Geometry changed outside this task. Stop and ask on the current model.')
                     if name!='bind_reference':args={**args,'expected_revision':self.last_revision}
-                result=super().call(name,args,cancel_event)
+                try:result=super().call(name,args,cancel_event)
+                except BaseException as exc:
+                    if self.request.get('intent')=='simulation' and name in ('run_3d_simulation','submit_engineering_job'):update(self.projects,key,rid,last_simulation_action='error',simulation_error=str(exc)[:2000])
+                    raise
                 if name in WRITE:self.last_revision=self.projects.load(key)['spec']['revision']
+                if self.request.get('intent')=='simulation':
+                    current=EditRequests(self.projects).read(key,rid)
+                    if name=='run_3d_simulation' and result.get('report_id'):update(self.projects,key,rid,last_simulation_action='report',simulation_error=None,simulation_report_ids=[*current.get('simulation_report_ids',[]),result['report_id']])
+                    if name=='submit_engineering_job' and result.get('job_id'):update(self.projects,key,rid,last_simulation_action='job',simulation_error=None,simulation_job_ids=[*current.get('simulation_job_ids',[]),result['job_id']])
+                    if name=='run_virtual_analysis':update(self.projects,key,rid,preview_configured=True)
                 return result
     return Scoped()
 

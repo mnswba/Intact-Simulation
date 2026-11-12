@@ -8,7 +8,7 @@ from urllib.parse import urlsplit,parse_qs
 from urllib.request import urlopen
 from .projects import ProjectService, atomic_json, EXPORTS
 
-VERSION='0.15.0'
+VERSION='0.16.0'
 
 def registry(root):return Path(root)/'viewer-session.json'
 
@@ -75,6 +75,7 @@ class ViewerHandler(BaseHTTPRequestHandler):
                     from .engineering_schema import Engineering
                     return self.send(200,{'model_id':key,'revision':revision,'draft':False,'engineering':Engineering.model_validate(r.get('engineering',{})).model_dump(mode='json')})
                 return self.send(200,FeatureService(self.projects).get(key))
+            if kind=='logo.svg':return self.send(200,Path(__file__).with_name('logo.svg').read_bytes(),'image/svg+xml')
             if kind=='draft-viewer.js':return self.send(200,Path(__file__).with_name('draft_viewer.js').read_bytes(),'text/javascript')
             if not self.projects.path(key).exists():
                 FeatureService(self.projects).load(key)

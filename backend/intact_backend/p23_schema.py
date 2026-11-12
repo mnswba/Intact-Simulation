@@ -69,6 +69,10 @@ class Simulation(StrictModel):
     convergence_tolerance:StrictFloat=Field(default=.1,ge=.001,le=.5)
     @model_validator(mode='after')
     def boundaries(self):
+        import re
+        # Explicit deflection/stress intent cannot be satisfied by a saved thermal or flow study.
+        if re.search(r'\b(deflect(?:ion)?|displacement|von[ -]?mises|structural stress)\b',self.user_request,re.I) and self.kind!='structural':
+            raise ValueError('Deflection/displacement requires a structural study with material, loads and supports; thermal and flow results cannot answer this request.')
         thermal={'temperature','heat_flux','convection','insulated'}
         structural={'fixed','displacement','force','pressure'}
         allowed=thermal if self.kind=='thermal' else structural if self.kind=='structural' else set()

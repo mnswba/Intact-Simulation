@@ -21,6 +21,7 @@ shutil.copy2(repo/'docs/PRIORITY1_OPEN_SOURCE.md',runtime/'PRIORITY1_OPEN_SOURCE
 shutil.copy2(repo/'docs/PRIORITY23_OPEN_SOURCE.md',runtime/'PRIORITY23_OPEN_SOURCE.md')
 shutil.copy2(repo/'plugin/skills/intact-cad/references/structured-modeling.md',runtime/'structured-modeling.md')
 shutil.copy2(repo/'plugin/skills/intact-cad/references/priority23.md',runtime/'priority23.md')
+shutil.copy2(repo/'plugin/skills/intact-cad/references/simulation.md',runtime/'simulation.md')
 for filename in ('pyproject.toml','uv.lock'):shutil.copy2(repo/'backend'/filename,runtime/filename)
 shutil.copytree(repo/'backend/intact_backend',runtime/'intact_backend',dirs_exist_ok=True,ignore=shutil.ignore_patterns('__pycache__'))
 for obsolete in ('agent.py','codex_transport.py','model_connection.py','edit_jobs.py','motion_worker.py'):

@@ -26,7 +26,7 @@ flowchart LR
 - `intact_lattice.py`, `advanced_worker.py`: bounded implicit sampling, distance-offset lattices and mesh operations.
 - `simulation_worker.py`, `engineering_jobs.py`: supported 3D solves and cancellable jobs with recorded assumptions.
 - `viewer_server.py`, `viewer.html`, `scripts/plugin-viewer.mjs`, `scripts/viewer/`: loopback server, browser controls and live geometry/results.
-- `edit_requests.py`, `ask_ai.py`: persisted request chains and optional scoped local AI fallback. Native browser handoff is in `scripts/viewer/chat-handoff.mjs`.
+- `edit_requests.py`, `ask_ai.py`: persisted request chains and optional scoped local AI fallback. Automatic message dispatch is in `scripts/viewer/direct-ai.mjs`; Ask AI no longer opens Annotation.
 - `plugin/skills/intact-cad/`: AI workflow instructions and tool contracts; not neural-network weights.
 - `app/`, `components/`, `lib/`: separately hosted website development source.
 

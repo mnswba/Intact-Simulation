@@ -2,7 +2,7 @@
 
 **Design, inspect and simulate CAD through an AI conversation.**
 
-[Website](https://www.intactsimulation.com/) · [Installation](docs/install.md) · [Examples](models/README.md) · [Architecture](docs/architecture.md) · [Contributing](CONTRIBUTING.md)
+[Website](https://www.intactsimulation.com/) · [Installation](docs/install.md) · [Examples](models/README.md) · [Architecture](docs/architecture.md) · [Contributing](CONTRIBUTING.md) · [ChatGPT launch procedure](docs/CHATGPT_LAUNCH.md)
 
 Intact gives an AI assistant local tools to create parametric parts and assemblies, inspect native geometry, edit designs and run supported engineering studies. The assistant reasons in your conversation; open-source CAD and numerical engines execute on your computer. No LiteLLM or separate model-service API key is required for the ChatGPT workflow.
 
@@ -39,14 +39,14 @@ This installs a local development plugin. Publishing this repository does not li
 | Editable history | Explicit feature graphs with supported sketch/extrude/revolve/hole/fillet/chamfer/boolean/pattern/transform operations |
 | Geometry inspection | Parts, faces, edges, vertices, native measurements, snapping and named references with ambiguity detection |
 | Viewer | Viewport-only fullscreen, right-click geometry actions, zoom/fit, standard projections, model-attached text, exploded component labels, collapsible components and five recent models |
-| Ask AI | Select geometry, attach references/sketches, describe an edit or question, rebuild and refresh; ChatGPT annotation handoff and clarification replies |
+| Ask AI | Select geometry, attach references/sketches, describe an edit or question, rebuild and refresh; Automatic Ask AI submission and clarification replies |
 | Verification | Native validity, saved dimension/hole/placement/clearance checks, requested tolerance and mesh convergence reports |
 | Lattices | Six sampled TPMS families, distance offsets, envelopes, mesh booleans and hybrid geometry |
 | Engineering | AI tools for bounded joints, reconstruction, manufacturing screening, reference drawings and background jobs; Design stays focused; simulation jobs appear in Simulation |
 | Simulation | Separate Virtual and Mechanical workspaces: kinematic driving, walking and machine previews; 3D thermal, static stress and creeping-flow Stokes, AI-prepared face conditions, automatic mesh sizing, colored fields, playback and CSV/VTU downloads |
 | Exports | STEP, ASCII/binary STL, GLB, 3MF, Python, project JSON, binary USD and text USDA; Project adds annotated PNG, PPTX, BOM CSV, 2D DXF/DWG and conditional FCStd/source STEP |
 
-Version **0.15.0** exposes **57 MCP tools**. See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
+Version **0.16.0** exposes **57 MCP tools**. [Latest changes and measured verification](docs/RELEASE_0_16.md). See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
 
 The **Tutorial** button next to Settings includes searchable help topics and an optional guided tour. Each topic explains a control, its purpose and usage steps. Use the mouse wheel for zoom and **Zoom to fit** beside Grid.
 
@@ -74,7 +74,7 @@ Select a part, face or edge in the viewer, enter a description, and click **Ask 
 
 > Add a matching camera on the opposite side. Preserve the indicator. Ask me if the required clearance cannot be maintained.
 
-Inside ChatGPT's built-in browser, this opens an annotation containing the selection and description. Review and send it, then continue replying in ChatGPT. The viewer also provides a Reply field. Ordinary browsers can use a separate scoped task through a signed-in local OpenAI client; that fallback does not post into the existing conversation. [Details](docs/ASK_AI_HANDOFF.md).
+Ask AI sends directly through the supported ChatGPT component bridge when available. In the localhost viewer it otherwise starts a separate scoped task through the signed-in OpenAI local client automatically; progress, answers and replies appear in Intact. This fallback does not post into the open ChatGPT conversation. No Annotation editor or clipboard step is required. [Details](docs/ASK_AI_HANDOFF.md).
 
 ### TPMS structures
 
@@ -127,7 +127,7 @@ npm test
 node scripts/build-plugin-viewer.mjs
 ```
 
-Some engineering and browser tests require FreeCAD, bubblewrap, browser libraries or the installed local runtime. [Contributing](CONTRIBUTING.md) explains the test layers. The optional website is development source and requires its own hosting/authentication configuration; this repository does not deploy it automatically.
+Some engineering and browser tests require FreeCAD, bubblewrap, browser libraries or the installed local runtime. [Contributing](CONTRIBUTING.md) · [ChatGPT launch procedure](docs/CHATGPT_LAUNCH.md) explains the test layers. The optional website is development source and requires its own hosting/authentication configuration; this repository does not deploy it automatically.
 
 ## Scope and privacy
 

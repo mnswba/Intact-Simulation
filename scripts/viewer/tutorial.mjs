@@ -4,7 +4,7 @@ export const topics=[
  ...[
  ['workspace','Design / Simulation','Switch between preserved CAD design and separate simulation studies.','Click Simulation to configure a study; click Design to restore your design display.'],
  ['virtual','Virtual Analysis','Kinematic driving, walking or machine trajectories using stable part IDs.','Open Simulation → Virtual Analysis, describe movement and ask AI to prepare bindings; use the preview playback controls.'],
- ['mechanical','Mechanical Analysis','Steady conduction, static linear stress and creeping-flow Stokes.','Open Simulation → Mechanical Analysis, describe material, supports and loads, then use Ask AI or Run Analysis.'],
+ ['mechanical','Mechanical Analysis','Steady conduction, static linear stress and creeping-flow Stokes.','Open Simulation → Mechanical Analysis, describe material, supports and loads, then click Ask AI. It runs the analysis once the physical inputs are sufficient.'],
  ['bodies','Motion bodies','AI binds existing CAD part IDs and pivots to a kinematic preview.','Describe which components move and ask AI to prepare the preview. No force or dynamics prediction is performed.'],
  ['joints','Joints and motors','Existing separate CAD parts can follow prescribed joint rotations.','Ask AI to identify each moving part and its CAD-space pivot and axis.'],
  ['gait','Gait / machine cycles','Sine amplitude, frequency and phase prescribe repeated motor trajectories.','Configure phased sine joints. A gait preview does not certify dynamic balance.'],
@@ -13,7 +13,7 @@ export const topics=[
  ['mesh','Mesh and accuracy','Refinement comparison, residual and conservation checks expose numerical limits.','AI sets mesh accuracy through its tools. Automatic sizing retries excessive requests and reports the effective size.'],
  ['fields','Result fields','Colored temperature, displacement and stress fields from actual solver nodes.','Open a completed result, choose its field and read the blue-to-red range.'],
  ['playback','Motion playback','Play, pause or scrub recorded poses and inspect joint/contact data.','Open a motion result and use Play / pause or the frame slider.'],
- ['data','Simulation data and AI','Download reports, CSV, VTU or a URDF rig; ask AI to run saved studies.','Describe the analysis and click Ask AI or Run Analysis. Review and send the native ChatGPT annotation when prompted.'],
+ ['data','Simulation data and AI','Download reports, CSV, VTU or a URDF rig; ask AI to run saved studies.','Describe the analysis and click Ask AI. The task starts automatically; answer clarifications in the reply field.'],
  ].map(([id,name,definition,how])=>topic('simulation-'+id,'#workspace-simulation',name,definition,how)),
  topic('fullscreen','#toggle-fullscreen','Full screen / Compact screen','A model-only viewport with a reversible exit.','Click Full screen to hide workspace panels.','Click Compact screen or press Escape to return.'),
  topic('orbit','#cad-canvas','Orbit, pan and wheel zoom','Move the camera without changing CAD geometry.','Drag the left mouse button to orbit.','Drag the right mouse button to pan; use the wheel to zoom.'),

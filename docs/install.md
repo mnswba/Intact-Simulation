@@ -40,7 +40,7 @@ After the runtime installer, use this stdio command on Linux or inside WSL:
 
 In a client's JSON configuration, replace `~` with the actual absolute home path; JSON command fields generally do not expand it. Windows desktop clients should invoke that command through `wsl.exe --distribution YOUR_DISTRO --user YOUR_LINUX_USER --exec ...`.
 
-The repository includes `.claude-plugin/plugin.json` for local Claude Code development. From a prepared Linux/WSL clone, run `claude --plugin-dir .` to load its Intact tools and skill. The manifest uses `${CLAUDE_PLUGIN_ROOT}` for its launcher. It has been checked against the documented manifest layout, but live Claude Code operation has not been tested here. This does not create an Anthropic marketplace listing. The Ask AI browser annotation bridge is specific to ChatGPT's built-in browser; MCP CAD operations are independent of that bridge.
+The repository includes `.claude-plugin/plugin.json` for local Claude Code development. From a prepared Linux/WSL clone, run `claude --plugin-dir .` to load its Intact tools and skill. The manifest uses `${CLAUDE_PLUGIN_ROOT}` for its launcher. It has been checked against the documented manifest layout, but live Claude Code operation has not been tested here. This does not create an Anthropic marketplace listing. Ask AI uses a direct ChatGPT component message bridge when supplied by the host; otherwise it starts a separate signed-in local task. MCP CAD operations are independent of that UI transport.
 
 ## Updates
 

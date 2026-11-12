@@ -4,7 +4,9 @@ from .projects import atomic_json
 from .p23_schema import Simulation
 from .preview_schema import PreviewStudy
 HEAVY={'frames','positions_mm','triangles','values','scalar_fields','fields','vectors','settings','study_definition'}
-def compact(r):return {k:v for k,v in r.items() if k not in HEAVY and k!='result'}
+def compact(r):
+ settings=r.get('settings') or r.get('study_definition') or {}
+ return {**{k:v for k,v in r.items() if k not in HEAVY and k!='result'},'user_request':settings.get('user_request',''),'part_id':settings.get('part_id',r.get('part_id'))}
 def workspace(projects,key):
  r=projects.load(key);folder=projects.root/'simulation-workspaces';path=folder/(key+'.json')
  saved=json.loads(path.read_text()) if path.exists() else {'studies':{}}
