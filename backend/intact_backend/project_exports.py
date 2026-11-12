@@ -55,28 +55,8 @@ def create(projects,key,data):
    for row in rows:writer.writerow({k:("'"+v if isinstance(v,str) and v.startswith(('=','+','-','@','\t','\r')) else v) for k,v in row.items()})
   scope={'components':len(rows),'scope':'One row per saved named component; quantity 1 per unique instance. Not a supplier-priced procurement BOM.'}
  elif kind=='deck':
-  from pptx import Presentation
-  from pptx.util import Inches,Pt
-  from PIL import Image
-  images=data.get('images',[])
-  if not isinstance(images,list) or not 1<=len(images)<=5:raise ValueError('Provide one to five viewport images.')
-  if sum(len(i.get('data_url','')) for i in images if isinstance(i,dict))>20*1024*1024:raise ValueError('Slide images exceed the 15 MB limit.')
-  prs=Presentation();prs.slide_width=Inches(13.333);prs.slide_height=Inches(7.5)
-  slide=prs.slides.add_slide(prs.slide_layouts[0]);slide.shapes.title.text=record['name'];slide.placeholders[1].text=f"Revision {record['spec']['revision']} · {len(record['spec']['parts'])} components\nLengths in millimeters; volumes in mm³. Mesh measurements are sampled approximations."
-  for item in images:
-   image=EditRequests(projects).image(item);raw=base64.b64decode(image['data_url'].split(',',1)[1]);
-   try:im=Image.open(io.BytesIO(raw));im.verify()
-   except (OSError,ValueError) as exc:raise ValueError('Slide image is invalid or truncated.') from exc
-   width,height=im.size
-   if width*height>24000000:raise ValueError('Slide image exceeds the 24-megapixel limit.')
-   slide=prs.slides.add_slide(prs.slide_layouts[5]);slide.shapes.title.text=image['name'][:100]
-   w=min(12,6*width/height);h=w*height/width;slide.shapes.add_picture(io.BytesIO(raw),Inches((13.333-w)/2),Inches(1.2),width=Inches(w),height=Inches(h))
-  slide=prs.slides.add_slide(prs.slide_layouts[5]);slide.shapes.title.text='Components and saved geometry measurements'
-  textbox=slide.shapes.add_textbox(Inches(.6),Inches(1.2),Inches(12),Inches(5.6));tf=textbox.text_frame;tf.word_wrap=True
-  tf.text='\n'.join(f"{p['name']}: {p['measurements']['volume_mm3']:.3f} mm³" for p in record['spec']['parts'][:24])
-  if len(record['spec']['parts'])>24:tf.text+='\nSee the CSV BOM for all components.'
-  for paragraph in tf.paragraphs:paragraph.font.size=Pt(16)
-  prs.save(target);scope={'slides':len(prs.slides),'scope':'User viewport captures and saved part measurements; no invented analysis or automatic design approval.'}
+  from .presentation import build_deck
+  scope=build_deck(projects,record,data,target)
  else:
   scope=write_dxf(topology,folder/'drawing.dxf')
   if kind=='dwg':
@@ -90,6 +70,9 @@ def create(projects,key,data):
     if check.returncode or not output.is_file() or not json.loads(output.read_text()).get('OBJECTS'):raise ValueError('DWG read-back validation failed. Use the DXF export.')
     validated=True;output.unlink()
    scope.update(readback_validated=validated,format='DWG R2000',compatibility='GNU LibreDWG writer; independent CAD application compatibility is not certified.')
+ with projects.lock(key):
+  current=projects.load(key)
+  if current['spec']['revision']!=revision or current['spec']['program']['artifact_id']!=record['spec']['program']['artifact_id']:raise ValueError('Geometry changed while creating the deliverable. Refresh and retry; no mixed-revision file was published.')
  report={'export_id':identifier,'kind':kind,'model_id':key,'revision':record['spec']['revision'],'artifact_id':record['spec']['program']['artifact_id'],'filename':FILES[kind],**scope};atomic_json(folder/'report.json',report)
  return {**report,'download':'project-file?export_id='+identifier+'&file='+FILES[kind]}
 

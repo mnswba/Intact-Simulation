@@ -14,6 +14,10 @@ class Advanced:
   return r
  def worker(self,key,spec,worker='advanced_worker.py',files=None,cancel=None):
   r=self.projects.ensure_ready(key) if key else None
+  geometry_audit=None
+  if worker=='simulation_worker.py':
+   from .geometry_audit import audit_model
+   geometry_audit=audit_model(self.projects,key,True)
   if r and (spec.get('source_revision') is not None and spec['source_revision']!=r['spec']['revision'] or spec.get('source_artifact') is not None and spec['source_artifact']!=r['spec']['program']['artifact_id']):raise ValueError('Simulation geometry changed before the worker started.')
   fingerprint=uuid.uuid4().hex;target=self.root/fingerprint;target.mkdir()
   with tempfile.TemporaryDirectory(prefix='intact-engineering-') as tmp:
@@ -28,6 +32,9 @@ class Advanced:
    import sys
    env={'LD_LIBRARY_PATH':str(Path(sys.prefix)/'intact-native-libs'),'PYTHONPATH':'/input'}
    result=run_worker(self.projects.programs,Path(__file__).with_name(worker),i,o,env=env,cancel_event=cancel,timeout=180)
+   if worker=='simulation_worker.py':
+    from .simulation_audit import audit_result
+    result['audit']=audit_result(result,geometry_audit)
    if cancel and cancel.is_set():raise ValueError('Cancelled; saved model preserved.')
    for p in o.iterdir():
     if p.is_file() and p.stat().st_size<=64*1024**2:shutil.copyfile(p,target/p.name)

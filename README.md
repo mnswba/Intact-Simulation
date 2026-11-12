@@ -52,11 +52,15 @@ This installs a local development plugin. Publishing this repository does not li
 | Simulation | Separate Virtual and Mechanical workspaces: kinematic driving, walking and machine previews; 3D thermal, static stress and creeping-flow Stokes, AI-prepared face conditions, automatic mesh sizing, colored fields, playback and CSV/VTU downloads |
 | Exports | STEP, ASCII/binary STL, GLB, 3MF, Python, project JSON, binary USD and text USDA; Project adds annotated PNG, PPTX, BOM CSV, 2D DXF/DWG and conditional FCStd/source STEP |
 
-Version **0.18.0** exposes **64 MCP tools**. [Latest changes](docs/RELEASE_0_18.md) · [Solver verification](docs/RELEASE_0_16.md). See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
+Version **0.19.0** exposes **65 MCP tools**. [Latest changes](docs/RELEASE_0_19.md) · [Solver verification](docs/RELEASE_0_16.md). See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
+
+**Review** (R) opens measured design context, read-only AI accuracy/detail checks and alternative ideas. Ctrl/Cmd+K opens movable Commands. Team PPTX exports render high-resolution views headlessly and list every saved component.
 
 The **Tutorial** button next to Settings shows the installed viewer version and includes searchable help topics and an optional guided tour. Each topic explains a control, its purpose and usage steps. Use the mouse wheel for zoom and **Zoom to fit** beside Grid.
 
-![Viewer with the guided tutorial and export formats](docs/images/tutorial.png)
+![Movable Commands alongside the model](docs/images/review-commands.png)
+
+The searchable Tutorial includes the shortcut list and guided controls. [Design-review release notes](docs/RELEASE_0_19.md) · [Verification](docs/QA_0_19.md).
 
 See [v0.15 workflow and verification](docs/RELEASE_0_15.md) and [Simulation instructions](docs/simulation.md) and [verification results](docs/SIMULATION_0_14_AUDIT.md). The complete v0.13 Design workspace remains available under **Design**. [v0.15 changes](docs/RELEASE_0_15.md) add native click gestures, fullscreen presentation, AI-driven analysis, kinematic previews and optional PicoGK TPMS.
 

@@ -309,6 +309,20 @@ def create_server(engine:IntactMCP|None=None):
     async def apply_edit_request(model_id:str,request_id:str,source:str,parameters:dict[str,StrictFloat],ctx:Context)->dict[str,Any]:
         """Apply a viewer edit request using revised build(params) Python. Preserves the previous model on failure, rejects stale selections, records completion and refreshes the open viewer. Preserve unrelated assembly parts. Inspect snapshot_model afterward."""
         return await execute('apply_edit_request',dict(model_id=model_id,request_id=request_id,source=source,parameters=parameters),ctx)
+    @server.tool(annotations=write)
+    async def create_presentation(model_id:str,ctx:Context,purpose:Annotated[str,Field(min_length=1,max_length=160)]='Concept design review',review_notes:Annotated[str,Field(max_length=2000)]='',analysis_report_id:Annotated[str,Field(pattern=r'^[a-f0-9]{32}$')]|None=None)->dict[str,Any]:
+        """Render five high-resolution views headlessly and create a professional revision-bound PPTX review deck. Includes actual geometry, complete paginated component data, audit status and optional review notes. analysis_report_id adds actual saved numerical evidence only when its model/artifact matches. Does not move the user's live camera or modify CAD. Present unverified assumptions honestly; do not invent analysis or approval. Returns a local viewer download URL."""
+        engine.authorize('create_presentation',{'model_id':model_id})
+        from .snapshot import presentation_images
+        from .project_exports import create
+        record=engine.projects.ensure_ready(model_id);revision=record['spec']['revision']
+        await ctx.report_progress(0,100,'Rendering high-resolution design review views')
+        try:
+            images=await presentation_images(engine.viewer(model_id,revision))
+            result=await anyio.to_thread.run_sync(partial(create,engine.projects,model_id,dict(kind='deck',revision=revision,artifact_id=record['spec']['program']['artifact_id'],images=images,purpose=purpose,review_notes=review_notes,analysis_report_id=analysis_report_id)))
+            await ctx.report_progress(100,100,'Presentation ready')
+            return {**result,'download_url':engine.viewer(model_id).removesuffix('view')+result['download']}
+        except (ValueError,OSError) as exc:raise ToolError(str(exc)) from exc
     from .advanced_mcp import register
     register(server,engine,execute,read,write)
     from .interactive_mcp import register as register_interactive

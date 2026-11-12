@@ -5,7 +5,7 @@ from pathlib import Path
 from .edit_requests import EditRequests
 from .projects import ProjectService,atomic_json
 
-READ={'audit_model','status','get_model','measure_model','resolve_references','get_feature_tree','get_design_requirements','verify_design','validate_model','check_accuracy','export_model','open_viewer','revisions','read_edit_request','respond_to_edit_request','snapshot_model'}
+READ={'create_presentation','audit_model','status','get_model','measure_model','resolve_references','get_feature_tree','get_design_requirements','verify_design','validate_model','check_accuracy','export_model','open_viewer','revisions','read_edit_request','respond_to_edit_request','snapshot_model'}
 READ |= {'engineering_evidence','run_3d_simulation','manufacturing_review','engineering_drawing','get_engineering_job'}
 SIMULATION={'configure_simulation','get_simulation_workspace','run_virtual_analysis','submit_engineering_job','cancel_engineering_job'}
 READ |= SIMULATION | {'measure_mesh_quality','list_commands','describe_command','control_view','parameter_configuration','preview_parameters'}

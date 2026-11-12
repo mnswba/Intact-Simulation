@@ -8,7 +8,7 @@ from urllib.parse import urlsplit,parse_qs
 from urllib.request import urlopen
 from .projects import ProjectService, atomic_json, EXPORTS
 
-VERSION='0.18.0'
+VERSION='0.19.0'
 
 def registry(root):return Path(root)/'viewer-session.json'
 
@@ -165,6 +165,12 @@ class ViewerHandler(BaseHTTPRequestHandler):
                 return self.send(200,result)
             if kind=='project-export':
                 from .project_exports import create
+                if data.get('kind')=='deck' and not data.get('images'):
+                    import asyncio
+                    from .snapshot import presentation_images
+                    current=self.projects.load(key)
+                    if data.get('revision')!=current['spec']['revision'] or data.get('artifact_id')!=current['spec']['program']['artifact_id']:raise ValueError('Geometry changed. Refresh before creating a presentation.')
+                    data['images']=asyncio.run(presentation_images(viewer_url(self.projects.root,key,current['spec']['revision'])))
                 return self.send(200,create(self.projects,key,data))
             if kind=='edit-request':
                 from .edit_requests import EditRequests

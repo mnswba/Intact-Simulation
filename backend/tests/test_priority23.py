@@ -73,6 +73,7 @@ def test_silhouette_calibration_reports_inferred_depth(tmp_path):
 @pytest.mark.parametrize('kind',['thermal','structural','stokes'])
 def test_pde_benchmarks_against_independent_solutions(native,kind):
  s,a,key=native;r=a.simulate(key,{'kind':kind,'part_id':'body','mesh_size_mm':4,'convergence':True,'convergence_tolerance':.15});assert r['relative_residual']<1e-7 and r['relative_balance_error']<1e-6;assert r['convergence']['passed'],r['convergence'];assert r['verified']
+ assert r['audit']['mode']=='headless' and all(c['passed'] for c in r['audit']['numerical_checks'])
  if kind=='thermal':
   points=np.asarray(r['positions_mm']);expected=300+(points[:,0]+10)/20*50;assert np.max(abs(np.asarray(r['values'])-expected))<1e-6
  elif kind=='structural':assert r['maximum']==pytest.approx(1*.02/(70e9*.01*.01)*1000,rel=.08);assert r['maximum_von_mises_pa']>0
