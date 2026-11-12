@@ -1,0 +1,19 @@
+{
+  "origin": "https://www.intactsimulation.com",
+  "home_id": 12,
+  "pages": {
+    "how-it-works": 28,
+    "articles": 29,
+    "getting-started": 30,
+    "contact": 31,
+    "privacy-data": 32,
+    "demo": 33
+  },
+  "article_parent_id": 29,
+  "articles": {
+    "engineering-a-better-text-to-cad-brief": 34,
+    "tpms-equation-to-sampled-gyroid": 36,
+    "reproducible-1000-newton-compression-benchmark": 35,
+    "selection-aware-edits-and-revision-guards": 37
+  }
+}

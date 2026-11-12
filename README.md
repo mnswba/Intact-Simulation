@@ -6,6 +6,12 @@
 
 Intact gives an AI assistant local tools to create parametric parts and assemblies, inspect native geometry, edit designs and run supported engineering studies. The assistant reasons in your conversation; open-source CAD and numerical engines execute on your computer. No LiteLLM or separate model-service API key is required for the ChatGPT workflow.
 
+## Public website
+
+[Interactive demo](https://www.intactsimulation.com/demo/) · [How it works](https://www.intactsimulation.com/how-it-works/) · [Engineering articles](https://www.intactsimulation.com/articles/) · [Get started](https://www.intactsimulation.com/getting-started/)
+
+The WordPress site hosts prebuilt browser examples and a recorded solver result. Live custom AI/CAD generation and new numerical studies run in the desktop plugin. Website source and publishing notes are in [website/](website/README.md).
+
 ## Quickstart
 
 The supported local execution environment is **Linux x86-64 or Windows with WSL2/Ubuntu**, Python 3.12–3.13, `uv`, and working bubblewrap user namespaces. Native Windows and macOS execution are not currently supported. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) first.

@@ -1,0 +1,13 @@
+wordpress/
+site/**/index.html
+site/demo/intact-demo.js
+site/demo/*.zip
+site/demo/*.glb
+site/demo/*.step
+site/demo/*.stl
+site/demo/*.3mf
+site/demo/*.csv
+site/demo/*.json
+site/assets/
+qa/
+__pycache__/
