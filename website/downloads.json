@@ -1,0 +1,12 @@
+{
+  "version": "0.20.0",
+  "platform": "Windows x86-64",
+  "filename": "Intact-Simulation-0.20.0-Windows-Local.zip",
+  "size_bytes": 15755028,
+  "size_label": "15.8 MB",
+  "sha256": "3ea9a3c712aa501877fd9b6b1e3742f26fd337257f438af6972393efc69ddfca",
+  "url": "https://github.com/mnswba/Intact-Simulation/releases/download/v0.20.0/Intact-Simulation-0.20.0-Windows-Local.zip",
+  "github_url": "https://github.com/mnswba/Intact-Simulation/releases/download/v0.20.0/Intact-Simulation-0.20.0-Windows-Local.zip",
+  "release_url": "https://github.com/mnswba/Intact-Simulation/releases/tag/v0.20.0",
+  "procedure_url": "https://github.com/mnswba/Intact-Simulation/blob/main/docs/INSTALL_WINDOWS_PRIVATE.md"
+}

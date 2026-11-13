@@ -6,6 +6,8 @@ Version 0.20.0 supports a native Windows x86-64 runtime. Linux x86-64 remains av
 
 ## Native Windows 0.20.0
 
+**For a new computer:** [download the Windows-Local ZIP](https://github.com/mnswba/Intact-Simulation/releases/download/v0.20.0/Intact-Simulation-0.20.0-Windows-Local.zip) and follow [Install Intact privately in Codex](INSTALL_WINDOWS_PRIVATE.md). That guide includes the exact installation request, version/readiness checks, checksum and design-transfer instructions. Do not use the automatic GitHub Source code archive as the plugin package.
+
 ### Use an existing local plugin installation
 
 1. Enable Intact Simulation in the desktop host that installed the local plugin. This is separate from uploading a public-directory draft.

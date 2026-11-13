@@ -14,6 +14,8 @@
 </p>
 <p align="center"><strong>v0.20.0</strong> &nbsp; | &nbsp; 65 MCP tools &nbsp; | &nbsp; Local CAD execution &nbsp; | &nbsp; Apache-2.0</p>
 
+<p align="center"><strong><a href="https://github.com/mnswba/Intact-Simulation/releases/download/v0.20.0/Intact-Simulation-0.20.0-Windows-Local.zip">Download Windows v0.20.0 ZIP</a></strong> · <a href="docs/INSTALL_WINDOWS_PRIVATE.md">Install on another computer</a> · <a href="https://www.intactsimulation.com/getting-started/">Website setup guide</a></p>
+
 ## What is Intact?
 
 Intact Simulation connects ChatGPT to open-source CAD and numerical engines. Describe a part or assembly, supply its dimensions, inspect the result, and refine the design through conversation. Intact creates real geometry with named components, editable parameters and saved revisions, then exports files for other engineering tools.
@@ -56,7 +58,7 @@ These are rendered exports of original Intact concept models, not photographs or
 
 ### 1. Set up the local tools
 
-Use a desktop host that supports local MCP execution. Follow the [installation guide](docs/install.md) for the Windows source runtime, existing native package setup and Linux development route. The source checkout and public-directory submission are separate workflows.
+Use a desktop host that supports local MCP execution. [Download the Windows plugin ZIP](https://github.com/mnswba/Intact-Simulation/releases/download/v0.20.0/Intact-Simulation-0.20.0-Windows-Local.zip), then follow the [private installation procedure](docs/INSTALL_WINDOWS_PRIVATE.md), including the exact request to paste into Codex. Use this Windows-Local package rather than GitHub's automatically generated Source code ZIP. The [release page](https://github.com/mnswba/Intact-Simulation/releases/tag/v0.20.0) includes checksums, scope and known limitations. Developer source setup remains in the [installation guide](docs/install.md).
 
 On first use, the Windows launcher automatically downloads the required Python/CAD runtime, FreeCAD and rendering components into your user profile. Allow internet access, several GB of free space and time for setup. Later starts reuse the installed components. **No WSL is required for the native Windows edition.**
 
