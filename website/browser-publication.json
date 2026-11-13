@@ -35,5 +35,8 @@
     "sha256": "4f7cad3fb8140983131c16e599bc9f5ef643a3a58a81a71739d734d0daa638a9",
     "entries": 11,
     "uncompressed_bytes": 4902413
-  }
+  },
+  "github_release_url": "https://github.com/mnswba/Intact-Simulation/releases/tag/browser-v0.1.0",
+  "github_zip_url": "https://github.com/mnswba/Intact-Simulation/releases/download/browser-v0.1.0/Intact-Browser-CAD-0.1.0-Website.zip",
+  "public_zip_checksum_verified": true
 }

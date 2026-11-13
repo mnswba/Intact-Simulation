@@ -2,6 +2,8 @@
 
 **[Open the live browser preview](https://www.intactsimulation.com/browser-cad/)** · [Hosting and user guide](HOSTING.md) · [Full desktop 65-tool catalog](../docs/TOOLS.md)
 
+[Website deployment ZIP (1.62 MB)](https://github.com/mnswba/Intact-Simulation/releases/download/browser-v0.1.0/Intact-Browser-CAD-0.1.0-Website.zip) · [Preview release and checksums](https://github.com/mnswba/Intact-Simulation/releases/tag/browser-v0.1.0). This archive is for website hosting, not ChatGPT plugin submission. Users can simply open the live page instead.
+
 Create small measured mesh parts on the user's device without a native Python/CAD installation or publisher CAD server. This separate edition uses browser capabilities rather than Windows executables; actual device support depends on WebAssembly, WebGL, module workers, available memory and downloads. It is a website preview, not a universal desktop plugin ZIP or an approved ChatGPT directory listing. The working Windows 0.20.0 package is unchanged.
 
 ![Actual live Browser CAD preview showing the generated mounting bracket, editable dimensions, transparent grid and measured geometry](../docs/images/browser/workspace.png)
