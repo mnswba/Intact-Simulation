@@ -1,15 +1,96 @@
 {
-  "product": "Intact Simulation",
-  "version": "0.16.0",
-  "status": "Proposed public-review scenarios; not evidence of directory approval",
-  "cases": [
-    {"id":"P1","type":"positive","prompt":"Create an 80 mm diameter, 8 mm thick flange with a 24 mm bore and six 6 mm holes on a 60 mm bolt circle. Verify positions and export STEP.","tools":["build_model","validate_model","measure_model","snapshot_model","export_model"],"expected":"Native solid, measured dimensions/holes, snapshot and usable STEP."},
-    {"id":"P2","type":"positive","prompt":"Select a hole face; use Ask AI to enlarge this bore to 8 mm while preserving its depth and other parts.","tools":["read_edit_request","get_model","build_model","validate_model","respond_to_edit_request"],"expected":"Automatic task start without Annotation, saved selection, one verified edit and refreshed viewer."},
-    {"id":"P3","type":"positive","prompt":"Create a 10 x 10 x 20 mm solid body. In Simulation Ask AI: E=10 GPa, nu=0, fixed bottom Z face, uniform 1000 N downward total force on top Z face; analyze deflection.","tools":["get_simulation_workspace","configure_simulation","submit_engineering_job","get_engineering_job"],"expected":"Structural displacement about 0.02 mm, reaction about +1000 N Z, stress about 10 MPa, real results and convergence evidence; no CAD revision change."},
-    {"id":"P4","type":"positive","prompt":"Preview a vehicle moving forward with named wheel groups; pause, scrub, replay and close.","tools":["get_model","run_virtual_analysis"],"expected":"Kinematic-only label; stable IDs and native geometry preserved; original parents/transforms restored."},
-    {"id":"P5","type":"positive","prompt":"Create a 16 mm gyroid cell block and export a watertight STL. Explain the representation.","tools":["build_tpms","validate_model","export_model"],"expected":"Sampled implicit mesh with resolution/volume evidence; no claim of smooth native STEP."},
-    {"id":"N1","type":"negative","prompt":"Apply 1000 N from the top and analyze deflection without specifying material or supports.","tools":["read_edit_request","get_model","respond_to_edit_request"],"expected":"Clarify material/support/load scope, usable reply field, no thermal substitution or invented result."},
-    {"id":"N2","type":"negative","prompt":"Reuse face references from before a geometry change to configure a load.","tools":["configure_simulation"],"expected":"Reject stale revision/artifact; request reselection; preserve geometry."},
-    {"id":"N3","type":"negative","prompt":"Run nonlinear contact of the whole car and turbulent CFD using this solver.","tools":["get_simulation_workspace","respond_to_edit_request"],"expected":"Explain unsupported analysis scope; do not generate fabricated physics results or substitute unrelated studies."}
-  ]
+    "product":  "Intact Simulation",
+    "version":  "0.20.0",
+    "status":  "Proposed public-review scenarios; not evidence of directory approval",
+    "cases":  [
+                  {
+                      "id":  "P1",
+                      "type":  "positive",
+                      "prompt":  "Create an 80 mm diameter, 8 mm thick flange with a 24 mm bore and six 6 mm holes on a 60 mm bolt circle. Verify positions and export STEP.",
+                      "tools":  [
+                                    "build_model",
+                                    "validate_model",
+                                    "measure_model",
+                                    "snapshot_model",
+                                    "export_model"
+                                ],
+                      "expected":  "Native solid, measured dimensions/holes, snapshot and usable STEP."
+                  },
+                  {
+                      "id":  "P2",
+                      "type":  "positive",
+                      "prompt":  "Select a hole face; use Ask AI to enlarge this bore to 8 mm while preserving its depth and other parts.",
+                      "tools":  [
+                                    "read_edit_request",
+                                    "get_model",
+                                    "build_model",
+                                    "validate_model",
+                                    "respond_to_edit_request"
+                                ],
+                      "expected":  "Automatic task start without Annotation, saved selection, one verified edit and refreshed viewer."
+                  },
+                  {
+                      "id":  "P3",
+                      "type":  "positive",
+                      "prompt":  "Create a 10 x 10 x 20 mm solid body. In Simulation Ask AI: E=10 GPa, nu=0, fixed bottom Z face, uniform 1000 N downward total force on top Z face; analyze deflection.",
+                      "tools":  [
+                                    "get_simulation_workspace",
+                                    "configure_simulation",
+                                    "submit_engineering_job",
+                                    "get_engineering_job"
+                                ],
+                      "expected":  "Structural displacement about 0.02 mm, reaction about +1000 N Z, stress about 10 MPa, real results and convergence evidence; no CAD revision change."
+                  },
+                  {
+                      "id":  "P4",
+                      "type":  "positive",
+                      "prompt":  "Preview a vehicle moving forward with named wheel groups; pause, scrub, replay and close.",
+                      "tools":  [
+                                    "get_model",
+                                    "run_virtual_analysis"
+                                ],
+                      "expected":  "Kinematic-only label; stable IDs and native geometry preserved; original parents/transforms restored."
+                  },
+                  {
+                      "id":  "P5",
+                      "type":  "positive",
+                      "prompt":  "Create a 16 mm gyroid cell block and export a watertight STL. Explain the representation.",
+                      "tools":  [
+                                    "build_tpms",
+                                    "validate_model",
+                                    "export_model"
+                                ],
+                      "expected":  "Sampled implicit mesh with resolution/volume evidence; no claim of smooth native STEP."
+                  },
+                  {
+                      "id":  "N1",
+                      "type":  "negative",
+                      "prompt":  "Apply 1000 N from the top and analyze deflection without specifying material or supports.",
+                      "tools":  [
+                                    "read_edit_request",
+                                    "get_model",
+                                    "respond_to_edit_request"
+                                ],
+                      "expected":  "Clarify material/support/load scope, usable reply field, no thermal substitution or invented result."
+                  },
+                  {
+                      "id":  "N2",
+                      "type":  "negative",
+                      "prompt":  "Reuse face references from before a geometry change to configure a load.",
+                      "tools":  [
+                                    "configure_simulation"
+                                ],
+                      "expected":  "Reject stale revision/artifact; request reselection; preserve geometry."
+                  },
+                  {
+                      "id":  "N3",
+                      "type":  "negative",
+                      "prompt":  "Run nonlinear contact of the whole car and turbulent CFD using this solver.",
+                      "tools":  [
+                                    "get_simulation_workspace",
+                                    "respond_to_edit_request"
+                                ],
+                      "expected":  "Explain unsupported analysis scope; do not generate fabricated physics results or substitute unrelated studies."
+                  }
+              ]
 }

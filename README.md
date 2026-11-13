@@ -8,13 +8,21 @@ Intact gives an AI assistant local tools to create parametric parts and assembli
 
 ## Public website
 
-[Interactive demo](https://www.intactsimulation.com/demo/) · [How it works](https://www.intactsimulation.com/how-it-works/) · [Engineering articles](https://www.intactsimulation.com/articles/) · [Get started](https://www.intactsimulation.com/getting-started/)
+[Architecture](https://www.intactsimulation.com/demo/) · [How to use](https://www.intactsimulation.com/how-it-works/) · [Engineering articles](https://www.intactsimulation.com/articles/) · [Get started](https://www.intactsimulation.com/getting-started/)
 
 The WordPress site hosts prebuilt browser examples and a recorded solver result. Live custom AI/CAD generation and new numerical studies run in the desktop plugin. Website source and publishing notes are in [website/](website/README.md).
 
 ## Quickstart
 
-The supported local execution environment is **Linux x86-64 or Windows with WSL2/Ubuntu**, Python 3.12–3.13, `uv`, and working bubblewrap user namespaces. Native Windows and macOS execution are not currently supported. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) first.
+**Current Windows package:** the 15.8 MB local-runtime plugin includes instructions, the Intact wheel and a pinned uv launcher. On first use it installs CAD libraries and native components on the user's Windows computer, following the uvx-style CAD-plugin pattern. No publisher-hosted CAD server, WSL or separately provided computer is required. First setup needs internet access and several GB of disk space. The earlier full-runtime archive is not a directory upload. See the [current packaging and review status](docs/CHATGPT_SUBMISSION_0_20.md).
+
+Version **0.20.0** adds a native **Windows x86-64 desktop distribution** with automatically installed Python, CAD libraries, FreeCAD and headless rendering. Its workers use Windows AppContainer and Job Objects; WSL is not required. Projects are saved separately in `%LOCALAPPDATA%/IntactSimulation/projects`. Existing WSL projects are preserved and can be transferred with project JSON export/import. Public-directory publication remains pending. See [Windows release notes](docs/RELEASE_0_20.md).
+
+The installed local build may display **0.20.0+local.1**; its CAD runtime is **0.20.0**. This build suffix selects a fresh desktop cache. An old WSL viewer URL can still display 0.19.0 after the plugin updates: open the native Windows viewer and check **Tutorial**. The launcher in `scripts/open-native-viewer.py` can open an existing saved model without rebuilding its geometry.
+
+### Linux source development and legacy WSL setup
+
+The Linux source installation below requires Python 3.12–3.13, `uv`, and working bubblewrap user namespaces. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) first. Native macOS execution is not supported.
 
 ```bash
 git clone https://github.com/mnswba/Intact-Simulation.git
@@ -24,7 +32,7 @@ sudo apt-get install -y build-essential bubblewrap libgl1 libglu1-mesa libxft2
 python3 scripts/install-chatgpt-plugin.py
 ```
 
-For the Windows ChatGPT desktop app, run the installer **inside WSL** with your Windows profile path:
+For the legacy Linux-backed Windows setup only, run the source installer **inside WSL** with your Windows profile path. The native Windows distribution above does not use this route:
 
 ```bash
 python3 scripts/install-chatgpt-plugin.py --windows-home /mnt/c/Users/YOUR_WINDOWS_USER
@@ -52,7 +60,7 @@ This installs a local development plugin. Publishing this repository does not li
 | Simulation | Separate Virtual and Mechanical workspaces: kinematic driving, walking and machine previews; 3D thermal, static stress and creeping-flow Stokes, AI-prepared face conditions, automatic mesh sizing, colored fields, playback and CSV/VTU downloads |
 | Exports | STEP, ASCII/binary STL, GLB, 3MF, Python, project JSON, binary USD and text USDA; Project adds annotated PNG, PPTX, BOM CSV, 2D DXF/DWG and conditional FCStd/source STEP |
 
-Version **0.19.0** exposes **65 MCP tools**. [Latest changes](docs/RELEASE_0_19.md) · [Solver verification](docs/RELEASE_0_16.md). See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
+Version **0.20.0** exposes **65 MCP tools**. [Latest changes](docs/RELEASE_0_20.md) · [Solver verification](docs/RELEASE_0_16.md). See [tool contracts](plugin/skills/intact-cad/references/priority23.md) and [structured modeling](plugin/skills/intact-cad/references/structured-modeling.md) for inputs and limits.
 
 **Review** (R) opens measured design context, read-only AI accuracy/detail checks and alternative ideas. Ctrl/Cmd+K opens movable Commands. Team PPTX exports render high-resolution views headlessly and list every saved component.
 

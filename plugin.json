@@ -1,14 +1,14 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "intact-simulation",
-  "version": "0.19.0",
-  "description": "ChatGPT CAD with constrained sketches, explicit feature history, design verification, stable references and TPMS.",
+  "version": "0.20.0",
+  "description": "Create and verify parametric CAD parts and assemblies, inspect native dimensions, export engineering files and run supported simulation studies through ChatGPT.",
   "extensions": {
     "com.openai": {
       "interface": {
         "displayName": "Intact Simulation",
-        "shortDescription": "AI CAD and simulation",
-        "longDescription": "Create and edit CAD through ChatGPT using isolated open-source engines. Includes real FreeCAD constrained sketches and diagnostics, explicit editable feature graphs, native hole/clearance/interference checks, named references with ambiguity detection, requested accuracy and mesh convergence checks, immutable history previews, native CAD/mesh exports and six sampled TPMS families. No separate AI service. Includes distance-offset lattices, mesh booleans, faceted STEP, bounded joints, reconstruction, screening and real 3D conduction, linear elasticity and creeping-flow Stokes. Turbulence, nonlinear/contact, multiphysics and smooth TPMS fitting remain unavailable. Viewer Ask AI sends directly through the ChatGPT component bridge when available, otherwise automatically starts a separate signed-in OpenAI local task. Includes model-scoped tools, clarification replies, progress and cancellation. Mechanical requests run actual bounded solvers once material, loads and supports are defined.",
+        "shortDescription": "CAD modeling and verification",
+        "longDescription": "Create parametric CAD parts and assemblies through ChatGPT on Windows. Inspect native geometry, verify dimensions and holes, edit constrained sketches and feature history, and export STEP, STL, GLB and 3MF. Includes sampled TPMS lattices and bounded thermal, linear-elastic and creeping-flow studies. Review can request a geometry accuracy check through your signed-in OpenAI local client. CAD execution stays in Windows isolation. Requires the Windows desktop app; outputs need engineering review before manufacture or safety-critical use.",
         "developerName": "Intact Simulation",
         "category": "Productivity",
         "capabilities": [
@@ -16,13 +16,16 @@
           "Interactive"
         ],
         "websiteURL": "https://www.intactsimulation.com/",
-        "brandColor": "#249DDD",
+        "brandColor": "#17649B",
         "defaultPrompt": [
           "Create a six-hole pipe flange with an 80 mm outer diameter and a 24 mm bore.",
           "Design a two-part electronics enclosure and show an exploded view."
         ],
         "logo": "./assets/logo.png",
-        "composerIcon": "./assets/logo.png"
+        "composerIcon": "./assets/logo.png",
+        "supportURL": "https://www.intactsimulation.com/contact/",
+        "privacyPolicyURL": "https://www.intactsimulation.com/privacy-data/",
+        "termsOfServiceURL": "https://www.intactsimulation.com/terms-of-service/"
       },
       "requires_local_executor": true
     }

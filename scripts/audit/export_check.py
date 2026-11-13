@@ -3,6 +3,7 @@ import os,signal,subprocess,sys,tempfile
 from pathlib import Path
 
 def verify_python_export(path):
+    if os.name=='nt':return verify_windows_export(path)
     from intact_backend.program import ProgramService
     import build123d as bd
     path=Path(path).resolve()
@@ -29,6 +30,31 @@ def verify_python_export(path):
             with zipfile.ZipFile(out/'model.3mf') as archive:
                 root=ET.fromstring(archive.read('3D/3dmodel.model'));ns={'m':'http://schemas.microsoft.com/3dmanufacturing/core/2015/02'}
                 colors={b.get('name'):tuple(int(b.get('displaycolor')[i:i+2],16) for i in (1,3,5)) for b in root.findall('.//m:base',ns)}
+            return {'valid':mesh.is_volume and mesh.is_watertight,'volume':float(mesh.volume),'solid_count':int(mesh.body_count),'labels':list(colors),'colors':colors,'mesh_only':True}
+        shape=bd.import_step(out/'model.step')
+        return {'valid':shape.is_valid,'volume':shape.volume,'solid_count':len(shape.solids()),'labels':[c.label for c in shape.children],'colors':{c.label:tuple(round(v*255) for v in tuple(c.color)[:3]) if c.color else None for c in shape.children}}
+
+
+def verify_windows_export(path):
+    import shutil,json,zipfile,xml.etree.ElementTree as ET
+    import build123d as bd
+    from intact_backend.windows_sandbox import run,runtime_options
+    path=Path(path).resolve()
+    with tempfile.TemporaryDirectory(prefix='intact-export-check-') as tmp:
+        root=Path(tmp);inputs=root/'input';out=root/'output';inputs.mkdir();out.mkdir()
+        for source in (path,path.with_name('input.step')):
+            if source.is_file():shutil.copy2(source,inputs/source.name)
+        python,readable,env=runtime_options()
+        code='import runpy,sys;runpy.run_path(sys.argv[1],run_name="__main__")'
+        result=run([python,'-c',code,str(inputs/path.name)],inputs,out,readable,env=env,timeout=60,max_file_bytes=32*1024**2)
+        assert result==0,(out/'worker.log').read_text(errors='replace')[-3000:]
+        for name in ('model.stl','model.glb','model.3mf'):assert (out/name).stat().st_size>40
+        if not (out/'model.step').exists():
+            import trimesh
+            mesh=trimesh.load(out/'model.stl',force='mesh',process=True)
+            with zipfile.ZipFile(out/'model.3mf') as archive:
+                document=ET.fromstring(archive.read('3D/3dmodel.model'));ns={'m':'http://schemas.microsoft.com/3dmanufacturing/core/2015/02'}
+                colors={b.get('name'):tuple(int(b.get('displaycolor')[i:i+2],16) for i in (1,3,5)) for b in document.findall('.//m:base',ns)}
             return {'valid':mesh.is_volume and mesh.is_watertight,'volume':float(mesh.volume),'solid_count':int(mesh.body_count),'labels':list(colors),'colors':colors,'mesh_only':True}
         shape=bd.import_step(out/'model.step')
         return {'valid':shape.is_valid,'volume':shape.volume,'solid_count':len(shape.solids()),'labels':[c.label for c in shape.children],'colors':{c.label:tuple(round(v*255) for v in tuple(c.color)[:3]) if c.color else None for c in shape.children}}

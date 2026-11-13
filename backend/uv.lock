@@ -574,12 +574,13 @@ wheels = [
 
 [[package]]
 name = "intact-simulation-backend"
-version = "0.19.0"
+version = "0.20.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
     { name = "mcp" },
     { name = "numpy" },
+    { name = "psutil", marker = "sys_platform == 'win32'" },
     { name = "pydantic" },
     { name = "scipy" },
     { name = "uvicorn" },
@@ -620,6 +621,7 @@ requires-dist = [
     { name = "meshio", marker = "extra == 'cad'", specifier = "==5.3.5" },
     { name = "numpy", specifier = ">=2,<3" },
     { name = "playwright", marker = "extra == 'cad'", specifier = "==1.65.0" },
+    { name = "psutil", marker = "sys_platform == 'win32'", specifier = ">=7,<8" },
     { name = "pydantic", specifier = ">=2.11,<3" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8,<10" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.25,<2" },

@@ -1,10 +1,11 @@
-"""Shared local project operations used by MCP and the persistent viewer."""
 from __future__ import annotations
+from .platform_support import file_lock as fcntl, background_options, terminate_tree, process_matches
+"""Shared local project operations used by MCP and the persistent viewer."""
 from contextlib import contextmanager
 from copy import deepcopy
 import base64
 from hashlib import sha256
-import fcntl, json, re, shutil, threading, uuid
+import os, json, re, shutil, threading, uuid
 from pathlib import Path, PureWindowsPath
 from .generated import generated_spec
 from .program import ProgramService
@@ -18,7 +19,7 @@ def local_path(value):
     """Accept the desktop client's Windows paths on the WSL CAD host."""
     text=str(value)
     if text.startswith('\\\\?\\'):text=text[4:]
-    if re.match(r'^[A-Za-z]:[\\/]',text):
+    if os.name != 'nt' and re.match(r'^[A-Za-z]:[\\/]',text):
         windows=PureWindowsPath(text)
         return Path('/mnt')/windows.drive[0].lower()/Path(*windows.parts[1:])
     return Path(text).expanduser()

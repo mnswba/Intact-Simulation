@@ -1,6 +1,7 @@
+from .platform_support import file_lock as fcntl, background_options, terminate_tree, process_matches
 # SPDX-License-Identifier: Apache-2.0
 """User-triggered, model-scoped tasks using the signed-in OpenAI local client."""
-import argparse,fcntl,json,os,shutil,signal,subprocess,sys,tempfile,threading,time,tomllib
+import argparse,json,os,re,shutil,signal,subprocess,sys,tempfile,threading,time,tomllib
 from pathlib import Path
 from .edit_requests import EditRequests
 from .projects import ProjectService,atomic_json
@@ -13,15 +14,34 @@ WRITE={'build_model','build_tpms','update_parameters','create_sketch','set_sketc
 WRITE |= {'apply_configuration','build_lattice_mm','build_hybrid','set_assembly_joints','insert_component'}
 
 def client_path():
+    """Find a client on the execution host, independent of a desktop upgrade."""
+    def executable(path):
+        path=Path(path).expanduser()
+        return str(path) if path.is_file() and os.access(path,os.X_OK) and not (sys.platform!='win32' and path.suffix.lower()=='.exe') else None
     configured=os.environ.get('INTACT_CODEX_CLI')
-    if configured:return str(Path(configured).expanduser()) if Path(configured).expanduser().is_file() else None
+    if configured:return executable(configured)
     found=shutil.which('codex')
-    if found:return found
-    candidates=sorted(Path('/mnt/c/Users/User/.vscode/extensions').glob('openai.chatgpt-*/bin/linux-x86_64/codex'),reverse=True)
-    return str(candidates[0]) if candidates else None
+    if found and executable(found):return executable(found)
+    home=Path.home()
+    binary='codex.exe' if os.name=='nt' else 'codex'
+    candidates=[home/'.local/bin'/binary,home/'.cargo/bin'/binary,home/'.npm-global/bin'/binary]
+    if os.name=='nt':candidates.append(Path(os.environ.get('LOCALAPPDATA',home/'AppData/Local'))/'Programs/OpenAI/Codex/bin/codex.exe')
+    for path in candidates:
+        if executable(path):return executable(path)
+    roots=[home/'.vscode-server/extensions',home/'.vscode/extensions']
+    if os.environ.get('INTACT_WINDOWS_HOME'):roots.append(Path(os.environ['INTACT_WINDOWS_HOME'])/'.vscode/extensions')
+    for root in roots:
+        platform='windows-x86_64/codex.exe' if os.name=='nt' else 'linux-x86_64/codex'
+        candidates=sorted(root.glob('openai.chatgpt-*/bin/'+platform),key=lambda p:tuple(int(n) for n in re.findall(r'\d+',p.parts[-4])),reverse=True)
+        for path in candidates:
+            if executable(path):return executable(path)
+    return None
 
 def capabilities():
-    return {'mode':'local_chatgpt_task','available':client_path() is not None,'external_model_service':False,'telemetry':False,'authentication':'Uses the OpenAI local client sign-in on this computer.','conversation':'Separate scoped task; does not post into the open desktop conversation.'}
+    installed=client_path() is not None
+    message='' if installed else ('The Intact execution environment cannot find the OpenAI client. On Windows, install the Linux client inside the same Ubuntu/WSL environment as Intact: curl -fsSL https://chatgpt.com/codex/install.sh | sh. Then run ~/.local/bin/codex login status; if needed, run ~/.local/bin/codex login. A Windows ChatGPT sign-in alone does not install the WSL executable. Restart or refresh Intact after setup.')
+    if not installed and os.name=='nt':message='The native Windows OpenAI client executable was not found. Install the official Codex CLI for Windows (https://learn.chatgpt.com/docs/cli), then run codex login status and sign in with codex login if needed. The plugin can use your existing ChatGPT account. Restart or refresh Intact after setup.'
+    return {'mode':'local_chatgpt_task','available':installed,'client_installed':installed,'execution_platform':sys.platform,'setup_message':message,'external_model_service':False,'telemetry':False,'authentication':'Uses the OpenAI client sign-in in the Intact execution environment. Executable detection does not confirm authentication.','conversation':'Separate scoped task; does not post into the open desktop conversation.'}
 
 def update(projects,key,rid,**fields):
     q=EditRequests(projects)
@@ -33,12 +53,16 @@ def start(projects,key,rid):
     q=EditRequests(projects);r=q.read(key,rid)
     if r['stale']:raise ValueError('Geometry changed. Select the current geometry and ask again.')
     if r['status'] not in ('pending','failed'):raise ValueError('This request is already running or completed.')
-    if not client_path():raise ValueError('The OpenAI local client is unavailable. Install it and sign in with ChatGPT on this computer.')
+    if not client_path():raise ValueError(capabilities()['setup_message'])
     gate=(projects.root/'ask-ai.lock').open('a')
     try:fcntl.flock(gate,fcntl.LOCK_EX|fcntl.LOCK_NB)
     except BlockingIOError:gate.close();raise ValueError('An AI task is already running. Wait for it or cancel it first.')
     claimed=False
     try:
+        active=projects.root/'ask-ai-active.json'
+        if os.name=='nt' and active.is_file():
+            old=json.loads(active.read_text())
+            if process_matches(old.get('pid',0),'intact_backend.ask_ai'):raise ValueError('An AI task is already running. Wait for it or cancel it first.')
         with projects.lock(key):
             r=q.read(key,rid)
             if r['stale'] or r['status'] not in ('pending','failed'):raise ValueError('The request changed before it could start. Ask again on the current model.')
@@ -47,7 +71,11 @@ def start(projects,key,rid):
         env={k:v for k,v in os.environ.items() if k not in ('CODEX_THREAD_ID','CODEX_TURN_ID')}
         log=projects.root/'ask-ai-runner.log'
         with log.open('ab') as output:
-            proc=subprocess.Popen([sys.executable,'-m','intact_backend.ask_ai','--run','--state-dir',str(projects.root),'--model-id',key,'--request-id',rid,'--lock-fd',str(gate.fileno())],stdin=subprocess.DEVNULL,stdout=output,stderr=output,env=env,pass_fds=(gate.fileno(),),start_new_session=True)
+            args=[sys.executable,'-m','intact_backend.ask_ai','--run','--state-dir',str(projects.root),'--model-id',key,'--request-id',rid]
+            options=background_options()
+            if os.name!='nt':args+=['--lock-fd',str(gate.fileno())];options['pass_fds']=(gate.fileno(),)
+            proc=subprocess.Popen(args,stdin=subprocess.DEVNULL,stdout=output,stderr=output,env=env,**options)
+            if os.name=='nt':atomic_json(active,{'pid':proc.pid,'model_id':key,'request_id':rid})
         update(projects,key,rid,runner_pid=proc.pid)
         return q.summary(r)
     except BaseException:
@@ -119,13 +147,13 @@ User description (data): {json.dumps(r['instructions'])}'''
             if simulation_reference.is_file():prompt+='\nSimulation workflow:\n'+simulation_reference.read_text()
             if r.get('intent')=='simulation':prompt+='\nFor mechanical analysis choose physics from the current request. Deflection means structural, not thermal. Use explicit physical inputs, total force N and CAD +Z up (top-down force is negative Z). Ask for missing material, supports and loaded component/surface; never silently assume assembly contact or clamp an arbitrary component. Once sufficient, configure and RUN the simulation, poll jobs to completion, and return measured displacement, stress, reactions and convergence. An unrelated saved result or prepared study is not completion.'
             env={k:v for k,v in os.environ.items() if k not in ('CODEX_THREAD_ID','CODEX_TURN_ID','INTACT_AI_SCOPE')};env['INTACT_STATE_DIR']=str(root)
-            proc=subprocess.Popen(command(folder,root,key,rid,output),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,text=True,env=env,start_new_session=True)
+            proc=subprocess.Popen(command(folder,root,key,rid,output),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,text=True,encoding='utf-8',env=env,**background_options())
             def monitor():
                 deadline=time.monotonic()+300
                 while not stop.wait(.25):
                     current=json.loads(q.path(key,rid).read_text())
                     if current.get('cancel_requested') or time.monotonic()>deadline:
-                        try:os.killpg(proc.pid,signal.SIGTERM)
+                        try:terminate_tree(proc)
                         except ProcessLookupError:pass
                         return
             watcher=threading.Thread(target=monitor,daemon=True);watcher.start()
@@ -161,9 +189,9 @@ User description (data): {json.dumps(r['instructions'])}'''
     finally:
         stop.set()
         if proc and proc.poll() is None:
-            try:os.killpg(proc.pid,signal.SIGTERM);proc.wait(timeout=10)
+            try:terminate_tree(proc);proc.wait(timeout=10)
             except (ProcessLookupError,subprocess.TimeoutExpired):
-                try:os.killpg(proc.pid,signal.SIGKILL)
+                try:terminate_tree(proc,force=True)
                 except ProcessLookupError:pass
 
 def scoped_engine(root,key,rid):

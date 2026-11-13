@@ -5,12 +5,34 @@ from pathlib import Path
 
 def run_worker(service,script,input_dir,output_dir,python=None,mounts=None,env=None,cancel_event=None,timeout=120):
     import sys
-    if not service.available():raise ValueError('A working bubblewrap sandbox is required.')
+    if not service.available():raise ValueError('A working OS isolation sandbox is required.')
     python=Path(python or sys.executable);script=Path(script).resolve();input_dir=Path(input_dir).resolve();output_dir=Path(output_dir).resolve()
-    if mounts is None:mounts=[str(Path(sys.base_prefix)),str(Path(sys.base_prefix).resolve()),str(Path(sys.prefix).resolve()),str(Path(os.readlink(Path(sys.prefix)/'bin/python')).parent.parent)]
+    if os.name=='nt':
+        from .windows_sandbox import run,runtime_options
+        native_python,readable,native_env=runtime_options()
+        runtime_path=native_env['PYTHONPATH']
+        if python.resolve()!=Path(sys.executable).resolve():
+            native_python=python
+            readable.extend(Path(p) for p in (mounts or []))
+        native_env.update(env or {})
+        # Linux's virtual /input path is represented by INTACT_WORKER_INPUT.
+        paths=[str(script.parent),str(input_dir)]
+        if native_python==python and python.resolve()!=Path(sys.executable).resolve():paths.append((env or {}).get('PYTHONPATH',''))
+        else:paths[:0]=runtime_path.split(os.pathsep)
+        native_env['PYTHONPATH']=os.pathsep.join(filter(None,paths))
+        code=run([native_python,script],input_dir,output_dir,readable,env=native_env,cancel_event=cancel_event,timeout=timeout)
+        if code:
+            error=output_dir/'error.json';log=output_dir/'worker.log'
+            detail=json.loads(error.read_text()).get('error','') if error.exists() else log.read_text(errors='replace')[-3000:]
+            raise ValueError('Isolated geometry worker failed: '+str(detail)[:3500])
+        path=output_dir/'report.json'
+        if not path.is_file() or path.stat().st_size>16*1024**2:raise ValueError('Geometry worker did not return a bounded report.')
+        return json.loads(path.read_text())
+    if mounts is None:mounts=[str(Path(sys.base_prefix)),str(Path(sys.base_prefix).resolve()),str(Path(sys.prefix).resolve()),str((Path(sys.prefix)/'bin/python').resolve().parent.parent)]
     cmd=[service.binary,'--unshare-all','--die-with-parent','--new-session','--cap-drop','ALL','--clearenv']
     for p in dict.fromkeys(['/usr','/lib','/lib64',*map(str,mounts)]):cmd+=['--ro-bind',p,p]
     if Path('/etc/ld.so.cache').exists():cmd+=['--ro-bind','/etc/ld.so.cache','/etc/ld.so.cache']
+    cmd+=['--ro-bind',str(script.with_name('worker_context.py')),'/worker_context.py']
     cmd+=['--proc','/proc','--dev','/dev','--tmpfs','/tmp','--dir','/home/cad','--ro-bind',str(input_dir),'/input','--bind',str(output_dir),'/work','--ro-bind',str(script),'/worker.py','--chdir','/work']
     # FreeCAD uses getpwuid as well as HOME. Supply a synthetic identity rather
     # than exposing the host passwd database or the user's actual home.

@@ -1,8 +1,16 @@
 # Intact Simulation WordPress website
 
-Public site: https://www.intactsimulation.com/ · Demo: https://www.intactsimulation.com/demo/
+Public site: https://www.intactsimulation.com/ · Architecture: https://www.intactsimulation.com/architecture/ · Tutorial: https://www.intactsimulation.com/how-to-use/
 
-The website is published on the user's existing WordPress installation. It has an original responsive product layout, an interactive demo, how-it-works and installation pages, four technical articles, a searchable Finished Work collection, contact links and a factual data-flow page. `site-map.json` records the public content IDs; `public-assets.json` contains only public media URLs. The contact email was already displayed publicly on the original site.
+The November 13 content update was published through the authenticated WordPress REST API: 17 pages, including four new articles, returned HTTP 200 with the updated navigation. Submitted content matched WordPress's saved content after numeric HTML-entity normalization. Visual browser QA was not performed for this update. Credentials were not written into project files.
+
+The update centers the installed ChatGPT plugin. Get Started opens `https://chatgpt.com/` with the visitor's own account; a separate setup link explains local installation and enabling Intact. Opening ChatGPT does not install the plugin, and no public marketplace listing or one-click installation URL is claimed. The installation ZIP remains delivered through the project's public archive. Source-code navigation and developer-oriented download calls to action have been removed from the marketing pages; dependency attribution remains.
+
+Architecture contains an accessible HTML/CSS system map, an ordered modeling and repair flow, the engineering stack and an explanation of geometry audits versus design verification and physical validation. How to Use covers the viewer workflows and generates its shortcut table directly from `scripts/viewer/shortcuts.mjs`. The existing `/how-it-works/` page remains a tutorial alias to preserve bookmarks; its existing WordPress page ID should be updated rather than deleted. Architecture and How to Use are new page slugs. Contact includes URDT's official company reference and the project owner's supplied developer biography. The article collection now contains eight practical engineering guides.
+
+Content lives in `content/`, shared additions in `content.css`, and page generation in `build_wordpress.py`. Build output remains draft payloads until an authenticated WordPress publisher explicitly applies the update. Do not treat a local build as a production deployment.
+
+The website is published on the user's existing WordPress installation. The prepared update has a responsive product layout, architecture and user-tutorial pages, plugin setup, eight technical articles, a searchable Finished Work collection, company/contact information and a factual data-flow page. The interactive examples remain available. `site-map.json` records the existing public content IDs; `public-assets.json` contains only public media URLs. The contact email was already displayed publicly on the original site.
 
 The browser demo uses actual authored example CAD and a recorded 1000 N compression result. It supports orbit/pan/zoom, standard views, grid, wireframe, sectioning, component visibility/isolation/color, enclosure explosion, native example downloads and recorded FEM field/deformation controls. It does not perform new AI generation or solve new analyses online. Custom generation and supported new studies require the local desktop plugin and CAD runtime.
 

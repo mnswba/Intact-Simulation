@@ -1,7 +1,7 @@
 {
   "name": "intact-simulation",
-  "version": "0.19.0",
-  "description": "Local parametric CAD, geometry inspection and bounded engineering studies.",
+  "version": "0.20.0",
+  "description": "Create and verify parametric CAD parts and assemblies, inspect native dimensions, export engineering files and run supported simulation studies through ChatGPT.",
   "author": {
     "name": "Intact Simulation"
   },

@@ -1,0 +1,13 @@
+{
+  "page_id": 191,
+  "url": "https://www.intactsimulation.com/terms-of-service/",
+  "provider": "Abdul Samad",
+  "effective_date": "2026-11-13",
+  "checks": {
+    "http_status": 200,
+    "provider": true,
+    "effective_date": true,
+    "all_sections": true,
+    "draft_banner_absent": true
+  }
+}

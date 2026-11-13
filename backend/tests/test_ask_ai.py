@@ -85,7 +85,7 @@ def test_empty_ai_answer_is_not_reported_as_success(scoped,monkeypatch):
  ai.run(s.root,key,r['request_id']);result=EditRequests(s).read(key,r['request_id']);assert result['status']=='failed' and 'no answer' in result['error']
 
 def test_busy_ai_task_does_not_start_a_second_client(scoped):
- import fcntl
+ from intact_backend.platform_support import file_lock as fcntl
  s,key,request=scoped;r=request()
  with (s.root/'ask-ai.lock').open('a') as gate:
   fcntl.flock(gate,fcntl.LOCK_EX|fcntl.LOCK_NB)

@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Trusted, JSON-only FreeCAD adapter. Executed exclusively in bubblewrap."""
-import json,math,resource,sys,traceback
+"""Trusted, JSON-only FreeCAD adapter. Executed exclusively in OS isolation."""
+import json,math,sys,traceback
 from pathlib import Path
+from worker_context import resource,worker_path
 resource.setrlimit(resource.RLIMIT_CPU,(100,100))
 resource.setrlimit(resource.RLIMIT_AS,(4*1024**3,4*1024**3))
 resource.setrlimit(resource.RLIMIT_FSIZE,(64*1024**2,64*1024**2))
@@ -87,12 +88,12 @@ def select_edges(shape,selectors,p):
     return unique
 
 def main():
-    request=json.loads(Path('/input/request.json').read_text());e=request['engineering'];params=e['parameters'];doc=App.newDocument('Intact');objects={};sketches={};solves={}
+    request=json.loads(Path(worker_path('/input/request.json')).read_text());e=request['engineering'];params=e['parameters'];doc=App.newDocument('Intact');objects={};sketches={};solves={}
     for s in e['sketches']:
         sk,diagnostic=sketch(doc,s,params);sketches[s['id']]=sk;solves[s['id']]=diagnostic
     report={'engine':'FreeCAD','version':'.'.join(App.Version()[:3]),'sketches':solves,'features':[]}
     if request['mode']=='solve':
-        Path('/work/report.json').write_text(json.dumps(report,allow_nan=False));return
+        Path(worker_path('/work/report.json')).write_text(json.dumps(report,allow_nan=False));return
     for s in e['sketches']:
         if solves[s['id']]['conflict']:raise ValueError('Sketch '+s['id']+' has conflicting/redundant constraints: '+json.dumps(solves[s['id']]))
         if s['require_fully_constrained'] and not solves[s['id']]['fully_constrained']:raise ValueError('Sketch '+s['id']+' is under-constrained. Add constraints or explicitly allow remaining degrees of freedom.')
@@ -105,7 +106,7 @@ def main():
             report['features'].append({'id':f['id'],'suppressed':True});continue
         cached=f['id'] in request.get('cached_nodes',[])
         if cached:
-            shape=Part.Shape();shape.read('/input/nodes/'+f['id']+'.brep')
+            shape=Part.Shape();shape.read(worker_path('/input/nodes/')+f['id']+'.brep')
         elif k in ('extrude','revolve'):
             sk=sketches[f['sketch_id']];wires=sk.Shape.Wires
             if not wires or not all(w.isClosed() for w in wires):raise ValueError('Feature '+f['id']+' needs closed sketch wires.')
@@ -153,16 +154,16 @@ def main():
         if f.get('sketch_id'):obj.addProperty('App::PropertyLink','Profile');obj.Profile=sketches[f['sketch_id']]
         objects[f['id']]=obj
         if request.get('export_nodes'):
-            Path('/work/nodes').mkdir(exist_ok=True);shape.exportBrep('/work/nodes/'+f['id']+'.brep')
+            Path(worker_path('/work/nodes')).mkdir(exist_ok=True);shape.exportBrep(worker_path('/work/nodes/')+f['id']+'.brep')
         if f.get('part_id'):outputs[f['part_id']]=obj
         report['features'].append({'id':f['id'],'kind':k,'part_id':f.get('part_id'),'volume_mm3':shape.Volume,'faces':len(shape.Faces),'suppressed':False,'reused_cached_geometry':cached})
     if not outputs:raise ValueError('Assign part_id to at least one output feature.')
     tips=[]
     for name,obj in outputs.items():
         out=doc.addObject('PartDesign::Feature','Output_'+name);out.Label=name;out.Shape=obj.Shape.copy();tips.append(out)
-    doc.recompute();Import.export(tips,'/work/result.step');doc.saveAs('/work/design.FCStd')
-    report['part_ids']=list(outputs);Path('/work/report.json').write_text(json.dumps(report,allow_nan=False))
+    doc.recompute();Import.export(tips,worker_path('/work/result.step'));doc.saveAs(worker_path('/work/design.FCStd'))
+    report['part_ids']=list(outputs);Path(worker_path('/work/report.json')).write_text(json.dumps(report,allow_nan=False))
 
 try:main()
 except BaseException as exc:
-    Path('/work/error.json').write_text(json.dumps({'error':str(exc),'traceback':traceback.format_exc()[-4000:]}));sys.exit(1)
+    Path(worker_path('/work/error.json')).write_text(json.dumps({'error':str(exc),'traceback':traceback.format_exc()[-4000:]}));sys.exit(1)

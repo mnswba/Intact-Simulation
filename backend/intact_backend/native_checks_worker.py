@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Native design checks on an exported STEP, inside the geometry sandbox."""
-import json,math,resource,sys,traceback
+import json,math,sys,traceback
 from pathlib import Path
+from worker_context import resource,worker_path
 resource.setrlimit(resource.RLIMIT_CPU,(80,80));resource.setrlimit(resource.RLIMIT_AS,(4*1024**3,4*1024**3));resource.setrlimit(resource.RLIMIT_FSIZE,(16*1024**2,16*1024**2))
 import build123d as bd
 from OCP.BRepAdaptor import BRepAdaptor_Surface
@@ -53,7 +54,7 @@ def wall_samples(shape,limit=144):
     return {'sample_count':len(values),'minimum_sampled_mm':min(values) if values else None,'maximum_sampled_mm':max(values) if values else None,'sample_locations_xyz_mm':points,'provenance':'Surface-normal ray samples, not a proof of the global minimum wall thickness.'}
 
 def main():
-    request=json.loads(Path('/input/request.json').read_text());model=bd.import_step('/input/model.step');parts={p.label:p for p in model.children};tol=request['tolerance_mm'];results=[];hole_cache={}
+    request=json.loads(Path(worker_path('/input/request.json')).read_text());model=bd.import_step(worker_path('/input/model.step'));parts={p.label:p for p in model.children};tol=request['tolerance_mm'];results=[];hole_cache={}
     for check in request['checks']:
         result={'id':check['id'],'kind':check['kind'],'status':'pass','provenance':'Exported STEP / OpenCASCADE'};kind=check['kind'];part_id=check.get('part_id');p=parts.get(part_id);expected=check['expected']
         try:
@@ -109,8 +110,8 @@ def main():
             if not passed:result['status']='fail'
         except Exception as exc:result.update(status='unverified',error=str(exc)[:1000])
         results.append(result)
-    Path('/work/report.json').write_text(json.dumps({'checks':results,'all_passed':bool(results) and all(r['status']=='pass' for r in results)},allow_nan=False))
+    Path(worker_path('/work/report.json')).write_text(json.dumps({'checks':results,'all_passed':bool(results) and all(r['status']=='pass' for r in results)},allow_nan=False))
 
 try:main()
 except BaseException as exc:
-    Path('/work/error.json').write_text(json.dumps({'error':str(exc),'traceback':traceback.format_exc()[-3000:]}));sys.exit(1)
+    Path(worker_path('/work/error.json')).write_text(json.dumps({'error':str(exc),'traceback':traceback.format_exc()[-3000:]}));sys.exit(1)

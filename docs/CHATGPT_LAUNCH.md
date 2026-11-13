@@ -1,5 +1,7 @@
 # Publishing Intact Simulation to ChatGPT
 
+**For the native Windows 0.20.0 candidate and the current portal findings, use [the updated submission guide](CHATGPT_SUBMISSION_0_20.md).** The notes below record the earlier Linux/WSL release and are retained as historical context.
+
 Checked against OpenAI documentation on 12 November 2026. Product: **Intact Simulation**, plugin ID `intact-simulation`, release **0.19.0**. Publisher account/repository: `mnswba`. The public directory displays the developer identity verified in the submission account, not an identity established by this source code.
 
 **The local development installation is not a public listing.** This release fixes the Ask AI submission flow and structural-analysis workflow. Public approval, publisher verification and a distributable clean-machine runtime remain separate launch work. Do not upload your private project directory, installed client profile or credentials.

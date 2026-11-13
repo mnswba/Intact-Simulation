@@ -1,6 +1,7 @@
-"""Persistent loopback viewer. Survives stdio client reconnects without a console window."""
 from __future__ import annotations
-import argparse, fcntl, json, os, secrets, subprocess, sys, threading, time
+from .platform_support import file_lock as fcntl, background_options, terminate_tree, process_matches
+"""Persistent loopback viewer. Survives stdio client reconnects without a console window."""
+import argparse,  json, os, secrets, subprocess, sys, threading, time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.error import URLError
@@ -8,7 +9,7 @@ from urllib.parse import urlsplit,parse_qs
 from urllib.request import urlopen
 from .projects import ProjectService, atomic_json, EXPORTS
 
-VERSION='0.19.0'
+VERSION='0.20.0'
 
 def registry(root):return Path(root)/'viewer-session.json'
 
@@ -28,7 +29,7 @@ def ensure_viewer(root):
         current=live_session(root)
         if current:return current
         with (root/'viewer.log').open('ab') as log:
-            process=subprocess.Popen([sys.executable,'-m','intact_backend.viewer_server','--state-dir',str(root)],stdin=subprocess.DEVNULL,stdout=log,stderr=log,start_new_session=True,env={**os.environ,'PYTHONUNBUFFERED':'1'})
+            process=subprocess.Popen([sys.executable,'-m','intact_backend.viewer_server','--state-dir',str(root)],stdin=subprocess.DEVNULL,stdout=log,stderr=log,**background_options(),env={**os.environ,'PYTHONUNBUFFERED':'1'})
         deadline=time.monotonic()+15
         while time.monotonic()<deadline:
             current=live_session(root)

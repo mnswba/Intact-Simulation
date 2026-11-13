@@ -1,18 +1,19 @@
 # SPDX-License-Identifier: Apache-2.0
 """Trusted geometry analysis, reconstruction, drawings and mesh-to-B-rep adapter."""
-import json,math,resource,sys,traceback
+import json,math,sys,traceback
 from pathlib import Path
+from worker_context import resource,worker_path
 resource.setrlimit(resource.RLIMIT_CPU,(150,150));resource.setrlimit(resource.RLIMIT_AS,(4*1024**3,4*1024**3));resource.setrlimit(resource.RLIMIT_FSIZE,(64*1024**2,64*1024**2))
 import numpy as np,trimesh,build123d as bd
 
 def main():
- r=json.loads(Path('/input/request.json').read_text());op=r.pop('operation');report={}
+ r=json.loads(Path(worker_path('/input/request.json')).read_text());op=r.pop('operation');report={}
  if op=='mesh_quality':
   from intact_lattice import sampled_thickness
-  mesh=trimesh.load('/input/model.stl',force='mesh',process=True)
+  mesh=trimesh.load(worker_path('/input/model.stl'),force='mesh',process=True)
   report={'watertight':bool(mesh.is_watertight),'positive_volume':bool(mesh.is_volume),'volume_mm3':float(mesh.volume),'bounds_mm':mesh.bounds.tolist(),'triangles':len(mesh.faces),'thickness':sampled_thickness(mesh,96),'scope':'Measured exported mesh. Thickness uses finite inward surface-normal chords, not a global minimum or an exact implicit-surface thickness proof.'}
  elif op=='convert':
-  mesh=trimesh.load('/input/model.stl',force='mesh',process=True)
+  mesh=trimesh.load(worker_path('/input/model.stl'),force='mesh',process=True)
   if not mesh.is_volume:raise ValueError('Only closed, consistently oriented positive-volume meshes can become solids.')
   if len(mesh.faces)>r['maximum_faces']:raise ValueError('Faceted STEP face budget exceeded. Supply a genuinely coarser mesh; no silent decimation is performed.')
   solids=[]
@@ -21,7 +22,7 @@ def main():
    solid=bd.Solid(bd.Shell(faces))
    if not solid.is_valid or solid.volume<=0:raise ValueError('Faceted B-rep sewing failed.')
    solid.label='converted_'+str(len(solids));solids.append(solid)
-  combined=bd.Compound(children=solids);bd.export_step(combined,'/work/result.step');reopened=bd.import_step('/work/result.step');err=abs(reopened.volume-mesh.volume)/mesh.volume
+  combined=bd.Compound(children=solids);bd.export_step(combined,worker_path('/work/result.step'));reopened=bd.import_step(worker_path('/work/result.step'));err=abs(reopened.volume-mesh.volume)/mesh.volume
   if err>1e-4:raise ValueError('STEP reopening changed the converted volume.')
   report={'representation':'sewn planar triangular B-rep','faces':len(mesh.faces),'source_volume_mm3':float(mesh.volume),'step_volume_mm3':float(reopened.volume),'relative_volume_error':err,'fitting_error_to_source_triangles_mm':0,'scope':'Planar facets reproduce the input triangles; no smooth analytic TPMS or recovered parametric feature tree. Sampling error relative to the intended implicit surface remains.'}
  elif op=='reconstruct':
@@ -30,7 +31,7 @@ def main():
    from skimage.measure import marching_cubes
    n=r['voxel_resolution'];solid=np.ones((n,n,n),dtype=bool)
    for view in r['views']:
-    image=Image.open('/input/'+view+'.png')
+    image=Image.open(worker_path('/input/')+view+'.png')
     if image.width*image.height>16000000:raise ValueError('Image pixel budget exceeded.')
     values=np.asarray(image.convert('L'))/255;mask=values<r['threshold'];mask=~mask if r['invert'] else mask;ys,xs=np.where(mask)
     if len(xs)<4:raise ValueError('Silhouette is empty.')
@@ -38,16 +39,16 @@ def main():
     solid &= mask[:,:,None] if view=='top' else mask[:,None,:] if view=='front' else mask[None,:,:]
    spacing=np.asarray(r['size_mm'])/n;vertices,faces,_,_=marching_cubes(np.pad(solid,1).astype(np.float32),.5,spacing=spacing);vertices-=np.asarray(r['size_mm'])/2+spacing/2;mesh=trimesh.Trimesh(vertices,faces,process=True);mesh.fix_normals(multibody=True)
    if not mesh.is_volume:raise ValueError('Visual hull did not form a valid closed solid.')
-   mesh.export('/work/result.stl');report={'mode':'orthographic_hull','views':list(r['views']),'measured':['User-supplied XYZ dimensions'],'inferred':['Visual hull from aligned orthographic silhouettes; concavities invisible in supplied views are not recovered.'],'voxel_spacing_mm':spacing.tolist(),'scope':'Calibrated orthographic visual hull, not perspective photogrammetry or internal-feature reconstruction.'}
+   mesh.export(worker_path('/work/result.stl'));report={'mode':'orthographic_hull','views':list(r['views']),'measured':['User-supplied XYZ dimensions'],'inferred':['Visual hull from aligned orthographic silhouettes; concavities invisible in supplied views are not recovered.'],'voxel_spacing_mm':spacing.tolist(),'scope':'Calibrated orthographic visual hull, not perspective photogrammetry or internal-feature reconstruction.'}
   elif r['mode']=='scan':
-   mesh=trimesh.load('/input/scan.stl',force='mesh',process=True)
+   mesh=trimesh.load(worker_path('/input/scan.stl'),force='mesh',process=True)
    if len(mesh.faces)>250000 or not mesh.is_volume:raise ValueError('Scan must be a closed positive-volume STL with <=250,000 triangles; repair is not inferred silently.')
-   mesh.export('/work/result.stl');report={'mode':'scan','units':'mm','measured':['Provided scan vertices'],'inferred':[],'scope':'Preserves the supplied watertight scan; no feature recovery or hidden-surface inference.'}
+   mesh.export(worker_path('/work/result.stl'));report={'mode':'scan','units':'mm','measured':['Provided scan vertices'],'inferred':[],'scope':'Preserves the supplied watertight scan; no feature recovery or hidden-surface inference.'}
   else:
    from skimage.io import imread
    from skimage.color import rgb2gray
    from skimage.measure import find_contours,approximate_polygon
-   image=imread('/input/image.png')
+   image=imread(worker_path('/input/image.png'))
    if image.shape[0]*image.shape[1]>16000000:raise ValueError('Image exceeds 16 million pixels.')
    gray=rgb2gray(image[:,:,:3]) if image.ndim==3 else image.astype(float)/(255 if image.max()>1 else 1)
    mask=gray<r['threshold'];mask=~mask if r['invert'] else mask
@@ -56,9 +57,9 @@ def main():
    contour=max(contours,key=len);contour=approximate_polygon(contour,tolerance=r['simplify_px']);contour=contour[:-1] if np.allclose(contour[0],contour[-1]) else contour
    if not 3<=len(contour)<=512:raise ValueError('Silhouette complexity exceeds 512 points; increase simplify_px.')
    span=np.ptp(contour[:,1]);scale=r['width_mm']/span;points=[((float(p[1])-contour[:,1].mean())*scale,(-float(p[0])+contour[:,0].mean())*scale,0) for p in contour]
-   face=bd.Face(bd.Wire.make_polygon(points,close=True));solid=bd.extrude(face,amount=r['depth_mm']);solid.label='reconstruction';bd.export_step(bd.Compound(children=[solid]),'/work/result.step');report={'mode':'silhouette','calibration_mm_per_pixel':scale,'measured':['User-supplied width_mm'],'inferred':['Largest closed silhouette contour','Constant depth supplied by user; not inferred from a single photo'],'source_note':r['source_note'],'scope':'Calibrated single-view outline extrusion. Does not recover internal holes, multiple photo geometry, perspective correction or hidden surfaces.'}
+   face=bd.Face(bd.Wire.make_polygon(points,close=True));solid=bd.extrude(face,amount=r['depth_mm']);solid.label='reconstruction';bd.export_step(bd.Compound(children=[solid]),worker_path('/work/result.step'));report={'mode':'silhouette','calibration_mm_per_pixel':scale,'measured':['User-supplied width_mm'],'inferred':['Largest closed silhouette contour','Constant depth supplied by user; not inferred from a single photo'],'source_note':r['source_note'],'scope':'Calibrated single-view outline extrusion. Does not recover internal holes, multiple photo geometry, perspective correction or hidden surfaces.'}
  else:
-  shape=bd.import_step('/input/model.step');parts={p.label:p for p in shape.children};p=parts.get(r.get('part_id'))
+  shape=bd.import_step(worker_path('/input/model.step'));parts={p.label:p for p in shape.children};p=parts.get(r.get('part_id'))
   if p is None:raise ValueError('Part not found.')
   if op=='manufacturing':
    direction=np.asarray(r['direction'],float);direction/=np.linalg.norm(direction);findings=[];draft=[];blocked=0;tested=0
@@ -81,7 +82,7 @@ def main():
   elif op=='drawing':
    from reportlab.pdfgen.canvas import Canvas
    from reportlab.lib.pagesizes import A4,landscape
-   c=Canvas('/work/drawing.pdf',pagesize=landscape(A4));c.setTitle(r['title']);c.setFont('Helvetica',14);c.drawString(30,560,r['title'][:80]);c.setFont('Helvetica',8);c.drawString(30,545,'Units: mm | Orthographic mesh-edge projections from exported CAD | Hidden lines not classified | '+r.get('tolerance_note',''))
+   c=Canvas(worker_path('/work/drawing.pdf'),pagesize=landscape(A4));c.setTitle(r['title']);c.setFont('Helvetica',14);c.drawString(30,560,r['title'][:80]);c.setFont('Helvetica',8);c.drawString(30,545,'Units: mm | Orthographic mesh-edge projections from exported CAD | Hidden lines not classified | '+r.get('tolerance_note',''))
    verts,tri=p.tessellate(.05,.1);verts=np.asarray([tuple(v) for v in verts]);box=p.bounding_box();dims=tuple(box.size)
    for index,(axes,label) in enumerate([((0,1),'Top XY'),((0,2),'Front XZ'),((1,2),'Right YZ')]):
     x0=45+index*260;y0=180;v=verts[:,axes];lo=v.min(0);span=np.ptp(v,axis=0);scale=min(210/max(span[0],.01),280/max(span[1],.01));v=(v-lo)*scale+np.array([x0,y0]);edges=set()
@@ -92,6 +93,6 @@ def main():
     for a,b in edges:c.line(*v[a],*v[b])
     c.setFont('Helvetica',10);c.drawString(x0,y0-25,label);c.drawString(x0,y0-42,f'{span[0]:.3f} × {span[1]:.3f} mm');c.line(x0,y0-8,x0+span[0]*scale,y0-8)
    c.setFont('Helvetica',9);c.drawString(30,55,'Overall native CAD bounds: '+ ' × '.join(f'{x:.3f}' for x in dims)+' mm');c.drawString(30,40,'Reference drawing: add datum scheme, feature dimensions and manufacturing tolerances before production.');c.save();report={'dimensions_mm':list(dims),'views':['XY','XZ','YZ'],'scope':'Reference orthographic PDF with measured overall dimensions; not a complete GD&T or hidden-line manufacturing drawing.'}
- Path('/work/report.json').write_text(json.dumps(report,allow_nan=False))
+ Path(worker_path('/work/report.json')).write_text(json.dumps(report,allow_nan=False))
 try:main()
-except BaseException as exc:Path('/work/error.json').write_text(json.dumps({'error':str(exc),'traceback':traceback.format_exc()[-3000:]}));sys.exit(1)
+except BaseException as exc:Path(worker_path('/work/error.json')).write_text(json.dumps({'error':str(exc),'traceback':traceback.format_exc()[-3000:]}));sys.exit(1)

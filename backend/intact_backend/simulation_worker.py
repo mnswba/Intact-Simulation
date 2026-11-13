@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Bounded 3D tetrahedral linear PDE solvers; no model-authored code."""
-import json,resource,sys,traceback
+import json,sys,traceback
 from pathlib import Path
+from worker_context import resource,worker_path
 resource.setrlimit(resource.RLIMIT_CPU,(160,160));resource.setrlimit(resource.RLIMIT_AS,(4*1024**3,4*1024**3));resource.setrlimit(resource.RLIMIT_FSIZE,(64*1024**2,64*1024**2))
 import numpy as np
 import gmsh,meshio
@@ -15,7 +16,7 @@ from skfem.models.general import divergence
 def calculate(spec,h):
     gmsh.initialize(['-nopopup']);gmsh.option.setNumber('General.Terminal',0);gmsh.option.setNumber('General.NumThreads',1)
     try:
-        gmsh.model.occ.importShapes('/input/model.step');gmsh.model.occ.synchronize();
+        gmsh.model.occ.importShapes(worker_path('/input/model.step'));gmsh.model.occ.synchronize();
         volumes=gmsh.model.getEntities(3);chosen=[v for v in volumes if gmsh.model.getEntityName(*v).split('/')[-1]==spec['part_id']]
         if not chosen and len(volumes)==1:chosen=volumes
         if len(chosen)!=1:raise ValueError('Select a uniquely named single native solid for meshing: '+str([(v,gmsh.model.getEntityName(*v)) for v in volumes]))
@@ -31,7 +32,7 @@ def calculate(spec,h):
         conditions=spec.get('boundary_conditions',[])
         surface_facets={};face_data={}
         if any(b['selector']=='faces' for b in conditions):
-            topology=json.loads(Path('/input/topology.json').read_text());part=next(p for p in topology['parts'] if p['id']==spec['part_id']);face_data={f['ref']:f for f in part['faces']}
+            topology=json.loads(Path(worker_path('/input/topology.json')).read_text());part=next(p for p in topology['parts'] if p['id']==spec['part_id']);face_data={f['ref']:f for f in part['faces']}
             surfaces=[tag for dim,tag in gmsh.model.getBoundary(chosen,oriented=False) if dim==2]
             facet_lookup={tuple(sorted(mesh.facets[:,i])):i for i in mesh.boundary_facets()}
             for condition in conditions:
@@ -141,20 +142,20 @@ def calculate(spec,h):
             result['maximum_linear_strain']=float(np.abs(strain).max());result['regime_valid']=result['maximum_linear_strain']<=.01
         scalar_fields[name]=scalar.tolist();result['fields']=scalar_fields
         vector_fields={'displacement_vector_mm':vectors*1000} if vectors is not None and spec['kind']=='structural' else {'velocity_m_s':vectors} if vectors is not None else {}
-        meshio.write('/work/results.vtu',meshio.Mesh(mesh.p.T*1000,[('tetra',np.asarray(cells))],point_data={**{key:np.asarray(values) for key,values in scalar_fields.items()},**vector_fields},cell_data={'von_mises_Pa':[vm]} if spec['kind']=='structural' else {}))
+        meshio.write(worker_path('/work/results.vtu'),meshio.Mesh(mesh.p.T*1000,[('tetra',np.asarray(cells))],point_data={**{key:np.asarray(values) for key,values in scalar_fields.items()},**vector_fields},cell_data={'von_mises_Pa':[vm]} if spec['kind']=='structural' else {}))
         import csv
-        with Path('/work/results.csv').open('w',newline='') as stream:
+        with Path(worker_path('/work/results.csv')).open('w',newline='') as stream:
             writer=csv.writer(stream);keys=list(scalar_fields);writer.writerow(['x_mm','y_mm','z_mm',*keys])
             for i,point in enumerate(mesh.p.T*1000):writer.writerow([*point,*[scalar_fields[key][i] for key in keys]])
         return result
     finally:gmsh.finalize()
 
 def main():
-    spec=json.loads(Path('/input/request.json').read_text());requested=spec['mesh_size_mm'];h=requested;attempts=[]
+    spec=json.loads(Path(worker_path('/input/request.json')).read_text());requested=spec['mesh_size_mm'];h=requested;attempts=[]
     if spec.get('auto_mesh',True):
         gmsh.initialize(['-nopopup'])
         try:
-            gmsh.option.setNumber('General.Terminal',0);gmsh.model.occ.importShapes('/input/model.step');gmsh.model.occ.synchronize();volumes=gmsh.model.getEntities(3);chosen=[v for v in volumes if gmsh.model.getEntityName(*v).split('/')[-1]==spec['part_id']]
+            gmsh.option.setNumber('General.Terminal',0);gmsh.model.occ.importShapes(worker_path('/input/model.step'));gmsh.model.occ.synchronize();volumes=gmsh.model.getEntities(3);chosen=[v for v in volumes if gmsh.model.getEntityName(*v).split('/')[-1]==spec['part_id']]
             if not chosen and len(volumes)==1:chosen=volumes
             if len(chosen)==1:h=max(h,(gmsh.model.occ.getMass(*chosen[0])/(650 if spec.get('convergence') else 1800))**(1/3))
         finally:gmsh.finalize()
@@ -166,7 +167,7 @@ def main():
     else:raise ValueError('This geometry still exceeds the bounded meshing budget after automatic sizing. Isolate a simpler native solid or simplify small features before analysis.')
     result=coarse
     if spec['convergence']:
-        coarse_files={name:Path('/work/'+name).read_bytes() for name in ('results.vtu','results.csv')}
+        coarse_files={name:Path(worker_path('/work/')+name).read_bytes() for name in ('results.vtu','results.csv')}
         try:
             fine=calculate(spec,h*.7);change=abs(fine['metric']-coarse['metric'])/max(abs(fine['metric']),1e-15);fine['convergence']={'coarse_metric':coarse['metric'],'fine_metric':fine['metric'],'relative_change':change,'tolerance':spec['convergence_tolerance'],'passed':change<=spec['convergence_tolerance']};result=fine
             if spec['kind']=='thermal':
@@ -175,10 +176,10 @@ def main():
                 stress_change=abs(fine['maximum_von_mises_pa']-coarse['maximum_von_mises_pa'])/max(abs(fine['maximum_von_mises_pa']),1e-15);result['stress_convergence']={'relative_change':stress_change,'passed':stress_change<=spec['convergence_tolerance'],'scope':'Peak element-average stress refinement; local singularities may not converge.'}
         except ValueError as exc:
             result['convergence']={'passed':False,'reason':str(exc)}
-            for name,data in coarse_files.items():Path('/work/'+name).write_bytes(data)
+            for name,data in coarse_files.items():Path(worker_path('/work/')+name).write_bytes(data)
     else:result['convergence']={'passed':False,'reason':'Mesh refinement comparison was not requested.'}
     result['mesh_adaptation']={'requested_mm':requested,'effective_mm':result['mesh_size_mm'],'coarsened':result['mesh_size_mm']>requested,'automatically_sized':h>requested,'initial_size_mm':h,'attempts':attempts};result['solver_checks_passed']=True;result['verified']=result['convergence']['passed'] and result.get('regime_valid',True);result['verified_fields']={result['field_name']:result['verified']};
     if spec['kind']=='structural':result['verified_fields']['von_mises_Pa']=result['verified'] and result.get('stress_convergence',{}).get('passed',False)
-    result['study_definition']=spec;result['unit_system']='CAD coordinates mm converted to m; force N, pressure Pa, temperature K, conductivity W/(m K), viscosity Pa s. Defaults are representative inputs, not supplier-certified properties.';Path('/work/report.json').write_text(json.dumps(result,allow_nan=False))
+    result['study_definition']=spec;result['unit_system']='CAD coordinates mm converted to m; force N, pressure Pa, temperature K, conductivity W/(m K), viscosity Pa s. Defaults are representative inputs, not supplier-certified properties.';Path(worker_path('/work/report.json')).write_text(json.dumps(result,allow_nan=False))
 try:main()
-except BaseException as exc:Path('/work/error.json').write_text(json.dumps({'error':str(exc),'traceback':traceback.format_exc()[-3000:]}));sys.exit(1)
+except BaseException as exc:Path(worker_path('/work/error.json')).write_text(json.dumps({'error':str(exc),'traceback':traceback.format_exc()[-3000:]}));sys.exit(1)

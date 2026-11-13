@@ -8,13 +8,20 @@
     "contact": 31,
     "privacy-data": 32,
     "demo": 33,
-    "finished-work": 95
+    "finished-work": 95,
+    "how-to-use": 172,
+    "architecture": 170,
+    "terms-of-service": 191
   },
   "article_parent_id": 29,
   "articles": {
     "engineering-a-better-text-to-cad-brief": 34,
     "tpms-equation-to-sampled-gyroid": 36,
     "reproducible-1000-newton-compression-benchmark": 35,
-    "selection-aware-edits-and-revision-guards": 37
+    "selection-aware-edits-and-revision-guards": 37,
+    "auditor-verification-and-validation": 173,
+    "from-chatgpt-brief-to-local-cad": 174,
+    "parameter-previews-and-design-alternatives": 175,
+    "reading-a-simulation-result": 176
   }
 }

@@ -3,9 +3,10 @@
 This module never imports the web server, provider SDK or service credentials.
 It executes a CAD program only after the outer runner established isolation.
 """
-import json, math, os, re, resource, sys
+import json, math, os, re, sys
 from copy import deepcopy
 from pathlib import Path
+from worker_context import resource,worker_path
 
 resource.setrlimit(resource.RLIMIT_CPU,(100,100))
 resource.setrlimit(resource.RLIMIT_AS,(4*1024**3,4*1024**3))
@@ -28,16 +29,16 @@ SAFE_BUILTINS={name:getattr(__import__('builtins'),name) for name in ('abs','all
 SAFE_BUILTINS['__import__']=cad_import
 
 def main():
-    data=json.loads(Path('/input/request.json').read_text());parameters=data['parameters'];accuracy=data.get('meshing') or {};linear=accuracy.get('linear_deflection_mm');angular=accuracy.get('angular_deflection_rad',.15)
+    data=json.loads(Path(worker_path('/input/request.json')).read_text());parameters=data['parameters'];accuracy=data.get('meshing') or {};linear=accuracy.get('linear_deflection_mm');angular=accuracy.get('angular_deflection_rad',.15)
     scope={'__builtins__':SAFE_BUILTINS,'bd':bd,'math':math,'np':np}
     if data.get('asset_id'):
         if data.get('asset_name')=='input.stl':
             import trimesh
-            m=trimesh.load('/input/input.stl',force='mesh',process=True)
+            m=trimesh.load(worker_path('/input/input.stl'),force='mesh',process=True)
             if len(m.faces)>250000 or not m.is_volume:raise ValueError('Imported STL must be a closed positive volume with <=250,000 triangles.')
             scope['input_mesh']=MeshPart(m,{'provenance':'Supplied STL in millimeters; no automatic feature reconstruction.'})
         else:
-            input_shape=bd.import_step('/input/input.step');scope.update(input_shape=input_shape,imported_parts=imported_parts(input_shape))
+            input_shape=bd.import_step(worker_path('/input/input.step'));scope.update(input_shape=input_shape,imported_parts=imported_parts(input_shape))
     exec(compile(data['source'],'design.py','exec'),scope,scope)
     output=scope['build'](dict(parameters))
     if isinstance(output,bd.BuildPart):output=output.part
@@ -89,7 +90,7 @@ def main():
             import trimesh
             points=np.asarray(mesh['positions']).reshape(-1,3);points=np.column_stack((points[:,0]+cx,-points[:,2]+cy,points[:,1]+z0))
             mesh_exports.append((name,trimesh.Trimesh(points,np.asarray(mesh['indices']).reshape(-1,3),process=False),part['color']))
-    out=Path('/work')
+    out=Path(worker_path('/work'))
     if mesh_mode:write_mesh_exports(mesh_exports,out)
     else:
         combined=bd.Compound(children=assembly,label='Intact generated model')
@@ -109,4 +110,4 @@ if __name__=='__main__':
     try:main()
     except Exception as exc:
         import traceback
-        Path('/work/error.json').write_text(json.dumps({'error':type(exc).__name__,'detail':str(exc)[:2000],'traceback':traceback.format_exc()[-4000:]}));sys.exit(1)
+        Path(worker_path('/work/error.json')).write_text(json.dumps({'error':type(exc).__name__,'detail':str(exc)[:2000],'traceback':traceback.format_exc()[-4000:]}));sys.exit(1)

@@ -26,8 +26,9 @@ def test_policy_rejects_io_private_access_and_invalid_parameters():
     with pytest.raises(ProgramPolicyError):validate_parameters({'height':True})
     assert validate_source(FLANGE)==FLANGE
 
-def test_no_sandbox_means_no_execution(tmp_path):
+def test_no_sandbox_means_no_execution(tmp_path,monkeypatch):
     service=ProgramService(tmp_path,binary='/missing/bwrap')
+    monkeypatch.setattr(service,'available',lambda:False)
     with pytest.raises(SandboxUnavailable):service.build(FLANGE,PARAMS)
 
 def test_freeform_flange_uses_real_cad_and_exports_actual_mesh(tmp_path,beam):

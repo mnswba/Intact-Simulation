@@ -3,9 +3,10 @@
 import argparse,json,os,re,signal,subprocess,sys,threading,time,uuid
 from pathlib import Path
 from .projects import ProjectService,atomic_json
+from .platform_support import background_options,process_matches
 OPS={'adaptive','simulate','optimize','convert','manufacture','drawing','freeform','sheet','lattice','hybrid','assembly','reconstruct'}
 def update(projects,key,**fields):
- import fcntl
+ from .platform_support import file_lock as fcntl
  p=path(projects,key)
  with p.with_suffix('.lock').open('a') as lock:
   fcntl.flock(lock,fcntl.LOCK_EX);r=json.loads(p.read_text());r.update(fields);atomic_json(p,r);return r
@@ -19,10 +20,10 @@ def status(projects,key,model_id=None):
  if model_id and r.get('model_id')!=model_id:raise ValueError('Job belongs to another model.')
  if r['status'] in ('queued','running') and r.get('pid'):
   try:
-   cmd=(Path('/proc')/str(r['pid'])/'cmdline').read_bytes();alive=b'intact_backend.engineering_jobs' in cmd
+   alive=process_matches(r['pid'],'intact_backend.engineering_jobs')
   except OSError:alive=False
   if not alive:
-   import fcntl
+   from .platform_support import file_lock as fcntl
    with p.with_suffix('.lock').open('a') as lock:
     fcntl.flock(lock,fcntl.LOCK_EX);r=json.loads(p.read_text())
     if r['status'] in ('queued','running'):r.update(status='failed',error='The engineering worker ended before completion. Completed artifacts remain available.');atomic_json(p,r)
@@ -32,12 +33,12 @@ def submit(projects,operation,settings,model_id=None):
  if not isinstance(settings,dict):raise ValueError('Settings must be an object.')
  if model_id:record=projects.load(model_id)
  jobs=projects.root/'engineering-jobs';jobs.mkdir(exist_ok=True)
- import fcntl
+ from .platform_support import file_lock as fcntl
  with (jobs/'queue.lock').open('a') as gate:
   fcntl.flock(gate,fcntl.LOCK_EX)
   if sum(status(projects,p.stem)['status'] in ('queued','running') for p in jobs.glob('*.json'))>=3:raise ValueError('Three engineering jobs are already active.')
   key=uuid.uuid4().hex;r={'job_id':key,'operation':operation,'settings':settings,'model_id':model_id,'input_revision':record['spec']['revision'] if model_id else None,'status':'queued','progress':'Queued','cancel_requested':False,'created_at':time.time()};atomic_json(path(projects,key),r)
-  with (jobs/'workers.log').open('ab') as output:process=subprocess.Popen([sys.executable,'-m','intact_backend.engineering_jobs','--state-dir',str(projects.root),'--job-id',key],stdin=subprocess.DEVNULL,stdout=output,stderr=output,start_new_session=True)
+  with (jobs/'workers.log').open('ab') as output:process=subprocess.Popen([sys.executable,'-m','intact_backend.engineering_jobs','--state-dir',str(projects.root),'--job-id',key],stdin=subprocess.DEVNULL,stdout=output,stderr=output,**background_options())
   # A fast worker can update the job before this parent returns; only add PID.
   current=update(projects,key,pid=process.pid)
  return current

@@ -1,16 +1,16 @@
+from __future__ import annotations
+from .platform_support import file_lock as fcntl, background_options, terminate_tree, process_matches
 """Execute model-authored CAD Python in an actual rootless Linux sandbox.
 
 Filesystem mounts contain only Python/runtime libraries, one request and an output folder.
 No model/service credentials, home files, host /proc or network are accessible.
 AST checks are a usability layer; they are NOT used as a substitute for OS isolation.
 """
-from __future__ import annotations
 from hashlib import sha256
 import re,math
 import json, os, shutil, subprocess, sys, tempfile, threading, time, signal
 from pathlib import Path
 from contextlib import contextmanager
-import fcntl
 from .program_policy import validate_source,validate_parameters
 from .program_export import executable_source
 
@@ -21,6 +21,9 @@ class ProgramService:
     def __init__(self,root:Path,binary:str|None=None,timeout:float=120):
         self.root=root;root.mkdir(parents=True,exist_ok=True);self.binary=binary or os.environ.get('INTACT_BWRAP_BIN') or shutil.which('bwrap') or str(Path.home()/'.local/bin/bwrap');self.timeout=timeout;self._lock=threading.Lock();self._ready=None
     def available(self)->bool:
+        if os.name=='nt':
+            from .windows_sandbox import available
+            return available()
         if self._ready is None:
             try:
                 result=subprocess.run([self.binary,'--unshare-all','--die-with-parent','--new-session','--ro-bind','/usr','/usr','--ro-bind','/lib','/lib','--ro-bind','/lib64','/lib64','--proc','/proc','--dev','/dev','--clearenv','/usr/bin/true'],capture_output=True,timeout=5,env={'PATH':'/usr/bin:/bin'})
@@ -51,7 +54,7 @@ class ProgramService:
             return report
         except (OSError,ValueError,TypeError):return None
     def key(self,source:str,parameters:dict,asset_id=None,meshing=None)->str:
-        worker_signature=sha256(b''.join(Path(__file__).with_name(name).read_bytes() for name in ('program_worker.py','topology_worker.py','intact_lattice.py','geometry_audit_worker.py'))).hexdigest()
+        worker_signature=sha256(b''.join(Path(__file__).with_name(name).read_bytes() for name in ('program_worker.py','topology_worker.py','intact_lattice.py','geometry_audit_worker.py','worker_context.py'))).hexdigest()
         data={'worker':5,'worker_signature':worker_signature,'asset_id':asset_id,'build123d':'0.13.0','source':source,'parameters':parameters}
         if meshing:data['meshing']=meshing
         return sha256(json.dumps(data,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -75,7 +78,7 @@ class ProgramService:
         if meshing is not None:
             from .engineering_schema import Accuracy
             meshing=Accuracy.model_validate(meshing).model_dump(mode='json')
-        if not self.available():raise SandboxUnavailable('Free-form CAD needs bubblewrap with working user/network namespaces on the Python host. Execution is disabled until isolation is available.')
+        if not self.available():raise SandboxUnavailable('CAD execution is disabled because OS isolation is unavailable. Windows requires a working AppContainer; Linux requires bubblewrap and user/network namespaces.')
         asset_name=self.asset_name(asset_id) if asset_id else 'input.step'
         if asset_id is not None and not (self.root/'assets'/asset_id/asset_name).is_file():raise ValueError('Imported geometry asset is missing.')
         if asset_id and sha256((self.root/'assets'/asset_id/asset_name).read_bytes()).hexdigest()!=asset_id:raise ValueError('Imported geometry source is damaged. Reimport the original source or portable project.')
@@ -89,24 +92,32 @@ class ProgramService:
                 if asset_id:shutil.copyfile(self.root/'assets'/asset_id/asset_name,input_dir/asset_name)
                 worker=Path(__file__).with_name('program_worker.py').resolve();runtime=Path(sys.base_prefix).resolve();venv=Path(sys.prefix).resolve()
                 command=[self.binary,'--unshare-all','--die-with-parent','--new-session','--cap-drop','ALL','--clearenv']
-                for path in dict.fromkeys(['/usr','/lib','/lib64',str(runtime),str(Path(sys.base_prefix)),str(Path(os.readlink(venv/'bin/python')).parent.parent),str(venv)]):command+=['--ro-bind',path,path]
+                for path in dict.fromkeys(['/usr','/lib','/lib64',str(runtime),str(Path(sys.base_prefix)),str((venv/'bin/python').resolve().parent.parent),str(venv)]):command+=['--ro-bind',path,path]
                 if Path('/etc/ld.so.cache').exists():command+=['--ro-bind','/etc/ld.so.cache','/etc/ld.so.cache']
                 command+=['--proc','/proc','--dev','/dev','--tmpfs','/tmp','--dir','/home/cad','--ro-bind',str(input_dir),'/input','--ro-bind',str(worker),'/worker.py','--ro-bind',str(worker.with_name('topology_worker.py')),'/topology_worker.py','--bind',str(output_dir),'/work','--chdir','/work']
                 command+=['--ro-bind',str(worker.with_name('intact_lattice.py')),'/intact_lattice.py','--ro-bind',str(worker.with_name('geometry_audit_worker.py')),'/geometry_audit_worker.py']
+                command+=['--ro-bind',str(worker.with_name('worker_context.py')),'/worker_context.py']
                 for name,value in {'PATH':'/usr/bin:/bin','HOME':'/home/cad','PYTHONNOUSERSITE':'1','PYTHONDONTWRITEBYTECODE':'1','OPENBLAS_NUM_THREADS':'1','OMP_NUM_THREADS':'1','MKL_NUM_THREADS':'1','PYTHONUNBUFFERED':'1'}.items():command+=['--setenv',name,value]
                 command += [str(venv/'bin/python'),'/worker.py']
                 log=folder/'worker.log'
                 try:
-                    with log.open('wb') as output:
-                        process=subprocess.Popen(command,stdout=output,stderr=subprocess.STDOUT,start_new_session=True,env={'PATH':'/usr/bin:/bin'})
-                        deadline=time.monotonic()+self.timeout
-                        while process.poll() is None:
-                            if cancel_event and cancel_event.is_set() or time.monotonic()>deadline:
-                                os.killpg(process.pid,signal.SIGKILL);process.wait()
-                                raise ProgramBuildError('CAD build cancelled.' if cancel_event and cancel_event.is_set() else 'CAD program exceeded its wall-clock limit. Simplify the operation; the previous model was preserved.')
-                            time.sleep(.05)
+                    if os.name=='nt':
+                        from .windows_sandbox import run,runtime_options
+                        python,readable,env=runtime_options()
+                        returncode=run([python,worker],input_dir,output_dir,readable,env=env,cancel_event=cancel_event,timeout=self.timeout)
+                        log=output_dir/'worker.log'
+                    else:
+                        with log.open('wb') as output:
+                            process=subprocess.Popen(command,stdout=output,stderr=subprocess.STDOUT,start_new_session=True,env={'PATH':'/usr/bin:/bin'})
+                            deadline=time.monotonic()+self.timeout
+                            while process.poll() is None:
+                                if cancel_event and cancel_event.is_set() or time.monotonic()>deadline:
+                                    os.killpg(process.pid,signal.SIGKILL);process.wait()
+                                    raise ProgramBuildError('CAD build cancelled.' if cancel_event and cancel_event.is_set() else 'CAD program exceeded its wall-clock limit. Simplify the operation; the previous model was preserved.')
+                                time.sleep(.05)
+                            returncode=process.returncode
                 except OSError as exc:raise ProgramBuildError('The isolated CAD worker could not start.') from exc
-                if process.returncode:
+                if returncode:
                     if (output_dir/'error.json').exists():error=json.loads((output_dir/'error.json').read_text());detail=error['detail']+'\n'+error.get('traceback','')
                     else:detail=log.read_text(errors='replace')[-2500:]
                     raise ProgramBuildError('CAD program failed validation: '+detail[-3500:])

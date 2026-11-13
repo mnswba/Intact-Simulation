@@ -11,9 +11,13 @@ from .isolated_worker import run_worker
 class FreeCADRuntime:
     def __init__(self,projects):
         self.projects=projects
-        self.root=Path(os.environ.get('INTACT_FREECAD_ROOT',str(Path.home()/'.local/share/intact-simulation/freecad-1.1.4/squashfs-root'))).resolve()
+        default=Path.home()/'.local/share/intact-simulation/freecad-1.1.4/squashfs-root'
+        if os.name=='nt':
+            metadata=Path(os.environ['LOCALAPPDATA'])/'IntactSimulation/freecad-1.1.4/installation.json'
+            default=Path(json.loads(metadata.read_text())['root']) if metadata.is_file() else metadata.parent
+        self.root=Path(os.environ.get('INTACT_FREECAD_ROOT',str(default))).resolve()
     def python(self):
-        for name in ('usr/bin/python','usr/bin/python3','usr/bin/python3.11'):
+        for name in (('bin/python.exe','python.exe') if os.name=='nt' else ('usr/bin/python','usr/bin/python3','usr/bin/python3.11')):
             path=self.root/name
             if path.is_file():return path
         return None
@@ -53,6 +57,7 @@ class FreeCADRuntime:
                         except (OSError,ValueError):pass
                 request.update(cached_nodes=cached,export_nodes=mode=='rebuild');(input_dir/'request.json').write_text(json.dumps(request))
                 env={'PYTHONHOME':str(self.root/'usr'),'PYTHONPATH':str(self.root/'usr/lib')+':'+str(self.root/'usr/Mod'),'LD_LIBRARY_PATH':str(self.root/'usr/lib')+':'+str(self.root/'usr/lib/x86_64-linux-gnu'),'FONTCONFIG_PATH':'/tmp'}
+                if os.name=='nt':env={'PYTHONHOME':str(self.root/'bin'),'PYTHONPATH':str(self.root/'bin')+os.pathsep+str(self.root/'Mod'),'QT_QPA_PLATFORM':'offscreen'}
                 report=run_worker(self.projects.programs,worker,input_dir,output,python=python,mounts=[self.root],env=env,cancel_event=cancel_event)
                 if mode=='rebuild':
                     for fid,nkey in node_keys.items():
@@ -113,7 +118,7 @@ class FeatureService:
     def mutate(self,key,operation,expected_revision=None):
         # Serialize draft edits. Model commits have their own optimistic revision guard.
         with (self.projects.root/'engineering.lock').open('a') as lock:
-            import fcntl
+            from .platform_support import file_lock as fcntl
             fcntl.flock(lock,fcntl.LOCK_EX)
             r,e,draft=self.load(key);self.check_revision(r,draft,expected_revision);operation(e)
             e=Engineering.model_validate(e.model_dump(mode='json'));return self.save(r,e,draft)
@@ -174,7 +179,7 @@ class FeatureService:
         native=self.projects.programs.build(source,e.parameters,asset_id=asset,meshing=e.accuracy.model_dump(mode='json'),cancel_event=cancel_event)
         if {p['part']['id'] for p in native['parts']}!=set(report['part_ids']):raise ValueError('The STEP bridge did not preserve expected part names; no design was committed.')
         with (self.projects.root/'engineering.lock').open('a') as lock:
-            import fcntl
+            from .platform_support import file_lock as fcntl
             fcntl.flock(lock,fcntl.LOCK_EX)
             latest,_,now_draft=self.load(key)
             if now_draft!=draft or self.revision(latest,now_draft)!=self.revision(r,draft):raise ValueError('The design changed during rebuild; no edit was applied.')
