@@ -12,7 +12,7 @@
   <a href="docs/install.md">Setup</a> ·
   <a href="docs/RELEASE_0_20.md">Release notes</a>
 </p>
-<p align="center"><strong>v0.20.0</strong> &nbsp; | &nbsp; 65 MCP tools &nbsp; | &nbsp; Local CAD execution &nbsp; | &nbsp; Apache-2.0</p>
+<p align="center"><strong>v0.20.0</strong> &nbsp; | &nbsp; <a href="docs/TOOLS.md">65 MCP tools</a> &nbsp; | &nbsp; Local CAD execution &nbsp; | &nbsp; Apache-2.0</p>
 
 <p align="center"><strong><a href="https://github.com/mnswba/Intact-Simulation/releases/download/v0.20.0/Intact-Simulation-0.20.0-Windows-Local.zip">Download Windows v0.20.0 ZIP</a></strong> · <a href="docs/INSTALL_WINDOWS_PRIVATE.md">Install on another computer</a> · <a href="https://www.intactsimulation.com/getting-started/">Website setup guide</a></p>
 
@@ -26,6 +26,8 @@ The purpose is to make early design exploration, geometry inspection and repeata
 
 > **Current availability:** the native package targets **Windows x86-64**. Linux source development uses bubblewrap. Native macOS is not supported. The local edition works independently of public-directory publication, which remains pending; this GitHub repository is not an approved ChatGPT directory listing.
 
+**Browser preview:** [Open Intact Browser CAD](https://www.intactsimulation.com/browser-cad/) for a smaller, on-device mesh workshop with primitives, Boolean operations, editable dimensions and STL export. Use ChatGPT through manual JSON recipe exchange. No native CAD installation or publisher CAD server is needed; this is a separate preview, not full 65-tool parity. [Features, architecture and verification](browser-cad/README.md) · [Cross-platform status](docs/CROSS_PLATFORM.md)
+
 ## See the workflow
 
 <p align="center"><img src="docs/images/readme/assembly.gif" alt="Actual Intact viewer animation showing an enclosure body and lid separating in an exploded view and returning to their saved positions" width="100%"></p>
@@ -33,6 +35,8 @@ The purpose is to make early design exploration, geometry inspection and repeata
 **Inspect before you change.** This animation records the actual viewer with the bundled two-part enclosure. Explosion changes the display, while the saved CAD geometry stays intact. It is not a recording of AI generation or a simulation result. [Static workspace image](docs/images/readme/workspace.png) · [Example source](models/enclosure.py)
 
 ## What you can do
+
+See the [complete 65-tool reference](docs/TOOLS.md) for every registered operation, grouped by workflow, and the distinction between registered tools and installed optional engines.
 
 | Workflow | What Intact provides |
 | --- | --- |

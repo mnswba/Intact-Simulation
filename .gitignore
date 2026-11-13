@@ -1,5 +1,7 @@
 # Dependencies
 /node_modules/
+/browser-cad/node_modules/
+/browser-cad/dist/
 /.pnp
 .pnp.*
 # Keep authored Yarn tooling if the project adopts Yarn.

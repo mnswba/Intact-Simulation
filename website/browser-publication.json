@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-13",
+  "edition": "Intact Browser CAD",
+  "version": "0.1.0",
+  "url": "https://www.intactsimulation.com/browser-cad/",
+  "wordpress_page_id": 210,
+  "status": "publish",
+  "hosting": "existing WordPress page; self-contained sandboxed browser app",
+  "cad_computation": "user browser",
+  "chatgpt_integration": "manual recipe/report copy and paste",
+  "chatgpt_directory_approved": false,
+  "native_windows_version_unchanged": "0.20.0",
+  "geometry_tests_passed": 9,
+  "root_tests_passed": 46,
+  "live_browser_checks": {
+    "chromium_desktop": true,
+    "responsive_phone_tablet_emulation": true,
+    "real_ios_android_tested": false,
+    "native_mac_tested": false,
+    "stl_triangles": 1560,
+    "recipe_roundtrip": true,
+    "dimension_rebuild_and_undo": true,
+    "invalid_and_empty_preserve_previous": true,
+    "model_upload_requests": false,
+    "page_errors": []
+  },
+  "getting_started_link_verified": true,
+  "getting_started_desktop_mobile_overflow": false,
+  "package": {
+    "edition": "Intact Browser CAD",
+    "version": "0.1.0",
+    "kind": "website deployment, not ChatGPT plugin submission",
+    "filename": "Intact-Browser-CAD-0.1.0-Website.zip",
+    "size_bytes": 1620519,
+    "sha256": "4f7cad3fb8140983131c16e599bc9f5ef643a3a58a81a71739d734d0daa638a9",
+    "entries": 11,
+    "uncompressed_bytes": 4902413
+  }
+}

@@ -2,6 +2,12 @@
 
 Public site: https://www.intactsimulation.com/ · Architecture: https://www.intactsimulation.com/architecture/ · Tutorial: https://www.intactsimulation.com/how-to-use/
 
+## Browser CAD preview
+
+The separate [Browser CAD preview 0.1.0](https://www.intactsimulation.com/browser-cad/) is published on the existing WordPress host, page ID 210. Source, architecture and verification are in [`browser-cad/`](../browser-cad/README.md). It builds new primitive/Boolean meshes on the user's device, with manual ChatGPT recipe exchange, measured reports, editable JSON and STL. It introduces no publisher CAD server or API key. Full native 65-tool parity and direct ChatGPT tool integration are not claimed.
+
+Build with `cd browser-cad && npm ci && npm run build`. Its self-contained `dist/wordpress-page.json` is the source payload for the admin-owned WordPress page; it embeds the app in an opaque-origin sandboxed iframe. `wordpress-host-preview.html` exercises that same embedding without WordPress. The static-directory deployment is also included. Generated runtime bytes remain outside Git. The WordPress app denies network connections from the embedded workspace; models are not uploaded. Live Chromium desktop and emulated phone/tablet checks passed, but real iOS/Android hardware validation is pending. `browser-publication.json` records actual publication separately from draft build output. Get Started links to the preview using `content/browser-cad-banner.html`.
+
 ## Windows download and private installation
 
 The 0.20.0 Windows-Local ZIP is published as a versioned [GitHub release asset](https://github.com/mnswba/Intact-Simulation/releases/tag/v0.20.0). The website's [Get Started](https://www.intactsimulation.com/getting-started/) page, homepage and shared calls to action deliver that same file and explain private installation through Codex on another Windows computer. The WordPress binary upload timed out; no separate WordPress-hosted copy is claimed. `downloads.json` is the source of the public download URL, version, size and SHA-256.
