@@ -1,0 +1,22 @@
+{
+  "version": "0.20.0",
+  "models": [
+    "models/flange.py",
+    "models/enclosure.py"
+  ],
+  "capture": "Actual Intact viewer; isolated native CAD builds; snapshot mode disables view saves",
+  "assembly_animation": {
+    "duration_ms": 5850,
+    "operation": "Display-only explosion of two saved components; no geometry or revision edit",
+    "captured_frames": 64,
+    "encoded_frames": 51
+  },
+  "private_projects_used": false,
+  "gallery": {
+    "turbofan.png": "website/site/demo/showcase-stratus-turbofan-cutaway.png; public source models/showcase/industry-a/stratus-turbofan-cutaway.py",
+    "exchanger.png": "website/site/demo/showcase-tidal-plate-exchanger.png; public source models/showcase/industry-b/tidal-plate-exchanger.py",
+    "linear-stage.png": "website/site/demo/showcase-vector-ballscrew-stage.png; public source models/showcase/industry-b/vector-ballscrew-stage.py"
+  },
+  "hero": "Authored HTML layout in docs/media/hero.html using the real flange viewer capture",
+  "architecture": "Authored static vector diagram; not an execution trace or simulation result"
+}

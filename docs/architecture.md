@@ -1,6 +1,8 @@
 # Architecture
 
-An AI client calls the Intact MCP server. The server validates tool inputs and revision guards, then dispatches CAD/engineering work. The language model is provided by the user's AI client; there is no LiteLLM proxy or model training pipeline in this release.
+An AI client calls the Intact MCP server. The server validates tool inputs and revision guards, then dispatches CAD/engineering work. The language model is provided by the user's AI client; there is no LiteLLM proxy or model training pipeline in this release. The native Windows edition processes CAD on the user's computer and needs no publisher-operated CAD backend.
+
+![Intact architecture: conversation, local tools, isolated workers, verification and versioned outputs](images/readme/architecture.svg)
 
 ```mermaid
 flowchart LR
@@ -14,13 +16,17 @@ flowchart LR
     Engineering --> Results[Revision-bound results]
     Artifacts --> Viewer[Local browser viewer]
     Results --> Viewer
-    Viewer --> Annotation[ChatGPT annotation / reply request]
-    Annotation --> Chat
+    Viewer --> Bridge[Supported host message bridge]
+    Bridge --> Chat
+    Viewer --> Scoped[Separate signed-in local AI task]
+    Scoped --> MCP
 ```
 
 - `backend/intact_backend/mcp_server.py`: MCP registration and primary tool dispatch.
 - `projects.py`: projects, guarded commits, artifacts, immutable revision snapshots and appearance exports.
-- `program.py`, `program_policy.py`, `program_worker.py`: generated-Python validation and rootless Linux sandbox execution. AST checks supplement OS isolation.
+- `program.py`, `program_policy.py`, `program_worker.py`: generated-Python validation and isolated CAD execution. AST checks supplement OS isolation.
+- `windows_sandbox.py`, `worker_context.py`, `platform_support.py`: Windows AppContainer, bounded worker Job Objects, portable file locks and worker context checks. Linux retains bubblewrap; there is no unsandboxed generated-CAD fallback.
+- `desktop.py`: native Windows first-use runtime preparation, checksum-pinned components and MCP startup. ChatGPT reasoning remains in the AI client; native CAD and numerical tools run locally.
 - `feature_graph.py`, `freecad_worker.py`: explicit structured sketches and feature history. Imported opaque solids do not automatically gain a feature graph.
 - `stable_references.py`, `design_checks.py`, `accuracy.py`: named geometry handles, acceptance checks and accuracy evidence.
 - `intact_lattice.py`, `advanced_worker.py`: bounded implicit sampling, distance-offset lattices and mesh operations.

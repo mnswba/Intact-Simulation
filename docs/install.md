@@ -2,7 +2,57 @@
 
 ## Supported host
 
-Use Linux x86-64 or WSL2 Ubuntu on Windows. Python 3.12–3.13, uv, working Linux namespaces and bubblewrap are required. The pinned FreeCAD AppImage and engineering library preparation currently target Linux x86-64; other architectures and native macOS/Windows are not supported by this installer.
+Version 0.20.0 supports a native Windows x86-64 runtime. Linux x86-64 remains available through the source installer below. Native macOS is not implemented or validated. Ordinary web/mobile ChatGPT sessions cannot run this local Windows runtime.
+
+## Native Windows 0.20.0
+
+### Use an existing local plugin installation
+
+1. Enable Intact Simulation in the desktop host that installed the local plugin. This is separate from uploading a public-directory draft.
+2. On first start, allow the launcher to prepare its pinned Python/CAD dependencies, FreeCAD, browser and local AI client when needed. Setup needs internet access, several GB of disk space and time to complete.
+3. Ask Intact to check `status`. Confirm `version: 0.20.0`, `cad_ready: true` and `desktop_setup.ready: true` before modeling. Report setup errors instead of bypassing worker isolation.
+4. Create a small dimensional example, check its measurements and export STEP. Open the returned viewer and check the version in **Tutorial**.
+5. Use a new local conversation after an update when the old thread keeps its previous tool connection. An old WSL viewer URL can still point to 0.19.0; open the native Windows viewer rather than that stale link.
+
+The small **Windows-Local** package contains the Intact wheel and uv launcher; larger runtime components are installed automatically in the user's profile. It requires no WSL or publisher-hosted CAD backend. Public-directory publication is pending and local-MCP submission access is a separate OpenAI requirement. See [release notes](RELEASE_0_20.md) and [submission status](CHATGPT_SUBMISSION_0_20.md). Do not treat this source repository as a live directory installation link.
+
+Projects are stored separately in `%LOCALAPPDATA%/IntactSimulation/projects`. A local build suffix such as `0.20.0+local.1` selects a fresh plugin cache; the CAD runtime still reports 0.20.0. Preserve project libraries during reinstall/update. The installed desktop shortcut can open saved CAD without a geometry rebuild.
+
+### Develop the Windows source runtime
+
+Install Python/uv prerequisites using the [official uv installation guide](https://docs.astral.sh/uv/getting-started/installation/), then run from PowerShell:
+
+```powershell
+git clone https://github.com/mnswba/Intact-Simulation.git
+cd Intact-Simulation
+uv sync --project backend --python 3.12 --extra cad --extra dev --frozen
+```
+
+For an MCP client that supports custom local stdio configuration, use the actual checkout path:
+
+```json
+{
+  "mcpServers": {
+    "intact": {
+      "command": "uv",
+      "args": [
+        "run", "--project", "C:/path/to/Intact-Simulation/backend",
+        "--python", "3.12", "--extra", "cad", "--frozen",
+        "intact-simulation"
+      ],
+      "startup_timeout_sec": 300
+    }
+  }
+}
+```
+
+The `intact-simulation` entry point runs desktop setup and then serves MCP over stdio. It is not a standalone chat UI: launching it in a terminal waits for an MCP client. Hosts differ in how they register custom tools and plugin skills; use their supported local installation/configuration mechanism. Do not substitute this JSON into a remote HTTPS connector field. The modeling skill and its references are in [`plugin/skills/intact-cad/`](../plugin/skills/intact-cad/).
+
+The packaging source is `scripts/package-windows-local-loader.py`, using the backend wheel, uv installation and `backend/requirements-windows.txt`. The repository's native local installer helper is for the existing verified development-engine setup; it is not a universal fresh-machine GUI installer. The [verification record](QA_0_20.md) distinguishes tested startup from untested clean-account installation and records the Windows SDK viewer-disconnect limitation.
+
+## Linux source installation and legacy WSL route
+
+The Linux installer requires Python 3.12–3.13, uv, working namespaces and bubblewrap. Its pinned FreeCAD AppImage and library preparation target Linux x86-64. WSL2 Ubuntu is the legacy Linux-backed Windows route, not a prerequisite for the native Windows edition above.
 
 The installer downloads approximately 0.8 GB of FreeCAD data plus Python wheels. Allow several GB of disk space. Install uv using its official instructions: https://docs.astral.sh/uv/getting-started/installation/ . On Ubuntu install `build-essential bubblewrap libgl1 libglu1-mesa libxft2` using apt. Additional browser libraries may be required for snapshots; Playwright reports missing dependencies for your distribution.
 
