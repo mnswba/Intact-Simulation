@@ -2,6 +2,12 @@
 
 Public site: https://www.intactsimulation.com/ · Architecture: https://www.intactsimulation.com/architecture/ · Tutorial: https://www.intactsimulation.com/how-to-use/
 
+## Windows download and private installation
+
+The 0.20.0 Windows-Local ZIP is published as a versioned [GitHub release asset](https://github.com/mnswba/Intact-Simulation/releases/tag/v0.20.0). The website's [Get Started](https://www.intactsimulation.com/getting-started/) page, homepage and shared calls to action deliver that same file and explain private installation through Codex on another Windows computer. The WordPress binary upload timed out; no separate WordPress-hosted copy is claimed. `downloads.json` is the source of the public download URL, version, size and SHA-256.
+
+All 18 existing content pages were published and their saved raw content checked against the prepared payload after HTML-entity normalization. The live Get Started button downloaded the correctly named ZIP and its SHA-256 matched the local package. Desktop (1440 px) and mobile (390 px) checks passed, including all five installation steps and no horizontal overflow. The GitHub release includes the ZIP, checksum, verification record and installation guide. See `download-publication.json` for the public verification receipt. This publication is software distribution, not OpenAI directory approval.
+
 The November 13 content update was published through the authenticated WordPress REST API: 17 pages, including four new articles, returned HTTP 200 with the updated navigation. Submitted content matched WordPress's saved content after numeric HTML-entity normalization. Visual browser QA was not performed for this update. Credentials were not written into project files.
 
 The update centers the installed ChatGPT plugin. The current Get Started page provides the native Windows 0.20.0 ZIP and a private Codex installation procedure for another computer. The homepage and shared calls to action link to the same versioned GitHub release asset, declared in `downloads.json`; a separate Open ChatGPT link remains for existing users. Opening ChatGPT does not install the plugin, and no public-directory approval or one-click installation URL is claimed. Source-code archives are distinct from the Windows-Local plugin package. Source-code navigation remains absent from marketing navigation; dependency attribution remains.

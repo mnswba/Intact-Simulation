@@ -1,0 +1,22 @@
+{
+  "version": "0.20.0",
+  "published_date": "2026-11-13",
+  "release_url": "https://github.com/mnswba/Intact-Simulation/releases/tag/v0.20.0",
+  "download_url": "https://github.com/mnswba/Intact-Simulation/releases/download/v0.20.0/Intact-Simulation-0.20.0-Windows-Local.zip",
+  "size_bytes": 15755028,
+  "sha256": "3ea9a3c712aa501877fd9b6b1e3742f26fd337257f438af6972393efc69ddfca",
+  "website_procedure": "https://www.intactsimulation.com/getting-started/",
+  "distribution": "Versioned GitHub release asset linked from the website",
+  "wordpress_hosted_binary": false,
+  "wordpress_upload_result": "Timed out; no separate binary copy claimed",
+  "content_pages_published": 18,
+  "checks": {
+    "all_saved_page_payloads_matched": true,
+    "public_zip_sha256_matched": true,
+    "live_website_button_downloaded_correct_zip": true,
+    "live_desktop_layout_1440": true,
+    "live_mobile_layout_390": true,
+    "five_installation_steps": true
+  },
+  "public_chatgpt_directory_approved": false
+}
